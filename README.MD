@@ -12,8 +12,7 @@ Callbacks can be attached to the most common control events e.g. ```TextChanged`
 
 Form layout is managed by the module in order to reduce the
 time required to strap a GUI onto existing scripts and improve
-readibility by requiring only terse control initialisation and
-logic to be added.
+readibility by requiring only terse initialisation and logic.
 
 ## Install
 Copy QuickForms.psm1 and QuickForms.psd1 to your module path.
@@ -45,16 +44,28 @@ Import-Module .\QuickForms.psd1
 
 | Argument | Description |
 | --- | --- |
-| [-Title <value>] | Title to be displayed in the forms title bar (default: "My Form") |
-| [-LabelWidth <value>] | Width of the label column in pixels (default: 200) |
-| [-ControlWidth <value>] | Width of the control column in pixels (default)
+| [-Title \<value>] | Title to be displayed in the forms title bar (default: "My Form") |
+| [-LabelWidth \<value>] | Width of the label column in pixels (default: 200) |
+| [-ControlWidth \<value>] | Width of the control column in pixels (default)
 
 ``` PowerShell
 $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 ```
 ### Add controls rows
+Add a control, and it's label to a form.
+
+| Argument | Description | 
+| --- | --- |
+| \<type> | TextBox, PasswordBox, CheckBox, ComboBox or ListBox |
+| [\<rows>] | Optional number of rows to display for ListBox |
+| \<label> | Label for the control |
+| [\<options>] | Arrray of items to initialise ComboBox or ListBox with |
+| [\<callback>] | Scriptblock to be executed when ```TextChanged``` for ```TextBox``` and ```PasswordBox```, ```CheckedChanged``` for ```CheckBox```, ```SelectedValueChange``` for ```ComboBox``` and ```ListBox``` |
+| 
+
+
 ``` PowerShell
-.AddRow(<type>, <label>, )
+.AddRow(<type>, [<rows>], <label>, )
 ```
 
 #### TextBox
