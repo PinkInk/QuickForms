@@ -94,6 +94,9 @@ $Enabled = $MyForm.AddRow("CheckBox", "Enabled:")
 
 Callback is optional.  Callback is bound to ```CheckedChanged``` event.
 
+Checkbox labels appear to the right of the checkbox in the 
+control column of the form, not the left label column
+
 #### Control : ComboBox
 
 ``` PowerShell
