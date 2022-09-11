@@ -40,7 +40,12 @@ Import-Module .\QuickForms.psd1
 ```
 
 ### Initialise form
+
 ```New-QuickForm``` is used to initialise a new form
+
+``` PowerShell
+$MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
+```
 
 | Argument | Description |
 | --- | --- |
@@ -48,11 +53,13 @@ Import-Module .\QuickForms.psd1
 | [-LabelWidth \<value>] | Width of the label column in pixels (default: 200) |
 | [-ControlWidth \<value>] | Width of the control column in pixels (default)
 
-``` PowerShell
-$MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
-```
 ### Add controls rows
+
 Add a control, and it's label to a form.
+
+``` PowerShell
+.AddRow(<type>, [<rows>,] <label>, [<options>,][<callback>,][<buttons>]  )
+```
 
 | Argument | Description | 
 | --- | --- |
@@ -62,10 +69,6 @@ Add a control, and it's label to a form.
 | [\<options>] | Optional array of items to initialise ComboBox or ListBox with |
 | [\<callback>] | Optional Scriptblock to be executed on ```TextChanged``` for ```TextBox``` and ```PasswordBox```, ```CheckedChanged``` for ```CheckBox```, ```SelectedValueChange``` for ```ComboBox``` and ```ListBox``` |
 | [\<buttons>] | Optional array of buttons and callbacks for ```ListBox``` controls |
-
-``` PowerShell
-.AddRow(<type>, [<rows>,] <label>, [<options>,][<callback>,][<buttons>]  )
-```
 
 #### Control : TextBox
 #### Control : PasswordBox
