@@ -139,11 +139,16 @@ e.g. ```.SelectedIndex``` property.
 
 ``` PowerShell
 .AddRow("ListBox", <number_of_rows>, <label>, <items>, <callback>[, <buttons>])
+```
 
+e.g.
+
+``` PowerShell
 $MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), { Write-Host $MyList.SelectedItem })
 ```
 
-or add a row of buttons underneath, normally used for interacting with the list; 
+... or add a row of buttons underneath, normally used for interacting with the 
+list:
 
 ``` PowerShell
 $MyList = $demo.AddRow("ListBox", 3, "List:", 
@@ -163,6 +168,16 @@ $MyList = $demo.AddRow("ListBox", 3, "List:",
 
 ```Buttons``` are optional.  ```Items``` and ```Callback``` are not optional but
 can be empty e.g. ```@()``` and ```{}``` respectively (see example above).  
+
+```Buttons``` is an array of dictionary's containing ```Name``` (button text) 
+and ```callback``` e.g.
+
+``` PowerShell
+@(
+    @{ name="Add"; callback={} },
+    @{ name="Remove"; callback={} }
+)
+```
 
 Callback is bound to ```SelectedValueChanged``` event.
 
