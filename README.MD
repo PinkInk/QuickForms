@@ -8,6 +8,8 @@ supporting the following control types:
 - ```ComboBox``` (drop-down list)
 - ```ListBox``` (with optional user specified Buttons)
 
+![demo form](./demo.png)
+
 Callbacks can be attached to the most common control events e.g. ```TextChanged``` for ```TextBox``` and ```PasswordBox```, ```SelectedValueChange``` for ```ComboBox``` and ```ListBox```.
 
 Form layout is managed by the module in order to reduce the
