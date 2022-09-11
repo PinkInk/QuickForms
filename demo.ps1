@@ -27,4 +27,4 @@ $demo.AddAction({
 
 $demo.Show()
 
-Write-Host $MyFirstName.Text, $MySurname.Text, $MyPassword.Text
+Write-Host $MyFirstName.Text, $MySurname.Text, $MyUserID.Text, $MyPassword.Text
