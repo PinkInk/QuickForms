@@ -17,6 +17,16 @@ $MySex = $demo.AddRow("CheckBox", 'Male', { Write-Host $this.Checked })
 
 $MyOptions = $demo.AddRow("ComboBox", "Sex:", @("Male", "Female"), { Write-Host $this.SelectedItem })
 
+
+$MyList = $demo.AddRow("ListBox", 3, "List:", 
+    @("Item the first"), 
+    { Write-Host $MyList.SelectedItem }, 
+    @(
+        @{ name="Add"; callback={} },
+        @{ name="Remove"; callback={} }
+    )
+)
+
 $demo.AddAction({ 
     if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
         $this.parent.close()
