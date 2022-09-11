@@ -240,8 +240,8 @@ controls.
 ### Mimic radio buttons
 
 To work around the absence of radio button control functionality you can use
-multiple ```CheckBox``` controls with callbacks to maintain only a single 
-current selected control.
+multiple ```CheckBox``` controls with callbacks to maintain a single checked
+control.
 
 ### Additional properties
 
