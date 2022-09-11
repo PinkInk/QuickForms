@@ -71,10 +71,59 @@ Add a control, and it's label to a form.
 | [\<buttons>] | Optional array of buttons and callbacks for ```ListBox``` controls |
 
 #### Control : TextBox
+
+``` PowerShell
+$Firstname = $MyForm.AddRow("TextBox", "Firstname:", { $Firstname.Text = $Firstname.Text.ToUpper() })
+```
+
+Callback is optional.  Callback is bound to ```TextChanged``` event.
+
 #### Control : PasswordBox
+
+``` PowerShell
+$Password = $MyForm.AddRow("PasswordBox", "Password:" { Write-Host $Password.Text })
+```
+
+Callback is optional.  Callback is bound to ```TextChanged``` event.
+
 #### Control : CheckBox
+
+``` PowerShell
+$Enabled = $MyForm.AddRow("CheckBox", "Enabled:")
+```
+
+Callback is optional.  Callback is bound to ```CheckedChanged``` event.
+
 #### Control : ComboBox
+
+``` PowerShell
+$Gender = $MyForm.AddRow("ComboBox", "Gender:", @("Male", "Female"), { Write-Host $Gender.SelectedItem })
+```
+
+Options and Callback are optional.  Callback is bound to ```SelectedValueChanged``` event.
+
+```.SelectedItem``` contains the text of the currently selected item.
+
+```.SelectedIndex``` contains the index of the currently selected item, or ```-1``` if a selection hasn't yet been made.
+
 #### Control : ListBox
+
+``` PowerShell
+$MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), { Write-Host $MyList.SelectedItem })
+```
+
+or add a row of buttons underneath, normally used for interacting with the list; 
+
+``` PowerShell
+$MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), {}, 
+    @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
+)
+```
+Options, Callback and Buttons are optional.  Callback is bound to ```SelectedValueChanged``` event.
+
+```.SelectedItem``` contains the text of the currently selected item.
+
+```.SelectedIndex``` contains the index of the currently selected item, or ```-1``` if a selection hasn't yet been made.
 
 ### Add action
 
