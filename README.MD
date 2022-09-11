@@ -126,5 +126,32 @@ Options, Callback and Buttons are optional.  Callback is bound to ```SelectedVal
 ```.SelectedIndex``` contains the index of the currently selected item, or ```-1``` if a selection hasn't yet been made.
 
 ### Add action
+Add the customary OK and Cancel buttons to the form, optionally 
+with a callback for the OK button, which is commonly used to
+verify validity of entered data before closing the form and
+proceeding.
+
+This is typically called after all controls are added to a form,
+before it is shown.
+
+If Callback is specified for the OK button it will be required
+to explicitly close the form (if waranted) e.g. via ```$this.parent.close()```
+
+You likely want to set some value in the Callback to inform
+latter code that the form was closed via OK, rather than
+Cancelled.
+
+``` PowerShell
+$MyForm.AddAction({
+    # verify values
+    $ExitCode = 1
+    $this.parent.close()
+})
+```
 
 ### Show form
+Display the form.
+
+```PowerShell
+$MyForm.Show()
+```
