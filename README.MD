@@ -9,6 +9,8 @@ supporting the following controls:
 - ```ComboBox``` (drop-down list)
 - ```ListBox``` (with optional user specified Buttons)
 
+Example (the included **demo.ps1** form):
+
 ![demo form](./demo.png)
 
 Callbacks can be easily attached to the most common control events e.g. 
