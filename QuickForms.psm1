@@ -259,7 +259,6 @@ function New-QuickForm {
 
             <type> - either TextBox, PasswordBox, CheckBox, ComboBox, ListBox
             [<rows>] - number of rows to display for listbox controls
-            <name> - name of the control, must be unique
             <label> - label for the control, displayed in left column for all except
                       CheckBox
             [<options>] - optional array of items for a ComboBox e.g. @(1,2,3)
