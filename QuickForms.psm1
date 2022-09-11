@@ -115,12 +115,12 @@ class QuickForm {
         [array]$buttons
     ){
 
-        # parser doesn't think $c is defined when referred to after switch without this!
+        # parser doesn"t think $c is defined when referred to after switch without this!
         $c = $null 
 
         Switch($ControlType) {
 
-            'TextBox' {
+            "TextBox" {
                 $c = New-Object system.Windows.Forms.TextBox
                 $c.Multiline = $false
                 $c.Location = New-Object System.Drawing.Point(($this.label_width + $this.margin), ($this.row_height * $this.slot))
@@ -136,11 +136,11 @@ class QuickForm {
                 $rows = 1
             }
 
-            'PasswordBox' {
+            "PasswordBox" {
                 $c = New-Object system.Windows.Forms.TextBox
                 $c.Multiline = $false
                 $c.Location = New-Object System.Drawing.Point(($this.label_width + $this.margin), ($this.row_height * $this.slot))
-                $c.PasswordChar = '*'
+                $c.PasswordChar = "*"
                 $c.width = $this.control_width - (2*$this.margin)
                 if ($null -ne $callback) { $c.Add_TextChanged($callback) }
                 $l = New-Object System.Windows.Forms.Label
@@ -153,7 +153,7 @@ class QuickForm {
                 $rows = 1
             }
 
-            'CheckBox' {
+            "CheckBox" {
                 $c = New-Object system.Windows.Forms.CheckBox
                 $c.text = $label
                 $c.Width = $this.control_width - (2*$this.margin)
@@ -163,7 +163,7 @@ class QuickForm {
                 $rows = 1
             }
 
-            'ComboBox' {
+            "ComboBox" {
                 $c = New-Object System.Windows.Forms.ComboBox
                 $options | ForEach-Object{ [void] $c.Items.Add($_) }
                 $c.Location = New-Object System.Drawing.Point(($this.label_width + $this.margin), ($this.row_height * $this.slot))
@@ -179,7 +179,7 @@ class QuickForm {
                 $rows = 1
             }
 
-            'ListBox' {
+            "ListBox" {
                 $c = New-Object System.Windows.Forms.ListBox
                 $options | ForEach-Object{ [void] $c.Items.Add($_) }
                 $c.Location = New-Object System.Drawing.Point(($this.label_width + $this.margin), ($this.row_height * $this.slot))
@@ -227,10 +227,10 @@ class QuickForm {
         [scriptblock]$callback
     ) {
         $ok = New-Object system.Windows.Forms.Button
-        $ok.text = 'OK'
+        $ok.text = "OK"
         $ok.location = New-Object System.Drawing.Point(($this.width - 120 - ($this.margin *2)   ), ($this.row_height * $this.slot))
         $cancel = New-Object system.Windows.Forms.Button
-        $cancel.text = 'Cancel'
+        $cancel.text = "Cancel"
         $cancel.location = New-Object System.Drawing.Point(($this.width - 60 - $this.margin), ($this.row_height * $this.slot))
         $cancel.Width = $ok.Width = 60
         $cancel.Height = $ok.Height = $this.row_height
@@ -268,7 +268,7 @@ function New-QuickForm {
                            refer to the form as $this.parent
                            listboxes must have a callback
             [<buttons>] - optional array of buttons for listboxes e.g.
-                          @( @{name='<name>'; callback={}}, @{name='<name>'; callback={}}, etc. )
+                          @( @{name="<name>"; callback={}}, @{name="<name>"; callback={}}, etc. )
             
             The value of each control type can be accessed through its properties
             either via $this (within the controls own callback) or by assigning the returned
@@ -295,18 +295,18 @@ function New-QuickForm {
 
         $demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 
-        $myFirstName = $demo.AddRow('TextBox', 'First Name:', { Write-Host $this.Text })
-        $MySurname = $demo.AddRow('TextBox', 'Surname:', { Write-Host $this.Text })
-        $MyPassword = $demo.AddRow('PasswordBox', 'Password:')
-        $MyConfirmPassword = $demo.AddRow('PasswordBox', 'Confirm Password:', { Write-Host "$($MyPassword.Text -eq $this.Text)" })
-        $MySex = $demo.AddRow("CheckBox", 'Male', { Write-Host $this.Checked })
+        $myFirstName = $demo.AddRow("TextBox", "First Name:", { Write-Host $this.Text })
+        $MySurname = $demo.AddRow("TextBox", "Surname:", { Write-Host $this.Text })
+        $MyPassword = $demo.AddRow("PasswordBox", "Password:")
+        $MyConfirmPassword = $demo.AddRow("PasswordBox", "Confirm Password:", { Write-Host "$($MyPassword.Text -eq $this.Text)" })
+        $MySex = $demo.AddRow("CheckBox", "Male", { Write-Host $this.Checked })
         $MyOptions = $demo.AddRow("ComboBox", "Sex:", @("Male", "Female"), { Write-Host $this.SelectedItem })
 
         $demo.AddAction({ 
             if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
                 $this.parent.close()
             } else {
-                Write-Host 'Password & Confirm Password do not match!'
+                Write-Host "Password & Confirm Password do not match!"
             }
         })
 
@@ -324,7 +324,7 @@ function New-QuickForm {
         Width of the controls column in pixels.
     #>
     param (
-        [string]$Title = 'My Form',
+        [string]$Title = "My Form",
         [int32]$LabelWidth = 200,
         [int32]$ControlWidth = 200
     )
