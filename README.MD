@@ -116,6 +116,8 @@ Options and Callback are optional.  Callback is bound to
 #### Control : ListBox
 
 ``` PowerShell
+.AddRow("ListBox", <number_of_rows>, <label>, <items>, <callback>[, <buttons>])
+
 $MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), { Write-Host $MyList.SelectedItem })
 ```
 
@@ -126,8 +128,10 @@ $MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), {},
     @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
 )
 ```
-Options, Callback and Buttons are optional.  Callback is bound to 
-```SelectedValueChanged``` event.
+
+Buttons are optional.  
+
+Callback is bound to ```SelectedValueChanged``` event.
 
 ```.SelectedItem``` contains the text of the currently selected item.
 
