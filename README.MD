@@ -1,6 +1,7 @@
 # QuickForms
-Simple 2 column (label, control) PowerShell form module, 
-supporting the following control types:
+
+Quick and simple 2 column (label, control) PowerShell forms module, 
+supporting the following controls:
 
 - ```TextBox```
 - ```PasswordBox``` (shortcut for a TextBox with hidden input)
@@ -10,33 +11,37 @@ supporting the following control types:
 
 ![demo form](./demo.png)
 
-Callbacks can be attached to the most common control events e.g. ```TextChanged``` for ```TextBox``` and ```PasswordBox```, ```SelectedValueChange``` for ```ComboBox``` and ```ListBox```.
+Callbacks can be easily attached to the most common control events e.g. 
+```TextChanged``` event for ```TextBox``` and ```PasswordBox``` controls.
 
 Form layout is managed by the module in order to reduce the
 time required to strap a GUI onto existing scripts and improve
 readibility by requiring only terse initialisation and logic.
 
 ## Install
-Copy **QuickForms.psm1** and **QuickForms.psd1** to your module path, or place in same
-directory as your script for portability.
+
+Copy **QuickForms.psm1** and **QuickForms.psd1** to your module path, or place 
+in same directory as your script for portability.
 
 ## Use
+
 The general workflow is;
 
 - Import module
 - Initialise form
-- Add control rows (in order)
+- Add control rows (in display order)
 - Add action (OK, Cancel buttons)
 - Show form
 
 ### Import module
-If installed in your module path
+
+If installed in your module path:
 
 ``` PowerShell
 Import-Module QuickForms
 ```
 
-If installed in the same directory as your script
+If installed in the same directory as your script:
 
 ``` PowerShell
 Import-Module .\QuickForms.psd1
@@ -44,7 +49,7 @@ Import-Module .\QuickForms.psd1
 
 ### Initialise form
 
-```New-QuickForm``` is used to initialise a new form
+```New-QuickForm``` is used to initialise a new form.
 
 ``` PowerShell
 $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
@@ -79,9 +84,9 @@ Add a control, and it's label to a form.
 $Firstname = $MyForm.AddRow("TextBox", "Firstname:", { $Firstname.Text = $Firstname.Text.ToUpper() })
 ```
 
-Callback is optional.  Callback is bound to ```TextChanged``` event.
+Callback is optional and bound to ```TextChanged``` event if supplied.
 
-Access the value of the control via property ```.Text```
+Access the value of the control via its ```.Text``` property. 
 
 #### Control : PasswordBox
 
@@ -89,9 +94,9 @@ Access the value of the control via property ```.Text```
 $Password = $MyForm.AddRow("PasswordBox", "Password:" { Write-Host $Password.Text })
 ```
 
-Callback is optional.  Callback is bound to ```TextChanged``` event.
+Callback is optional and bound to ```TextChanged``` event if supplied.
 
-Access the value of the control via property ```.Text```
+Access the value of the control via its ```.Text``` property. 
 
 #### Control : CheckBox
 
@@ -99,12 +104,12 @@ Access the value of the control via property ```.Text```
 $Enabled = $MyForm.AddRow("CheckBox", "Enabled:")
 ```
 
-Callback is optional.  Callback is bound to ```CheckedChanged``` event.
+Callback is optional and bound to ```CheckedChanged``` event if supplied.
 
 Checkbox labels appear to the right of the checkbox in the 
 control column of the form, not the left label column.
 
-Access the boolean value of the control via property ```.Checked``` 
+Access the boolean value of the control via its ```.Checked``` property. 
 
 #### Control : ComboBox
 
@@ -112,22 +117,23 @@ Access the boolean value of the control via property ```.Checked```
 $Gender = $MyForm.AddRow("ComboBox", "Gender:", @("Male", "Female"), { Write-Host $Gender.SelectedItem })
 ```
 
-Options and Callback are optional.  Callback is bound to 
-```SelectedValueChanged``` event.
+Options and callback are optional, callback is bound to its 
+```SelectedValueChanged``` event if supplied.
 
 ```.SelectedItem``` property contains the text of the currently selected item.
 
-```.SelectedIndex``` property contains the index of the currently selected item, or 
-```-1``` if a selection hasn't yet been made.
+```.SelectedIndex``` property contains the index of the currently selected item, 
+or ```-1``` if a selection hasn't yet been made.
 
 ```.Items``` property contains the list of items.
 
-```.Items.Add("<value>")``` to add an item.
+Call ```.Items.Add("<value>")``` method to add a new item.
 
-```.Items.Remove("<value>")``` removes an item by name (randomly where multiple
-items with the same name appear in the list).
+Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
+where multiple items with the same name appear in the list).
 
-```.Items.RemoveAt("<index>")``` removes an item by index e.g. ```.SelectedIndex```
+Call ```.Items.RemoveAt("<index>")``` method to remove an item by index 
+e.g. ```.SelectedIndex``` property.
 
 #### Control : ListBox
 
@@ -162,17 +168,18 @@ Callback is bound to ```SelectedValueChanged``` event.
 
 ```.SelectedItem``` property contains the text of the currently selected item.
 
-```.SelectedIndex``` property contains the index of the currently selected item, or 
-```-1``` if a selection hasn't yet been made.
+```.SelectedIndex``` property contains the index of the currently selected item, 
+or ```-1``` if a selection hasn't yet been made.
 
 ```.Items``` property contains the list of items.
 
-```.Items.Add("<value>")``` to add an item.
+Call ```.Items.Add("<value>")``` method to add a new item.
 
-```.Items.Remove("<value>")``` removes an item by name (randomly where multiple
-items with the same name appear in the list).
+Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
+where multiple items with the same name appear in the list).
 
-```.Items.RemoveAt("<index>")``` removes an item by index e.g. ```.SelectedIndex```
+Call ```.Items.RemoveAt("<index>")``` method to remove an item by index 
+e.g. ```.SelectedIndex``` property.
 
 ### Add action
 Add the customary OK and Cancel buttons to the form, optionally 
