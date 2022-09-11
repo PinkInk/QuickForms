@@ -80,6 +80,8 @@ $Firstname = $MyForm.AddRow("TextBox", "Firstname:", { $Firstname.Text = $Firstn
 
 Callback is optional.  Callback is bound to ```TextChanged``` event.
 
+Access the value of the control via property ```.Text```
+
 #### Control : PasswordBox
 
 ``` PowerShell
@@ -87,6 +89,8 @@ $Password = $MyForm.AddRow("PasswordBox", "Password:" { Write-Host $Password.Tex
 ```
 
 Callback is optional.  Callback is bound to ```TextChanged``` event.
+
+Access the value of the control via property ```.Text```
 
 #### Control : CheckBox
 
@@ -97,7 +101,9 @@ $Enabled = $MyForm.AddRow("CheckBox", "Enabled:")
 Callback is optional.  Callback is bound to ```CheckedChanged``` event.
 
 Checkbox labels appear to the right of the checkbox in the 
-control column of the form, not the left label column
+control column of the form, not the left label column.
+
+Access the boolean value of the control via property ```.Checked``` 
 
 #### Control : ComboBox
 
@@ -108,10 +114,19 @@ $Gender = $MyForm.AddRow("ComboBox", "Gender:", @("Male", "Female"), { Write-Hos
 Options and Callback are optional.  Callback is bound to 
 ```SelectedValueChanged``` event.
 
-```.SelectedItem``` contains the text of the currently selected item.
+```.SelectedItem``` property contains the text of the currently selected item.
 
-```.SelectedIndex``` contains the index of the currently selected item, or 
+```.SelectedIndex``` property contains the index of the currently selected item, or 
 ```-1``` if a selection hasn't yet been made.
+
+```.Items``` property contains the list of items.
+
+```.Items.Add("<value>")``` to add an item.
+
+```.Items.Remove("<value>")``` removes an item by name (randomly where multiple
+items with the same name appear in the list).
+
+```.Items.RemoveAt("<index>")``` removes an item by index e.g. ```.SelectedIndex```
 
 #### Control : ListBox
 
@@ -124,19 +139,32 @@ $MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), { Write-H
 or add a row of buttons underneath, normally used for interacting with the list; 
 
 ``` PowerShell
-$MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), {}, 
-    @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
+$MyList = $MyForm.AddRow("ListBox", 3, "List:", @(), {}, 
+    @( 
+        @{name="Add"; callback={}}, 
+        @{name="Remove"; callback={}}
+    )
 )
 ```
 
-Buttons are optional.  
+```Buttons``` are optional.  ```Items``` and ```Callback``` are not optional but
+can be empty e.g. ```@()``` and ```{}``` respectively (see example above).  
 
 Callback is bound to ```SelectedValueChanged``` event.
 
-```.SelectedItem``` contains the text of the currently selected item.
+```.SelectedItem``` property contains the text of the currently selected item.
 
-```.SelectedIndex``` contains the index of the currently selected item, or 
+```.SelectedIndex``` property contains the index of the currently selected item, or 
 ```-1``` if a selection hasn't yet been made.
+
+```.Items``` property contains the list of items.
+
+```.Items.Add("<value>")``` to add an item.
+
+```.Items.Remove("<value>")``` removes an item by name (randomly where multiple
+items with the same name appear in the list).
+
+```.Items.RemoveAt("<index>")``` removes an item by index e.g. ```.SelectedIndex```
 
 ### Add action
 Add the customary OK and Cancel buttons to the form, optionally 
