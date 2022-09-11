@@ -103,11 +103,13 @@ control column of the form, not the left label column
 $Gender = $MyForm.AddRow("ComboBox", "Gender:", @("Male", "Female"), { Write-Host $Gender.SelectedItem })
 ```
 
-Options and Callback are optional.  Callback is bound to ```SelectedValueChanged``` event.
+Options and Callback are optional.  Callback is bound to 
+```SelectedValueChanged``` event.
 
 ```.SelectedItem``` contains the text of the currently selected item.
 
-```.SelectedIndex``` contains the index of the currently selected item, or ```-1``` if a selection hasn't yet been made.
+```.SelectedIndex``` contains the index of the currently selected item, or 
+```-1``` if a selection hasn't yet been made.
 
 #### Control : ListBox
 
@@ -122,11 +124,13 @@ $MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), {},
     @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
 )
 ```
-Options, Callback and Buttons are optional.  Callback is bound to ```SelectedValueChanged``` event.
+Options, Callback and Buttons are optional.  Callback is bound to 
+```SelectedValueChanged``` event.
 
 ```.SelectedItem``` contains the text of the currently selected item.
 
-```.SelectedIndex``` contains the index of the currently selected item, or ```-1``` if a selection hasn't yet been made.
+```.SelectedIndex``` contains the index of the currently selected item, or 
+```-1``` if a selection hasn't yet been made.
 
 ### Add action
 Add the customary OK and Cancel buttons to the form, optionally 
@@ -157,4 +161,28 @@ Display the form.
 
 ```PowerShell
 $MyForm.Show()
+```
+
+## Tips and tricks
+It can be useful to add properties to the form to e.g. replace the functionality
+of hidden fields, or record an exit code.
+
+``` PowerShell
+$form = New-QuickForm -Title "Test Form"
+
+# add fields
+$form | Add-Member -NotePropertyName "ExitCode" -NotePropertyValue 0
+$form | Add-Member -NotePropertyName "HiddenCalculatedValue" -NotePropertyValue ""
+
+# add controls
+
+$form.AddAction({
+    $form.ExitCode = 1
+    $this.parent.Close()
+})
+
+if ($form.ExitCode -eq 1) {
+    # do work
+} else { Write-Host "Form Cancelled" }
+
 ```
