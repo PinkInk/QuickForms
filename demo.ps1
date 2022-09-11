@@ -24,10 +24,11 @@ $MyList = $demo.AddRow("ListBox", 3, "List:",
     @(
         @{ name="Add"; callback={ $MyList.Items.Add("Item another") } },
         @{ name="Remove"; callback={
-            if ( $MyList.SelectedIndex -ne -1 ) {
-                $MyList.Items.RemoveAt( $MyList.SelectedIndex )
-            }
-        } }
+                if ( $MyList.SelectedIndex -ne -1 ) {
+                    $MyList.Items.RemoveAt( $MyList.SelectedIndex )
+                }
+            } 
+        }
     )
 )
 
