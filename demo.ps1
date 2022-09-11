@@ -22,8 +22,12 @@ $MyList = $demo.AddRow("ListBox", 3, "List:",
     @("Item the first"), 
     { Write-Host $MyList.SelectedItem }, 
     @(
-        @{ name="Add"; callback={} },
-        @{ name="Remove"; callback={} }
+        @{ name="Add"; callback={ $MyList.Items.Add("Item another") } },
+        @{ name="Remove"; callback={
+            if ( $MyList.SelectedIndex -ne -1 ) {
+                $MyList.Items.RemoveAt( $MyList.SelectedIndex )
+            }
+        } }
     )
 )
 
