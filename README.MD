@@ -169,8 +169,8 @@ $MyList = $demo.AddRow("ListBox", 3, "List:",
 ```Buttons``` are optional.  ```Items``` and ```Callback``` are not optional but
 can be empty e.g. ```@()``` and ```{}``` respectively (see example above).  
 
-```Buttons``` is an array of dictionary's containing ```Name``` (button text) 
-and ```callback``` e.g.
+```Buttons``` is an array of dictionary's containing ```name``` (button text) 
+and ```callback``` (called when button pressed) properties e.g.
 
 ``` PowerShell
 @(
