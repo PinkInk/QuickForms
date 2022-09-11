@@ -206,6 +206,15 @@ $MyForm.Show()
 ```
 
 ## Tips and tricks
+
+### Form logic
+
+For brevity it's probably preferable to author one ```Update-Fields``` function
+to manage control logic and bind it to the callback of all (or most) enabled
+controls. 
+
+### Additional properties
+
 It can be useful to add properties to the form to e.g. replace the functionality
 of hidden fields, or record an exit code.
 
