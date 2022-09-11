@@ -61,18 +61,17 @@ Add a control, and it's label to a form.
 | \<label> | Label for the control |
 | [\<options>] | Optional array of items to initialise ComboBox or ListBox with |
 | [\<callback>] | Optional Scriptblock to be executed on ```TextChanged``` for ```TextBox``` and ```PasswordBox```, ```CheckedChanged``` for ```CheckBox```, ```SelectedValueChange``` for ```ComboBox``` and ```ListBox``` |
-| 
 | [\<buttons>] | Optional array of buttons and callbacks for ```ListBox``` controls |
 
 ``` PowerShell
-.AddRow(<type>, [<rows>,] <label>, [<options>,][<callback>,][<buttons>,]  )
+.AddRow(<type>, [<rows>,] <label>, [<options>,][<callback>,][<buttons>]  )
 ```
 
-#### TextBox
-#### PasswordBox
-#### CheckBox
-#### ComboBox
-#### ListBox
+#### Control : TextBox
+#### Control : PasswordBox
+#### Control : CheckBox
+#### Control : ComboBox
+#### Control : ListBox
 
 ### Add action
 
