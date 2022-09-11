@@ -3,7 +3,7 @@ Simple 2 column (label, control) PowerShell form module,
 supporting the following control types:
 
 - ```TextBox```
-- ```PasswordBox``` (shortcut for a TextBox with *'d out input)
+- ```PasswordBox``` (shortcut for a TextBox with hidden input)
 - ```CheckBox```
 - ```ComboBox``` (drop-down list)
 - ```ListBox``` (with optional user specified Buttons)
