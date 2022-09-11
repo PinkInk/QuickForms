@@ -17,7 +17,8 @@ time required to strap a GUI onto existing scripts and improve
 readibility by requiring only terse initialisation and logic.
 
 ## Install
-Copy QuickForms.psm1 and QuickForms.psd1 to your module path.
+Copy QuickForms.psm1 and QuickForms.psd1 to your module path, or place in same
+directory as your script for portability.
 
 ## Use
 The general workflow is;
