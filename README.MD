@@ -18,7 +18,7 @@ Callbacks can be easily attached to the most common control events e.g.
 
 Form layout is managed by the module in order to reduce the
 time required to strap a GUI onto existing scripts and improve
-readibility by requiring only terse initialisation and logic.
+readability by requiring only terse initialisation and logic.
 
 ## Install
 
@@ -208,7 +208,7 @@ This is typically called after all controls are added to a form,
 before it is shown.
 
 If Callback is specified for the OK button it will be required
-to explicitly close the form (if waranted) e.g. via ```$this.parent.close()```
+to explicitly close the form (if warranted) e.g. via ```$this.parent.close()```
 
 You likely want to set some value in the Callback to inform
 latter code that the form was closed via OK, rather than
