@@ -5,17 +5,17 @@
 #
 # History
 # -------
-# 25/08/2022 - v7 - Tim Pelling - adopt system default font
-# 17/08/2022 - v6 - Tim Pelling - remove control name requirement
-# 01/07/2022 - v5 - Tim Pelling - return rather than magically create objects
-#                                 unhide child form object
-#                                 modified argument order for AddRow(s), bring type to front
-#                                 added listbox, with buttons
-# 30/06/2022 - v4 - Tim Pelling - allow different label and column widths
-# 29/08/2019 - v3 - Tim Pelling - update AddAction behaviour for flexibility
-# 29/08/2019 - v2 - Tim Pelling - added module manifest, PasswordBox as discrete type
-# 28/08/2019 - v1 - Tim Pelling - make widget variable declarations global
-# 26/08/2019 - v0 - Tim Pelling - First Issue
+# 25/08/2022 - v1.3.1 - Tim Pelling - adopt system default font
+# 17/08/2022 - v1.3.0 - Tim Pelling - remove control name requirement
+# 01/07/2022 - v1.2.0 - Tim Pelling - return rather than magically create objects
+#                                       unhide child form object
+#                                       modified argument order for AddRow(s), bring type to front
+#                                       added listbox, with buttons
+# 30/06/2022 - v1.1.2 - Tim Pelling - allow different label and column widths
+# 29/08/2019 - v1.1.1 - Tim Pelling - update AddAction behaviour for flexibility
+# 29/08/2019 - v1.1.0 - Tim Pelling - added module manifest, PasswordBox as discrete type
+# 28/08/2019 - v1.0.1 - Tim Pelling - make widget variable declarations global
+# 26/08/2019 - v1.0.0 - Tim Pelling - First Issue
 
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
