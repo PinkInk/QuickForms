@@ -22,8 +22,14 @@ readability by requiring only terse initialisation and logic.
 
 ## Install
 
-Copy **QuickForms.psm1** and **QuickForms.psd1** to your module path, or place 
-in same directory as your script for portability.
+Install from PSGallery;
+
+``` PowerShell
+Install-Module QuickForms
+```
+
+Or copy **QuickForms.psm1** and **QuickForms.psd1** to your script path for 
+portability.
 
 ## Use
 
@@ -37,7 +43,7 @@ The general workflow is;
 
 ### Import module
 
-If installed in your module path:
+If installed:
 
 ``` PowerShell
 Import-Module QuickForms
@@ -48,6 +54,10 @@ If installed in the same directory as your script:
 ``` PowerShell
 Import-Module .\QuickForms.psd1
 ```
+
+Note: if installed in the same directory as script you must import the .psd1
+file (not the .psm1 file) in order to satisfy a dependency on the 
+System.Windows.Forms assemblies.
 
 ### Initialise form
 
