@@ -66,7 +66,7 @@ class QuickForm {
     ) { return $this.DoAddRow($ControlType, $label, $null, $null, $null, $null) }
 
     # callback
-    [object]AddRow( 
+    [object]AddRow(
         [ControlTypes]$ControlType,
         [string]$label,
         [scriptblock]$callback
@@ -116,7 +116,7 @@ class QuickForm {
     ){
 
         # parser doesn"t think $c is defined when referred to after switch without this!
-        $c = $null 
+        $c = $null
 
         Switch($ControlType) {
 
@@ -193,7 +193,7 @@ class QuickForm {
                 $l.Width = $this.label_width - (2*$this.margin)
                 $l.Height = $this.row_height
                 $this.Form.Controls.Add($l)
-                
+
                 if ($buttons) {
                     $x = $this.label_width + $this.margin
                     $buttons | ForEach-Object{
@@ -218,9 +218,9 @@ class QuickForm {
 
     }
 
-    # 
+    #
     # OK (action) and Cancel buttons
-    # 
+    #
     [void]AddAction() { $this.DoAddAction($null) }
     [void]AddAction( [scriptblock]$callback) { $this.DoAddAction($callback) }
     hidden [void]DoAddAction(
@@ -236,10 +236,10 @@ class QuickForm {
         $cancel.Height = $ok.Height = $this.row_height
         $this.Form.Controls.Add($ok)
         $this.Form.Controls.Add($cancel)
-        if ($null -ne $callback) { 
-            $ok.Add_Click($callback) 
+        if ($null -ne $callback) {
+            $ok.Add_Click($callback)
         } else {
-            $ok.Add_Click({ $this.parent.Close() }) 
+            $ok.Add_Click({ $this.parent.Close() })
         }
         $cancel.Add_Click({ $this.parent.Close() })
     }
@@ -269,7 +269,7 @@ function New-QuickForm {
                            listboxes must have a callback
             [<buttons>] - optional array of buttons for listboxes e.g.
                           @( @{name="<name>"; callback={}}, @{name="<name>"; callback={}}, etc. )
-            
+
             The value of each control type can be accessed through its properties
             either via $this (within the controls own callback) or by assigning the returned
             control to a variable.
@@ -286,9 +286,9 @@ function New-QuickForm {
                            to e.g. validate values before submission
                            If specified it is the callbacks responsibility to close the
                            form if necessary e.g. via $this.parent.close()
-        
+
         .Show()
-            Display the form            
+            Display the form
 
         .EXAMPLE
         import-module QuickForms
@@ -302,7 +302,7 @@ function New-QuickForm {
         $MySex = $demo.AddRow("CheckBox", "Male", { Write-Host $this.Checked })
         $MyOptions = $demo.AddRow("ComboBox", "Sex:", @("Male", "Female"), { Write-Host $this.SelectedItem })
 
-        $demo.AddAction({ 
+        $demo.AddAction({
             if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
                 $this.parent.close()
             } else {
@@ -311,7 +311,7 @@ function New-QuickForm {
         })
 
         $demo.Show()
-        
+
         Write-Host $MyFirstName.Text, $MySurname.Text, $MyPassword.Text
 
         .PARAMETER Title
@@ -329,5 +329,5 @@ function New-QuickForm {
         [int32]$ControlWidth = 200
     )
     $form = New-Object QuickForm($Title, $LabelWidth, $ControlWidth)
-    return $form    
+    return $form
 }
