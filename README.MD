@@ -206,7 +206,11 @@ e.g. ```.SelectedIndex``` property.
 ### RadioBox
 
 ``` PowerShell
-$MyRadios = Add-RadioBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Horizontal
+$MyRadios = Add-RadioBox -Form $demo   
+    -Label "Sex:" `
+    -Options @("Male", "Female") `
+    -Horizontal `
+    -Callback { if ( $this.Checked ) { Write-Host $this.Text } }
 ```
 
 Returns a Panel of RadioButtons according to the ```-Options``` array.  RadioButtons can be
