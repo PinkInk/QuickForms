@@ -4,9 +4,9 @@ Quick and simple 2 column (label, control) PowerShell forms module,
 supporting the following controls:
 
 - ```TextBox```
-- ```PasswordBox``` (shortcut for a TextBox with hidden input)
+- ```PasswordBox``` (TextBox with hidden input)
 - ```CheckBox```
-- ```ComboBox``` (drop-down list)
+- ```ComboBox```
 - ```ListBox``` (with optional user specified Buttons)
 
 Example (the included **demo.ps1** form):
@@ -71,49 +71,34 @@ $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 | --- | --- |
 | [-Title \<value>] | Title to be displayed in the forms title bar (default: "My Form") |
 | [-LabelWidth \<value>] | Width of the label column in pixels (default: 200) |
-| [-ControlWidth \<value>] | Width of the control column in pixels (default)
+| [-ControlWidth \<value>] | Width of the control column in pixels (default: 400)
 
 ### Add controls rows
 
-Add a control, and it's label to a form.
+#### TextBox
 
 ``` PowerShell
-.AddRow(<type>, [<rows>,] <label>, [<options>,][<callback>,][<buttons>]  )
-```
-
-| Argument | Description | 
-| --- | --- |
-| \<type> | TextBox, PasswordBox, CheckBox, ComboBox or ListBox |
-| [\<rows>] | Optional number of rows to display for ListBox |
-| \<label> | Label for the control |
-| [\<options>] | Optional array of items to initialise ComboBox or ListBox with |
-| [\<callback>] | Optional Scriptblock to be executed on ```TextChanged``` for ```TextBox``` and ```PasswordBox```, ```CheckedChanged``` for ```CheckBox```, ```SelectedValueChange``` for ```ComboBox``` and ```ListBox``` |
-| [\<buttons>] | Optional array of buttons and callbacks for ```ListBox``` controls |
-
-#### Control : TextBox
-
-``` PowerShell
-$Firstname = $MyForm.AddRow("TextBox", "Firstname:", { $Firstname.Text = $Firstname.Text.ToUpper() })
+$Firstname = Add-TextBox -Form $MyForm -Label "Firstname:" -Callback { $Firstname.Text = $Firstname.Text.ToUpper() }
 ```
 
 Callback is optional and bound to ```TextChanged``` event if supplied.
 
 Access the value of the control via its ```.Text``` property. 
 
-#### Control : PasswordBox
+#### PasswordBox
 
 ``` PowerShell
-$Password = $MyForm.AddRow("PasswordBox", "Password:" { Write-Host $Password.Text })
+$Password = Add-PasswordBox -Form $MyForm -Label "Password:" -Callback { Write-Host $Password.Text }
 ```
 
 Callback is optional and bound to ```TextChanged``` event if supplied.
 
 Access the value of the control via its ```.Text``` property. 
 
-#### Control : CheckBox
+#### CheckBox
 
 ``` PowerShell
-$Enabled = $MyForm.AddRow("CheckBox", "Enabled:")
+$Enabled = Add-CheckBox -Form $MyForm -Label "Enabled:" -Callback { Write-Host $this.Checked }
 ```
 
 Callback is optional and bound to ```CheckedChanged``` event if supplied.
@@ -123,13 +108,13 @@ control column of the form, not the left label column.
 
 Access the boolean value of the control via its ```.Checked``` property. 
 
-#### Control : ComboBox
+#### ComboBox
 
 ``` PowerShell
-$Gender = $MyForm.AddRow("ComboBox", "Gender:", @("Male", "Female"), { Write-Host $Gender.SelectedItem })
+$Gender = Add-ComboBox -Form $MyForm -Label "Gender:" -Options @("Male", "Female") -Callback { Write-Host $Gender.SelectedItem }
 ```
 
-Options and callback are optional, callback is bound to its 
+Options and Callback are optional, Callback is bound to its 
 ```SelectedValueChanged``` event if supplied.
 
 ```.SelectedItem``` property contains the text of the currently selected item.
@@ -147,26 +132,21 @@ where multiple items with the same name appear in the list).
 Call ```.Items.RemoveAt("<index>")``` method to remove an item by index 
 e.g. ```.SelectedIndex``` property.
 
-#### Control : ListBox
+#### ListBox
 
 ``` PowerShell
-.AddRow("ListBox", <number_of_rows>, <label>, <items>, <callback>[, <buttons>])
-```
-
-e.g.
-
-``` PowerShell
-$MyList = $MyForm.AddRow("ListBox", 3, "List:", @("Item 1", "Item 2"), { Write-Host $MyList.SelectedItem })
+$MyList = Add-ListBox -Form $MyForm -Label "List:" -Rows 4 -Options @("Item 1", "Item 2") -Callback { Write-Host $MyList.SelectedItem }
 ```
 
 ... or add a row of buttons underneath, normally used for interacting with the 
 list:
 
 ``` PowerShell
-$MyList = $demo.AddRow("ListBox", 3, "List:", 
-    @("Item the first"), 
-    { Write-Host $MyList.SelectedItem }, 
-    @(
+$MyList = Add-ListBox -Form $MyForm `
+    -Label "List:" `
+    -Options @("Item the first") `
+    -Callback { Write-Host $MyList.SelectedItem } `
+    -Buttons @(
         @{ name="Add"; callback={ $MyList.Items.Add("Item another") } },
         @{ name="Remove"; callback={
                 if ( $MyList.SelectedIndex -ne -1 ) {
@@ -175,11 +155,11 @@ $MyList = $demo.AddRow("ListBox", 3, "List:",
             } 
         }
     )
-)
 ```
 
-```Buttons``` are optional.  ```Items``` and ```Callback``` are not optional but
-can be empty e.g. ```@()``` and ```{}``` respectively (see example above).  
+```Rows```, ```Options```, ```Callback``` and ```Buttons``` are optional.
+
+```Rows``` defaults to 3.  
 
 ```Buttons``` is an array of dictionary's containing ```name``` (button text) 
 and ```callback``` (called when button pressed) properties e.g.
@@ -209,6 +189,11 @@ Call ```.Items.RemoveAt("<index>")``` method to remove an item by index
 e.g. ```.SelectedIndex``` property.
 
 ### Add action
+
+``` Powershell
+Add-Action -Form $MyForm -Callback { $this.parent.Close(); Write-Host "OK Selected" }
+```
+
 Add the customary OK and Cancel buttons to the form, optionally 
 with a callback for the OK button, which is commonly used to
 verify validity of entered data before closing the form and
@@ -225,11 +210,11 @@ latter code that the form was closed via OK, rather than
 Cancelled.
 
 ``` PowerShell
-$MyForm.AddAction({
+Add-Action -Form $MyForm -Callback {
     # verify values
     $ExitCode = 1
     $this.parent.close()
-})
+}
 ```
 
 ### Show form
@@ -240,6 +225,20 @@ $MyForm.Show()
 ```
 
 ## Tips and tricks
+
+### Pipeline
+Add-<Control> and Add-Action cmdlets accept a form on the pipeline e.g.
+
+``` Password
+$MyTextBox = $MyForm | Add-TextBox -Label "Text entry:"
+```
+
+### $this
+You can refer to the current control as ```$this``` within its Callback e.g.
+
+``` PowerShell
+$MyCheckbox = Add-CheckBox -Form $MyForm -Callback { Write-Host $this.Checked }
+```
 
 ### Form logic
 
@@ -253,7 +252,7 @@ To work around the absence of radio button control functionality you can use
 multiple ```CheckBox``` controls with callbacks to maintain a single checked
 control.
 
-### Additional properties
+### Add form properties
 
 It can be useful to add properties to the form to e.g. replace the functionality
 of hidden fields, or record an exit code.
@@ -267,10 +266,10 @@ $form | Add-Member -NotePropertyName "HiddenCalculatedValue" -NotePropertyValue 
 
 # add controls
 
-$form.AddAction({
+Add-Action -Form $MyForm -Callback {
     $form.ExitCode = 1
     $this.parent.Close()
-})
+}
 
 if ($form.ExitCode -eq 1) {
     # do work
