@@ -21,6 +21,12 @@ $MyConfirmPassword = Add-PasswordBox -Form $demo -Label "Confirm Password:" -Cal
         Write-Output "$($MyPassword.Text -eq $this.Text)"
     }
 
+$MyDateTime = Add-DateTimePicker -Form $demo `
+        -Label "Date Time:" `
+        -Type DateTime `
+        -DateTime (Get-Date -Year 1999 -Month 12 -Day 3 -Hour 12 -Minute 23) `
+        -Callback { Write-Host $this.Value }
+
 $MySex = Add-CheckBox -Form $demo -Label "Male" -Callback {
         if ( $this.Checked ) {
             $MyOptions.SelectedItem = "Male"
@@ -57,12 +63,6 @@ $MyList = Add-ListBox -Form $demo `
                     }
                 }
             )
-
-$MyDateTime = Add-DateTimePicker -Form $demo `
-            -Label "Date Time:" `
-            -Type DateTime `
-            -DateTime (Get-Date -Year 1999 -Month 12 -Day 3 -Hour 12 -Minute 23) `
-            -Callback { Write-Host $this.Value }
 
 Add-Action -Form $demo -Callback {
     if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
