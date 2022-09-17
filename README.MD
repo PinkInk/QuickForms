@@ -207,6 +207,27 @@ Optional ```Callback``` is bound to the ```CheckedChanged``` event of __all__ Ra
 Use the ```.Checked``` property of a RadioButton in the ```.Controls``` array
 to determine whether it is selected, and/or the ```.PerformClick()``` method to select it.
 
+### DateTimePicker
+
+``` PowerShell
+$MyDateTime = Add-DateTimePicker -Form $demo `
+            -Label "Date Time:" `
+            -Type DateTime `
+            -DateTime (Get-Date -Year 1999 -Month 12 -Day 3 -Hour 12 -Minute 23) `
+            -Callback { Write-Host $this.Value }
+```
+
+Returns a DateTimePicker control with specified Label.
+
+```Type``` can be either ```Date```, ```Time``` or both (```DateTime```).
+
+Optionally specify the initial value using ```-DateTime```, normally
+constructed using ```Get-Time``` cmdlet, but defaults to the current Date & Time.
+
+Optional ```Callback``` is bound to the controls ```ValueChanged``` event.
+
+Access the value of the control via its ```.Value``` property. 
+
 ### Add action
 
 ``` Powershell

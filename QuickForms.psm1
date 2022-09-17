@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 17/09/2022 - v2.2.0 - Tim Pelling - add DateTimePicker control option
 # 17/09/2022 - v2.1.0 - Tim Pelling - add RadioBox control option
 # 17/09/2022 - v2.0.0 - Tim Pelling - switched from methods to cmdlets
 # 25/08/2022 - v1.3.1 - Tim Pelling - adopt system default font
@@ -370,6 +371,59 @@ function Add-ListBox {
         }
         $rows += 1
     }
+    $Form.slot += $rows
+    $Form.Form.Controls.Add($c)
+    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    return $c
+}
+
+function Add-DateTimePicker {
+    <#
+        .SYNOPSIS
+        Add a DateTimePicker control and label to an existing QuickForm.
+        .DESCRIPTION
+        Returns a DateTimePicker object.
+        .EXAMPLE
+        $MyDateTime = Add-DateTimePicker -Form $demo -Label "Date Time:" -Type Date -DateTime (Get-Date -Year 1999 -Month 12 -Day 3) -Callback { Write-Host $this.Value }
+        .PARAMETER Form
+        Form to add the control and label to.
+        .PARAMETER Label
+        Label for the control.
+        .PARAMETER Type
+        Date (default), Time or DateTime
+        .PARAMETER DateTime
+        Initial DateTime for the control.
+        .PARAMETER Callback
+        Optional Scriptblock to call when the ValueChanged event occurs.
+    #>
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [ValidateNotNullOrEmpty()][ValidateSet('Date','Time','DateTime')][string]$Type = "Date",
+        [datetime]$DateTime,
+        [scriptblock]$Callback
+    )
+    $c = New-Object system.Windows.Forms.DateTimePicker
+    if ( $Type -eq "Time" ) { 
+        $c.Format = "Custom"
+        $c.CustomFormat = (Get-Culture).DateTimeFormat.ShortTimePattern
+        $c.ShowUpDown = $true
+    } elseif ( $Type -eq "DateTime" ) {
+        $c.Format = "Custom"
+        $c.CustomFormat = (Get-Culture).DateTimeFormat.FullDateTimePattern
+    } # Date is control default
+    if ( $DateTime ) { $c.Value = $DateTime }
+    $c.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
+    $c.width = $Form.control_width - (2*$Form.margin)
+    if ($null -ne $callback) { $c.Add_ValueChanged($callback) }
+    $l = New-Object System.Windows.Forms.Label
+    $l.text = $label
+    $l.AutoSize = $false
+    $l.Location = New-Object System.Drawing.Point(($Form.margin), ($Form.row_height * $Form.slot))
+    $l.Width = $Form.label_width - (2*$Form.margin)
+    $l.Height = $c.Height = $Form.row_height
+    $Form.Form.Controls.Add($l)
+    $rows = 1
     $Form.slot += $rows
     $Form.Form.Controls.Add($c)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
