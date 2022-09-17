@@ -1,15 +1,15 @@
-import-module .\QuickForms.psd1 
+import-module .\QuickForms.psd1
 
 $demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 $demo | Add-Member -NotePropertyName ExitCode -NotePropertyValue 0
 
 # pipeline form
-$MyFirstName = $demo | Add-TextBox -Label "First name:" -Callback { 
-    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)" 
+$MyFirstName = $demo | Add-TextBox -Label "First name:" -Callback {
+    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
 }
 
-$MySurName = Add-TextBox -Form $demo -Label "Surname:" -Callback { 
-    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)" 
+$MySurName = Add-TextBox -Form $demo -Label "Surname:" -Callback {
+    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
 }
 
 $MyUserID = Add-TextBox -Form $demo -Label "User ID:"
@@ -17,20 +17,20 @@ $MyUserID.Enabled = $false
 
 $MyPassword = Add-PasswordBox -Form $demo -Label "Password:"
 
-$MyConfirmPassword = Add-PasswordBox -Form $demo -Label "Confirm Password:" -Callback { 
-    Write-Output "$($MyPassword.Text -eq $this.Text)" 
+$MyConfirmPassword = Add-PasswordBox -Form $demo -Label "Confirm Password:" -Callback {
+    Write-Output "$($MyPassword.Text -eq $this.Text)"
 }
 
-$MySex = Add-CheckBox -Form $demo -Label "Male" -Callback { 
-    if ( $this.Checked ) { 
-        $MyOptions.SelectedItem = "Male" 
-    } else { 
-        $MyOptions.SelectedItem = "Female" 
-    } 
+$MySex = Add-CheckBox -Form $demo -Label "Male" -Callback {
+    if ( $this.Checked ) {
+        $MyOptions.SelectedItem = "Male"
+    } else {
+        $MyOptions.SelectedItem = "Female"
+    }
 }
 
-$MyOptions = Add-ComboBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Callback { 
-    $MySex.Checked = if ($this.SelectedItem -eq "Male") {$true} else {$false} 
+$MyOptions = Add-ComboBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Callback {
+    $MySex.Checked = if ($this.SelectedItem -eq "Male") {$true} else {$false}
 }
 
 $MyList = Add-ListBox -Form $demo `
@@ -44,11 +44,11 @@ $MyList = Add-ListBox -Form $demo `
                         if ( $MyList.SelectedIndex -ne -1 ) {
                             $MyList.Items.RemoveAt( $MyList.SelectedIndex )
                         }
-                    } 
+                    }
                 }
             )
 
-Add-Action -Form $demo -Callback { 
+Add-Action -Form $demo -Callback {
     if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
         $demo.ExitCode = 1
         $this.parent.close()
