@@ -80,7 +80,9 @@ $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 #### TextBox
 
 ``` PowerShell
-$Firstname = Add-TextBox -Form $MyForm -Label "Firstname:" -Callback { $Firstname.Text = $Firstname.Text.ToUpper() }
+$Firstname = Add-TextBox -Form $MyForm `
+    -Label "Firstname:" `
+    -Callback { $Firstname.Text = $Firstname.Text.ToUpper() }
 ```
 
 Callback is optional and bound to ```TextChanged``` event if supplied.
@@ -90,7 +92,9 @@ Access the value of the control via its ```.Text``` property.
 #### PasswordBox
 
 ``` PowerShell
-$Password = Add-PasswordBox -Form $MyForm -Label "Password:" -Callback { Write-Host $Password.Text }
+$Password = Add-PasswordBox -Form $MyForm `
+    -Label "Password:" `
+    -Callback { Write-Host $Password.Text }
 ```
 
 Callback is optional and bound to ```TextChanged``` event if supplied.
@@ -100,7 +104,9 @@ Access the value of the control via its ```.Text``` property.
 #### CheckBox
 
 ``` PowerShell
-$Enabled = Add-CheckBox -Form $MyForm -Label "Enabled:" -Callback { Write-Host $this.Checked }
+$Enabled = Add-CheckBox -Form $MyForm `
+    -Label "Enabled:" `
+    -Callback { Write-Host $this.Checked }
 ```
 
 Callback is optional and bound to ```CheckedChanged``` event if supplied.
@@ -113,7 +119,10 @@ Access the boolean value of the control via its ```.Checked``` property.
 #### ComboBox
 
 ``` PowerShell
-$Gender = Add-ComboBox -Form $MyForm -Label "Gender:" -Options @("Male", "Female") -Callback { Write-Host $Gender.SelectedItem }
+$Gender = Add-ComboBox -Form $MyForm `
+    -Label "Gender:" `
+    -Options @("Male", "Female") `
+    -Callback { Write-Host $Gender.SelectedItem }
 ```
 
 Options and Callback are optional, Callback is bound to its 
@@ -137,7 +146,11 @@ e.g. ```.SelectedIndex``` property.
 #### ListBox
 
 ``` PowerShell
-$MyList = Add-ListBox -Form $MyForm -Label "List:" -Rows 4 -Options @("Item 1", "Item 2") -Callback { Write-Host $MyList.SelectedItem }
+$MyList = Add-ListBox -Form $MyForm ``
+    -Label "List:" `
+    -Rows 4 `
+    -Options @("Item 1", "Item 2") `
+    -Callback { Write-Host $MyList.SelectedItem }
 ```
 
 ... or add a row of buttons underneath, normally used for interacting with the 
@@ -232,7 +245,8 @@ Access the value of the control via its ```.Value``` property.
 ### Add action
 
 ``` Powershell
-Add-Action -Form $MyForm -Callback { $this.parent.Close(); Write-Host "OK Selected" }
+Add-Action -Form $MyForm `
+    -Callback { $this.parent.Close(); Write-Host "OK Selected" }
 ```
 
 Add the customary OK and Cancel buttons to the form, optionally 
