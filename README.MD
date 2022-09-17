@@ -9,6 +9,7 @@ supporting the following controls:
 - ```ComboBox```
 - ```RadioBox``` (Panel of RadioButtons)
 - ```ListBox``` (with optional user specified Buttons)
+- ```DateTimePicker```
 
 Example (the included **demo.ps1** form):
 
