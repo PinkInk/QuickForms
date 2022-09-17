@@ -7,6 +7,7 @@ supporting the following controls:
 - ```PasswordBox``` (TextBox with hidden input)
 - ```CheckBox```
 - ```ComboBox```
+- ```RadioBox``` (Panel of RadioButtons)
 - ```ListBox``` (with optional user specified Buttons)
 
 Example (the included **demo.ps1** form):
@@ -187,6 +188,24 @@ where multiple items with the same name appear in the list).
 
 Call ```.Items.RemoveAt("<index>")``` method to remove an item by index 
 e.g. ```.SelectedIndex``` property.
+
+### RadioBox
+
+``` PowerShell
+$MyRadios = Add-RadioBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Horizontal
+```
+
+Returns a Panel of RadioButtons according to the ```-Options``` array.  RadioButtons can be
+accessed directly via the Panels ```.Controls``` array.
+
+Default orientation is vertical i.e. the Panel will consume as many rows as elements 
+in the Options array.  The ```-Horizontal``` option causes the RadioButton's to be presented
+horizontally, but no attempt is made to prevent them overflowing the forms width.
+
+Optional ```Callback``` is bound to the ```CheckedChanged``` event of __all__ RadioButtons.
+
+Use the ```.Checked``` property of a RadioButton in the ```.Controls``` array
+to determine whether it is selected, and/or the ```.PerformClick()``` method to select it.
 
 ### Add action
 

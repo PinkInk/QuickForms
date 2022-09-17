@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 17/09/2022 - v2.1.0 - Tim Pelling - add RadioBox control option
 # 17/09/2022 - v2.0.0 - Tim Pelling - switched from methods to cmdlets
 # 25/08/2022 - v1.3.1 - Tim Pelling - adopt system default font
 # 17/08/2022 - v1.3.0 - Tim Pelling - remove control name requirement
@@ -241,6 +242,78 @@ function Add-ComboBox {
     return $c
 }
 
+function Add-RadioBox {
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [Parameter(Mandatory=$true)][array]$Options,
+        [switch]$Horizontal,
+        [scriptblock]$Callback
+    )
+    <#
+        .SYNOPSIS
+        Add a group of RadioButton controls and label, to an existing QuickForm.
+        .DESCRIPTION
+        Returns the Panel object that contains the RadioButtons - access RadioButton children through its .Controls property.
+        .EXAMPLE
+        $myRadioButtons = Add-RadioBox -Form $demo -Label "Radios:" -Options @("Male","Female") -Callback { if ($this.Checked) { Write-Host $this.Text } }
+        .PARAMETER Form
+        Form to add the control and label to.
+        .PARAMETER Label
+        Label for the controls.
+        .PARAMETER Options
+        Array of options - one RadioButton is added to the Form Panel for each option.
+        .PARAMETER Callback
+        Optional Scriptblock to call when the CheckedChange event occurs.
+
+        This will be called for all RadioButtons in the set/Panel hence you must inspect the $this.Checked property to determine
+        whether any particular RadioButton is currently selected.
+        .PARAMETER Horizontal
+        Layout the RadioButton's horizontally in a single control row.
+
+        Default layout is vertical - one control row per Option.
+    #>
+    $p = New-Object System.Windows.Forms.Panel
+    $p.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
+    $p.width = $Form.control_width - (2*$Form.margin)
+    if ($Horizontal) {
+        $hpos = 0
+        $options | ForEach-Object { 
+            $c = New-Object System.Windows.Forms.RadioButton
+            $c.Location = New-Object System.Drawing.Point($hpos, 0)
+            $c.height = $Form.row_height
+            $c.Text = $_
+            if ($null -ne $callback) { $c.Add_CheckedChanged( $callback ) }
+            $p.Controls.Add($c)
+            $hpos += $c.width
+        }
+        $rows = 1
+    } else { # default vertical layout
+        $rows = 0
+        $options | ForEach-Object { 
+            $c = New-Object System.Windows.Forms.RadioButton
+            $c.Location = New-Object System.Drawing.Point(0, ($Form.row_height * $rows))
+            $c.width = $Form.control_width - (2*$Form.margin)
+            $c.height = $Form.row_height
+            $c.Text = $_
+            if ($null -ne $callback) { $c.Add_CheckedChanged( $callback ) }
+            $p.Controls.Add($c)
+            $rows += 1
+        }
+    }
+    $l = New-Object System.Windows.Forms.Label
+    $l.text = $label
+    $l.AutoSize = $false
+    $l.Location = New-Object System.Drawing.Point(($Form.margin), ($Form.row_height * $Form.slot))
+    $l.Width = $Form.label_width - (2*$Form.margin)
+    $l.Height = $p.Height = $Form.row_height * $rows
+    $Form.Form.Controls.Add($l)
+    $Form.slot += $rows
+    $Form.Form.Controls.Add($p)
+    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    return $p
+}
+
 function Add-ListBox {
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
@@ -333,7 +406,9 @@ function Add-Action {
     if ($null -ne $callback) {
         $ok.Add_Click($callback)
     } else {
-        $ok.Add_Click({ $Form.parent.Close() })
+        # $ok.Add_Click({ $Form.parent.Close() })
+        $ok.Add_Click({ $this.parent.Close() })
     }
-    $cancel.Add_Click({ $Form.parent.Close() })
+    # $cancel.Add_Click({ $Form.parent.Close() })
+    $cancel.Add_Click({ $this.parent.Close() })
 }

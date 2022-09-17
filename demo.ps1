@@ -5,12 +5,12 @@ $demo | Add-Member -NotePropertyName ExitCode -NotePropertyValue 0
 
 # pipeline form
 $MyFirstName = $demo | Add-TextBox -Label "First name:" -Callback {
-    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
-}
+        $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
+    }
 
 $MySurName = Add-TextBox -Form $demo -Label "Surname:" -Callback {
-    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
-}
+        $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
+    }
 
 $MyUserID = Add-TextBox -Form $demo -Label "User ID:"
 $MyUserID.Enabled = $false
@@ -18,20 +18,30 @@ $MyUserID.Enabled = $false
 $MyPassword = Add-PasswordBox -Form $demo -Label "Password:"
 
 $MyConfirmPassword = Add-PasswordBox -Form $demo -Label "Confirm Password:" -Callback {
-    Write-Output "$($MyPassword.Text -eq $this.Text)"
-}
+        Write-Output "$($MyPassword.Text -eq $this.Text)"
+    }
 
 $MySex = Add-CheckBox -Form $demo -Label "Male" -Callback {
-    if ( $this.Checked ) {
-        $MyOptions.SelectedItem = "Male"
-    } else {
-        $MyOptions.SelectedItem = "Female"
+        if ( $this.Checked ) {
+            $MyOptions.SelectedItem = "Male"
+            $MyRadios.Controls | %{ if ($_.Text -eq "Male") { $_.PerformClick() } }
+        } else {
+            $MyOptions.SelectedItem = "Female"
+            $MyRadios.Controls | %{ if ($_.Text -eq "Female") { $_.PerformClick() } }
+        }
     }
-}
 
 $MyOptions = Add-ComboBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Callback {
-    $MySex.Checked = if ($this.SelectedItem -eq "Male") {$true} else {$false}
-}
+        $MySex.Checked = if ($this.SelectedItem -eq "Male") {$true} else {$false}
+        $MyRadios.Controls | %{  if ($_.Text -eq $this.SelectedItem) { $_.PerformClick() } }
+    }
+
+$MyRadios = Add-RadioBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Horizontal -Callback {
+        if ($this.Checked) {
+            $MyOptions.SelectedItem = $this.Text
+            $MySex.Checked = if ($this.Text -eq "Male") {$true} else {$false}
+        }
+    }
 
 $MyList = Add-ListBox -Form $demo `
             -Label "List:" `
