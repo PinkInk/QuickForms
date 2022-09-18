@@ -305,12 +305,6 @@ For brevity it's probably preferable to author one ```Update-Fields``` function
 to manage control logic and bind it to the callback of all (or most) enabled
 controls. 
 
-### Mimic radio buttons
-
-To work around the absence of radio button control functionality you can use
-multiple ```CheckBox``` controls with callbacks to maintain a single checked
-control.
-
 ### Add form properties
 
 It can be useful to add properties to the form to e.g. replace the functionality
