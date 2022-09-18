@@ -133,15 +133,15 @@ Options and Callback are optional, Callback is bound to its
 ```.SelectedIndex``` property contains the index of the currently selected item, 
 or ```-1``` if a selection hasn't yet been made.
 
-```.Items``` property contains the list of items.
+```.Items``` property contains the array of items.
 
 Call ```.Items.Add("<value>")``` method to add a new item.
 
-Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
-where multiple items with the same name appear in the list).
-
 Call ```.Items.RemoveAt("<index>")``` method to remove an item by index 
 e.g. ```.SelectedIndex``` property.
+
+Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
+where multiple items with the same name appear in the list).
 
 #### ListBox
 
@@ -153,7 +153,7 @@ $MyList = Add-ListBox -Form $MyForm ``
     -Callback { Write-Host $MyList.SelectedItem }
 ```
 
-... or add a row of buttons underneath, normally used for interacting with the 
+... or add a row of buttons (underneath) for interacting with the 
 list:
 
 ``` PowerShell
@@ -176,7 +176,7 @@ $MyList = Add-ListBox -Form $MyForm `
 
 ```Rows``` defaults to 3.  
 
-```Buttons``` is an array of dictionary's containing ```name``` (button text) 
+```Buttons``` is an array of hashtable's containing ```name``` (button text) 
 and ```callback``` (called when button pressed) properties e.g.
 
 ``` PowerShell
@@ -193,15 +193,15 @@ Callback is bound to ```SelectedValueChanged``` event.
 ```.SelectedIndex``` property contains the index of the currently selected item, 
 or ```-1``` if a selection hasn't yet been made.
 
-```.Items``` property contains the list of items.
+```.Items``` property contains the array of items.
 
 Call ```.Items.Add("<value>")``` method to add a new item.
 
-Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
-where multiple items with the same name appear in the list).
-
 Call ```.Items.RemoveAt("<index>")``` method to remove an item by index 
 e.g. ```.SelectedIndex``` property.
+
+Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
+where multiple items with the same name appear in the list).
 
 ### RadioBox
 
@@ -213,17 +213,31 @@ $MyRadios = Add-RadioBox -Form $demo
     -Callback { if ( $this.Checked ) { Write-Host $this.Text } }
 ```
 
-Returns a Panel of RadioButtons according to the ```-Options``` array.  RadioButtons can be
-accessed directly via the Panels ```.Controls``` array.
+Returns a Panel of RadioButtons according to the ```-Options``` array.
+
+Individual RadioButtons can be accessed through the Panels ```.Controls``` array.
 
 Default orientation is vertical i.e. the Panel will consume as many rows as elements 
-in the Options array.  The ```-Horizontal``` option causes the RadioButton's to be presented
-horizontally, but no attempt is made to prevent them overflowing the forms width.
+in the Options array.  The ```-Horizontal``` option causes the RadioButton's to be 
+presented horizontally but no attempt is made to prevent overflow of the forms width.
 
-Optional ```Callback``` is bound to the ```CheckedChanged``` event of __all__ RadioButtons.
+Optional ```Callback``` is bound to the ```CheckedChanged``` event of __all__ 
+RadioButtons.
 
 Use the ```.Checked``` property of a RadioButton in the ```.Controls``` array
-to determine whether it is selected, and/or the ```.PerformClick()``` method to select it.
+to determine whether it is selected, and/or the ```.PerformClick()``` method to 
+select it e.g.
+
+``` PowerShell
+$MyRadio = Add-RadioBox -Form $MyForm `
+    -Label "Test:" `
+    -Options @("Test1", "Test2", "Test3) `
+    -Callback {
+        $MyRadio.Controls | %{ if ($_.Checked) {  Write-Host $_.Text } }
+    }
+
+$MyRadio.Controls | Where Text -eq "Test2" | %{ $_.PerformClick() }
+```
 
 ### DateTimePicker
 
@@ -237,10 +251,11 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 
 Returns a DateTimePicker control with specified Label.
 
-```Type``` can be either ```Date```, ```Time``` or both (```DateTime```).
+Optional ```-Type``` can be either ```Date```, ```Time``` or both (```DateTime```)
+and defaults to ```Date```.
 
-Optionally specify the initial value using ```-DateTime```, normally
-constructed using ```Get-Time``` cmdlet, but defaults to the current Date & Time.
+Optional initial Date/Time is specified using ```-DateTime``` which must normally
+be constructed using the ```Get-Time``` cmdlet (defaults to current Date & Time).
 
 Optional ```Callback``` is bound to the controls ```ValueChanged``` event.
 
