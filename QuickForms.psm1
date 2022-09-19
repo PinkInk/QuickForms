@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 19/09/2022 - v2.3.1 - Tim Pelling - bugfix date-time control.showupdown
 # 19/09/2022 - v2.3.0 - Tim Pelling - add File Open/SaveAs control (FileBox)
 # 19/09/2022 - v2.2.1 - Tim Pelling - refactor
 # 17/09/2022 - v2.2.0 - Tim Pelling - add DateTimePicker control option
@@ -515,7 +516,7 @@ function Add-DateTimePicker {
     if ( $Type -eq "Time" ) {
         $Control.Format = "Custom"
         $Control.CustomFormat = (Get-Culture).DateTimeFormat.ShortTimePattern
-        $ControlShowUpDown = $true
+        $Control.ShowUpDown = $true
     } elseif ( $Type -eq "DateTime" ) {
         $Control.Format = "Custom"
         $Control.CustomFormat = (Get-Culture).DateTimeFormat.FullDateTimePattern
@@ -577,7 +578,7 @@ function Add-FileBox {
         [String]$FileFilter,
         [scriptblock]$Callback
     )
-    
+
     $Panel = New-Object System.Windows.Forms.Panel
     $Panel.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
@@ -600,16 +601,16 @@ function Add-FileBox {
             $Dialog = New-Object system.Windows.Forms.OpenFileDialog
             if ($this.FileFilter -ne "") { $Dialog.Filter = $this.FileFilter }
             if ( $Dialog.ShowDialog() -eq "OK" ) {
-                $TextBox = $this.parent.Controls | Where { $_.GetType().Name -eq "TextBox"}
+                $TextBox = $this.parent.Controls | Where-Object { $_.GetType().Name -eq "TextBox"}
                 $TextBox.Text = $Dialog.FileName
             }
-        })    
+        })
     } else { # SaveAs
         $ButtonControl.Add_Click({
             $Dialog = New-Object System.Windows.Forms.SaveFileDialog
             if ($this.FileFilter -ne "") { $Dialog.Filter = $this.FileFilter }
             if ( $Dialog.ShowDialog() -eq "OK" ) {
-                $TextBox = $this.parent.Controls | Where { $_.GetType().Name -eq "TextBox"}
+                $TextBox = $this.parent.Controls | Where-Object { $_.GetType().Name -eq "TextBox"}
                 $TextBox.Text = $Dialog.FileName
             }
         })
@@ -626,7 +627,7 @@ function Add-FileBox {
         $Control.Add_TextChanged($callback)
     }
     $Panel.Controls.Add($Control)
-    
+
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
