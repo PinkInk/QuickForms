@@ -42,7 +42,7 @@ $MyOptions = Add-ComboBox -Form $demo -Label "Sex:" -Options @("Male", "Female")
         $MyRadios.Controls | %{  if ($_.Text -eq $this.SelectedItem) { $_.PerformClick() } }
     }
 
-$MyRadios = Add-RadioBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Horizontal -Callback {
+$MyRadios = Add-RadioBox -Form $demo -Label "Gender:" -Options @("Male", "Female") -Callback {
         if ($this.Checked) {
             $MyOptions.SelectedItem = $this.Text
             $MySex.Checked = if ($this.Text -eq "Male") {$true} else {$false}
