@@ -5,12 +5,12 @@ $demo | Add-Member -NotePropertyName ExitCode -NotePropertyValue 0
 
 # pipeline form
 $MyFirstName = $demo | Add-TextBox -Label "First name:" -Callback {
-        $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
-    }
+    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
+}
 
 $MySurName = Add-TextBox -Form $demo -Label "Surname:" -Callback {
-        $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
-    }
+    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
+}
 
 $MyUserID = Add-TextBox -Form $demo -Label "User ID:"
 $MyUserID.Enabled = $false
@@ -18,36 +18,36 @@ $MyUserID.Enabled = $false
 $MyPassword = Add-PasswordBox -Form $demo -Label "Password:"
 
 $MyConfirmPassword = Add-PasswordBox -Form $demo -Label "Confirm Password:" -Callback {
-        Write-Host "$($MyPassword.Text -eq $this.Text)"
-    }
+    Write-Host "$($MyPassword.Text -eq $this.Text)"
+}
 
 $MyDateTime = Add-DateTimePicker -Form $demo `
-        -Label "Date Time:" `
-        -Type DateTime `
-        -DateTime (Get-Date -Year 1999 -Month 12 -Day 3 -Hour 12 -Minute 23) `
-        -Callback { Write-Host $this.Value }
+                -Label "Date Time:" `
+                -Type DateTime `
+                -DateTime (Get-Date -Year 1999 -Month 12 -Day 3 -Hour 12 -Minute 23) `
+                -Callback { Write-Host $this.Value }
 
 $MySex = Add-CheckBox -Form $demo -Label "Male" -Callback {
-        if ( $this.Checked ) {
-            $MyOptions.SelectedItem = "Male"
-            $MyRadios.Controls | %{ if ($_.Text -eq "Male") { $_.PerformClick() } }
-        } else {
-            $MyOptions.SelectedItem = "Female"
-            $MyRadios.Controls | %{ if ($_.Text -eq "Female") { $_.PerformClick() } }
-        }
+    if ( $this.Checked ) {
+        $MyOptions.SelectedItem = "Male"
+        $MyRadios.Controls | %{ if ($_.Text -eq "Male") { $_.PerformClick() } }
+    } else {
+        $MyOptions.SelectedItem = "Female"
+        $MyRadios.Controls | %{ if ($_.Text -eq "Female") { $_.PerformClick() } }
     }
+}
 
 $MyOptions = Add-ComboBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Callback {
-        $MySex.Checked = if ($this.SelectedItem -eq "Male") {$true} else {$false}
-        $MyRadios.Controls | %{  if ($_.Text -eq $this.SelectedItem) { $_.PerformClick() } }
-    }
+    $MySex.Checked = if ($this.SelectedItem -eq "Male") {$true} else {$false}
+    $MyRadios.Controls | %{  if ($_.Text -eq $this.SelectedItem) { $_.PerformClick() } }
+}
 
 $MyRadios = Add-RadioBox -Form $demo -Label "Gender:" -Options @("Male", "Female") -Callback {
-        if ($this.Checked) {
-            $MyOptions.SelectedItem = $this.Text
-            $MySex.Checked = if ($this.Text -eq "Male") {$true} else {$false}
-        }
+    if ($this.Checked) {
+        $MyOptions.SelectedItem = $this.Text
+        $MySex.Checked = if ($this.Text -eq "Male") {$true} else {$false}
     }
+}
 
 $MyList = Add-ListBox -Form $demo `
             -Label "List:" `
@@ -71,13 +71,13 @@ $MySaveFile = Add-FileBox -Form $demo `
                 -Callback { Write-Host $MySaveFile.Text }
             
 Add-Action -Form $demo -Callback {
-        if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
-            $demo.ExitCode = 1
-            $this.parent.close()
-        } else {
-            Write-Host "Password & Confirm Password do not match!"
-        }
+    if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
+        $demo.ExitCode = 1
+        $this.parent.close()
+    } else {
+        Write-Host "Password & Confirm Password do not match!"
     }
+}
 
 $demo.Show()
 
