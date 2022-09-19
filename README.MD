@@ -70,11 +70,11 @@ System.Windows.Forms assemblies.
 $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 ```
 
-| Argument | Description |
-| --- | --- |
-| [-Title \<value>] | Title to be displayed in the forms title bar (default: "My Form") |
-| [-LabelWidth \<value>] | Width of the label column in pixels (default: 200) |
-| [-ControlWidth \<value>] | Width of the control column in pixels (default: 400)
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| [-Title \<value>] | No | String | Title to be displayed in the forms title bar (default: "My Form") |
+| [-LabelWidth \<value>] | No | Int | Width of labels column in pixels (default: 200) |
+| [-ControlWidth \<value>] | No | Int | Width of controls column in pixels (default: 400)
 
 ### Add controls rows
 
