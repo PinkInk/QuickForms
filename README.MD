@@ -10,7 +10,7 @@ supporting the following controls:
 - ```RadioBox``` (Panel of RadioButtons)
 - ```ListBox``` (with optional user specified Buttons)
 - ```DateTimePicker```
-- ```FileBox``` (file Open and SaveAs control & dialog)
+- ```FileBox``` (file Open and SaveAs)
 
 Example (the included **demo.ps1** form):
 
