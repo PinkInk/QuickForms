@@ -497,6 +497,101 @@ function Add-DateTimePicker {
     return $Control
 }
 
+function Add-FileBox {
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [ValidateNotNullOrEmpty()][ValidateSet('Open','SaveAs')][string]$Type = "Open",
+        [String]$FileFilter,
+        [scriptblock]$Callback
+    )
+    <#
+        .SYNOPSIS
+        Add a File Open or SaveAs control, and label, to an existing QuickForm.
+        .DESCRIPTION
+        Returns the TextBox object that is populated with selected file path & name when the corresponding Dialog boxes OK button is clicked.
+        .EXAMPLE
+        $myFileOpen = Add-FileBox -Form $demo -Label "Open file:" -Type "Open" -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*" -Callback { Write-Host $MyFileOpen.Text }
+        .PARAMETER Form
+        Form to add the panel, controls and label to.
+        .PARAMETER Label
+        Label for the panel.
+        .PARAMETER Type
+        Either "Open" (default) or "SaveAs"
+        .PARAMETER FileFilter
+        Optional FileFilter string as required by the OpenFileDialog and SaveFileDialog widgets.
+
+        e.g. "txt files (*.txt)|*.txt|All files (*.*)|*.*"
+        .PARAMETER Callback
+        Optional Scriptblock to call when the TextBox's TextChanged event occurs.
+    #>
+    
+    $Panel = New-Object System.Windows.Forms.Panel
+    $Panel.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Panel.width = $Form.control_width - (2*$Form.margin)
+    $Panel.Height = $Form.row_height
+
+    $ButtonControl = New-Object system.Windows.Forms.Button
+    $ButtonControl.Text = "..."
+    $ButtonControl.Height = $Form.row_height
+    $ButtonControl.Location = New-Object System.Drawing.Point(
+        ($Panel.Width - $ButtonControl.Width),
+        0
+    )
+    $ButtonControl | Add-Member -NotePropertyName FileFilter -NotePropertyValue $FileFilter
+    if ($Type -eq "Open") {
+        $ButtonControl.Add_Click({
+            $Dialog = New-Object system.Windows.Forms.OpenFileDialog
+            if ($this.FileFilter -ne "") { $Dialog.Filter = $this.FileFilter }
+            if ( $Dialog.ShowDialog() -eq "OK" ) {
+                $TextBox = $this.parent.Controls | Where { $_.GetType().Name -eq "TextBox"}
+                $TextBox.Text = $Dialog.FileName
+            }
+        })    
+    } else { # SaveAs
+        $ButtonControl.Add_Click({
+            $Dialog = New-Object System.Windows.Forms.SaveFileDialog
+            if ($this.FileFilter -ne "") { $Dialog.Filter = $this.FileFilter }
+            if ( $Dialog.ShowDialog() -eq "OK" ) {
+                $TextBox = $this.parent.Controls | Where { $_.GetType().Name -eq "TextBox"}
+                $TextBox.Text = $Dialog.FileName
+            }
+        })
+    }
+    $Panel.Controls.Add($ButtonControl)
+
+    $Control = New-Object system.Windows.Forms.TextBox
+    $Control.Location = New-Object System.Drawing.Point(0, 0)
+    $Control.Height = $Form.row_height
+    $Control.width = $Panel.Width - $ButtonControl.Width - $Form.margin
+    $Control.Enabled = $false
+    $Control.Multiline = $false
+    if ($null -ne $callback) {
+        $Control.Add_TextChanged($callback)
+    }
+    $Panel.Controls.Add($Control)
+    
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        $Form.margin,
+        ($Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
+    $LabelControl.Height = $Form.row_height
+    $Form.Form.Controls.Add($LabelControl)
+
+    $rows = 1
+    $Form.slot += $rows
+    $Form.Form.Controls.Add($Panel)
+    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    return $Control
+}
+
 function Add-Action {
    <#
         .SYNOPSIS

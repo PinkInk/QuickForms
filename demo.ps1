@@ -64,6 +64,14 @@ $MyList = Add-ListBox -Form $demo `
                 }
             )
 
+
+$MyOpenFile = Add-FileBox -Form $demo `
+                -Label "Save as:" `
+                -Type "SaveAs" `
+                -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*" `
+                -Callback { Write-Host $MyOpenFile.Text }
+
+            
 Add-Action -Form $demo -Callback {
     if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
         $demo.ExitCode = 1
