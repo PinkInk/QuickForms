@@ -109,23 +109,32 @@ function Add-TextBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the TextChanged event occurs.
     #>
-    $c = New-Object system.Windows.Forms.TextBox
-    $c.Multiline = $false
-    $c.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
-    $c.width = $Form.control_width - (2*$Form.margin)
-    if ($null -ne $callback) { $c.Add_TextChanged($callback) }
-    $l = New-Object System.Windows.Forms.Label
-    $l.text = $label
-    $l.AutoSize = $false
-    $l.Location = New-Object System.Drawing.Point(($Form.margin), ($Form.row_height * $Form.slot))
-    $l.Width = $Form.label_width - (2*$Form.margin)
-    $l.Height = $c.Height = $Form.row_height
-    $Form.Form.Controls.Add($l)
+    $Control = New-Object system.Windows.Forms.TextBox
+    $Control.Multiline = $false
+    $Control.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Control.width = $Form.control_width - (2 * $Form.margin)
+    if ($null -ne $callback) {
+        $Control.Add_TextChanged($callback)
+    }
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        $Form.margin,
+        ($Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
+    $LabelControl.Height = $Form.row_height
+    $Control.Height = $Form.row_height
+    $Form.Form.Controls.Add($LabelControl)
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($c)
+    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
-    return $c
+    return $Control
 }
 
 function Add-PasswordBox {
@@ -148,24 +157,33 @@ function Add-PasswordBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the TextChanged event occurs.
     #>
-    $c = New-Object system.Windows.Forms.TextBox
-    $c.Multiline = $false
-    $c.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
-    $c.PasswordChar = "*"
-    $c.width = $Form.control_width - (2*$Form.margin)
-    if ($null -ne $callback) { $c.Add_TextChanged($callback) }
-    $l = New-Object System.Windows.Forms.Label
-    $l.text = $label
-    $l.AutoSize = $false
-    $l.Location = New-Object System.Drawing.Point(($Form.margin), ($Form.row_height * $Form.slot))
-    $l.Width = $Form.label_width - (2*$Form.margin)
-    $l.Height = $c.Height = $Form.row_height
-    $Form.Form.Controls.Add($l)
+    $Control = New-Object system.Windows.Forms.TextBox
+    $Control.Multiline = $false
+    $Control.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Control.PasswordChar = "*"
+    $Control.width = $Form.control_width - (2 * $Form.margin)
+    if ($null -ne $callback) {
+        $Control.Add_TextChanged($callback)
+    }
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        $Form.margin,
+        ($Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
+    $LabelControl.Height = $Form.row_height
+    $Control.Height = $Form.row_height
+    $Form.Form.Controls.Add($LabelControl)
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($c)
+    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
-    return $c
+    return $Control
 }
 
 function Add-CheckBox {
@@ -188,17 +206,22 @@ function Add-CheckBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the CheckedChanged event occurs.
     #>
-    $c = New-Object system.Windows.Forms.CheckBox
-    $c.text = $label
-    $c.Width = $Form.control_width - (2*$Form.margin)
-    $c.Height = $Form.row_height
-    $c.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
-    if ($null -ne $callback) { $c.Add_CheckedChanged($callback) }
+    $Control = New-Object system.Windows.Forms.CheckBox
+    $Control.text = $label
+    $Control.Width = $Form.control_width - (2 * $Form.margin)
+    $Control.Height = $Form.row_height
+    $Control.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    if ($null -ne $callback) {
+        $Control.Add_CheckedChanged($callback)
+    }
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($c)
+    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
-    return $c
+    return $Control
 }
 
 function Add-ComboBox {
@@ -224,23 +247,32 @@ function Add-ComboBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the SelectedValueChanged event occurs.
     #>
-    $c = New-Object System.Windows.Forms.ComboBox
-    $options | ForEach-Object{ [void] $c.Items.Add($_) }
-    $c.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
-    $c.width = $Form.control_width - (2*$Form.margin)
-    if ($null -ne $callback) { $c.Add_SelectedValueChanged( $callback ) }
-    $l = New-Object System.Windows.Forms.Label
-    $l.text = $label
-    $l.AutoSize = $false
-    $l.Location = New-Object System.Drawing.Point(($Form.margin), ($Form.row_height * $Form.slot))
-    $l.Width = $Form.label_width - (2*$Form.margin)
-    $l.Height = $c.Height = $Form.row_height
-    $Form.Form.Controls.Add($l)
+    $Control = New-Object System.Windows.Forms.ComboBox
+    $options | ForEach-Object{ [void] $Control.Items.Add($_) }
+    $Control.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Control.width = $Form.control_width - (2 * $Form.margin)
+    if ($null -ne $callback) {
+        $Control.Add_SelectedValueChanged( $callback )
+    }
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        $Form.margin,
+        ($Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
+    $LabelControl.Height = $Form.row_height
+    $Control.Height = $Form.row_height
+    $Form.Form.Controls.Add($LabelControl)
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($c)
+    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
-    return $c
+    return $Control
 }
 
 function Add-RadioBox {
@@ -253,66 +285,76 @@ function Add-RadioBox {
     )
     <#
         .SYNOPSIS
-        Add a group of RadioButton controls and label, to an existing QuickForm.
+        Add a group of RadioButton controls, and label, to an existing QuickForm.
         .DESCRIPTION
-        Returns the Panel object that contains the RadioButtons - access RadioButton children through its .Controls property.
+        Returns the Panel object that contains the RadioButtons - access RadioButton's through its .Controls property.
         .EXAMPLE
-        $myRadioButtons = Add-RadioBox -Form $demo -Label "Radios:" -Options @("Male","Female") -Callback { if ($this.Checked) { Write-Host $this.Text } }
+        $myRadioButtons = Add-RadioBox -Form $demo -Label "Radios:" -Options @("Male","Female") -Horizontal -Callback { if ($this.Checked) { Write-Host $this.Text } }
         .PARAMETER Form
-        Form to add the control and label to.
+        Form to add the panel, controls and label to.
         .PARAMETER Label
-        Label for the controls.
+        Label for the panel.
         .PARAMETER Options
-        Array of options - one RadioButton is added to the Form Panel for each option.
+        Array of options - one RadioButton is added to the Panel for each option.
         .PARAMETER Callback
         Optional Scriptblock to call when the CheckedChange event occurs.
 
         This will be called for all RadioButtons in the set/Panel hence you must inspect the $this.Checked property to determine
         whether any particular RadioButton is currently selected.
         .PARAMETER Horizontal
-        Layout the RadioButton's horizontally in a single control row.
+        Layout the RadioButton's horizontally in a single control row, but may overflow form width.
 
-        Default layout is vertical - one control row per Option.
+        Default is vertical, one RadioButton form row per specified Option.
     #>
-    $p = New-Object System.Windows.Forms.Panel
-    $p.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
-    $p.width = $Form.control_width - (2*$Form.margin)
+    $Panel = New-Object System.Windows.Forms.Panel
+    $Panel.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Panel.width = $Form.control_width - (2*$Form.margin)
     if ($Horizontal) {
-        $hpos = 0
-        $options | ForEach-Object { 
-            $c = New-Object System.Windows.Forms.RadioButton
-            $c.Location = New-Object System.Drawing.Point($hpos, 0)
-            $c.height = $Form.row_height
-            $c.Text = $_
-            if ($null -ne $callback) { $c.Add_CheckedChanged( $callback ) }
-            $p.Controls.Add($c)
-            $hpos += $c.width
+        $x = 0
+        $options | ForEach-Object {
+            $Control = New-Object System.Windows.Forms.RadioButton
+            $Control.Location = New-Object System.Drawing.Point($x, 0)
+            $Control.height = $Form.row_height
+            $Control.Text = $_
+            if ($null -ne $callback) {
+                $Control.Add_CheckedChanged( $callback )
+            }
+            $Panel.Controls.Add($Control)
+            $x += $Control.width
         }
         $rows = 1
     } else { # default vertical layout
         $rows = 0
-        $options | ForEach-Object { 
-            $c = New-Object System.Windows.Forms.RadioButton
-            $c.Location = New-Object System.Drawing.Point(0, ($Form.row_height * $rows))
-            $c.width = $Form.control_width - (2*$Form.margin)
-            $c.height = $Form.row_height
-            $c.Text = $_
-            if ($null -ne $callback) { $c.Add_CheckedChanged( $callback ) }
-            $p.Controls.Add($c)
+        $options | ForEach-Object {
+            $Control = New-Object System.Windows.Forms.RadioButton
+            $Control.Location = New-Object System.Drawing.Point(0, ($Form.row_height * $rows))
+            $Control.width = $Form.control_width - (2 * $Form.margin)
+            $Control.height = $Form.row_height
+            $Control.Text = $_
+            if ($null -ne $callback) {
+                $Control.Add_CheckedChanged( $callback )
+            }
+            $Panel.Controls.Add($Control)
             $rows += 1
         }
     }
-    $l = New-Object System.Windows.Forms.Label
-    $l.text = $label
-    $l.AutoSize = $false
-    $l.Location = New-Object System.Drawing.Point(($Form.margin), ($Form.row_height * $Form.slot))
-    $l.Width = $Form.label_width - (2*$Form.margin)
-    $l.Height = $p.Height = $Form.row_height * $rows
-    $Form.Form.Controls.Add($l)
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        $Form.margin,
+        ($Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
+    $LabelControl.Height = $Panel.Height = $Form.row_height * $rows
+    $Form.Form.Controls.Add($LabelControl)
     $Form.slot += $rows
-    $Form.Form.Controls.Add($p)
+    $Form.Form.Controls.Add($Panel)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
-    return $p
+    return $Panel
 }
 
 function Add-ListBox {
@@ -345,54 +387,67 @@ function Add-ListBox {
         Optional array of buttons to display below the list e.g.
         @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
     #>
-    $c = New-Object System.Windows.Forms.ListBox
-    $options | ForEach-Object{ [void] $c.Items.Add($_) }
-    $c.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
-    $c.width = $Form.control_width - (2*$Form.margin)
-    if ($null -ne $callback) { $c.Add_SelectedValueChanged( $callback ) }
-    $c.Height = $Form.row_height * $rows
-    $l = New-Object System.Windows.Forms.Label
-    $l.text = $label
-    $l.AutoSize = $false
-    $l.Location = New-Object System.Drawing.Point(($Form.margin), ($Form.row_height * $Form.slot))
-    $l.Width = $Form.label_width - (2*$Form.margin)
-    $l.Height = $Form.row_height
-    $Form.Form.Controls.Add($l)
+    $Control = New-Object System.Windows.Forms.ListBox
+    $options | ForEach-Object{ [void] $Control.Items.Add($_) }
+    $Control.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Control.width = $Form.control_width - (2 * $Form.margin)
+    if ($null -ne $callback) {
+        $Control.Add_SelectedValueChanged( $callback )
+    }
+    $Control.Height = $Form.row_height * $rows
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        ($Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width - (2*$Form.margin)
+    $LabelControl.Height = $Form.row_height
+    $Form.Form.Controls.Add($LabelControl)
     if ($buttons) {
         $x = $Form.label_width + $Form.margin
         $buttons | ForEach-Object{
-            $b = New-Object System.Windows.Forms.Button
-            $b.Location = New-Object System.Drawing.Point($x, ($Form.row_height * ($Form.slot + $rows)))
-            $b.Height = $Form.row_height
-            $b.Text = $_.name
-            if ($null -ne $_.callback) { $b.Add_Click( $_.callback ) }
-            $Form.Form.Controls.Add($b)
-            $x += $b.Size.Width
+            $ButtonControl = New-Object System.Windows.Forms.Button
+            $ButtonControl.Location = New-Object System.Drawing.Point(
+                $x,
+                ($Form.row_height * ($Form.slot + $rows))
+            )
+            $ButtonControl.Height = $Form.row_height
+            $ButtonControl.Text = $_.name
+            if ($null -ne $_.callback) {
+                $ButtonControl.Add_Click( $_.callback )
+            }
+            $Form.Form.Controls.Add($ButtonControl)
+            $x += $ButtonControl.Size.Width
         }
         $rows += 1
     }
     $Form.slot += $rows
-    $Form.Form.Controls.Add($c)
+    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
-    return $c
+    return $Control
 }
 
 function Add-DateTimePicker {
     <#
         .SYNOPSIS
-        Add a DateTimePicker control and label to an existing QuickForm.
+        Add a DateTimePicker control, and label, to an existing QuickForm.
         .DESCRIPTION
         Returns a DateTimePicker object.
         .EXAMPLE
-        $MyDateTime = Add-DateTimePicker -Form $demo -Label "Date Time:" -Type Date -DateTime (Get-Date -Year 1999 -Month 12 -Day 3) -Callback { Write-Host $this.Value }
+        $MyDateTime = Add-DateTimePicker -Form $demo -Label "Date:" -Type Date -DateTime (Get-Date -Year 1999 -Month 12 -Day 3) -Callback { Write-Host $this.Value }
         .PARAMETER Form
         Form to add the control and label to.
         .PARAMETER Label
         Label for the control.
         .PARAMETER Type
-        Date (default), Time or DateTime
+        Date (default), Time or DateTime.
         .PARAMETER DateTime
-        Initial DateTime for the control.
+        Initial DateTime for the control, via Get-Date.
         .PARAMETER Callback
         Optional Scriptblock to call when the ValueChanged event occurs.
     #>
@@ -403,31 +458,42 @@ function Add-DateTimePicker {
         [datetime]$DateTime,
         [scriptblock]$Callback
     )
-    $c = New-Object system.Windows.Forms.DateTimePicker
-    if ( $Type -eq "Time" ) { 
-        $c.Format = "Custom"
-        $c.CustomFormat = (Get-Culture).DateTimeFormat.ShortTimePattern
-        $c.ShowUpDown = $true
+    $Control = New-Object system.Windows.Forms.DateTimePicker
+    if ( $Type -eq "Time" ) {
+        $Control.Format = "Custom"
+        $Control.CustomFormat = (Get-Culture).DateTimeFormat.ShortTimePattern
+        $ControlShowUpDown = $true
     } elseif ( $Type -eq "DateTime" ) {
-        $c.Format = "Custom"
-        $c.CustomFormat = (Get-Culture).DateTimeFormat.FullDateTimePattern
+        $Control.Format = "Custom"
+        $Control.CustomFormat = (Get-Culture).DateTimeFormat.FullDateTimePattern
     } # Date is control default
-    if ( $DateTime ) { $c.Value = $DateTime }
-    $c.Location = New-Object System.Drawing.Point(($Form.label_width + $Form.margin), ($Form.row_height * $Form.slot))
-    $c.width = $Form.control_width - (2*$Form.margin)
-    if ($null -ne $callback) { $c.Add_ValueChanged($callback) }
-    $l = New-Object System.Windows.Forms.Label
-    $l.text = $label
-    $l.AutoSize = $false
-    $l.Location = New-Object System.Drawing.Point(($Form.margin), ($Form.row_height * $Form.slot))
-    $l.Width = $Form.label_width - (2*$Form.margin)
-    $l.Height = $c.Height = $Form.row_height
-    $Form.Form.Controls.Add($l)
+    if ( $DateTime ) {
+        $Control.Value = $DateTime
+    }
+    $Control.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Control.width = $Form.control_width - (2 * $Form.margin)
+    if ($null -ne $callback) {
+        $Control.Add_ValueChanged($callback)
+    }
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        $Form.margin,
+       ( $Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
+    $LabelControl.Height = $Form.row_height
+    $Control.Height = $Form.row_height
+    $Form.Form.Controls.Add($LabelControl)
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($c)
+    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
-    return $c
+    return $Control
 }
 
 function Add-Action {
@@ -449,10 +515,16 @@ function Add-Action {
     )
     $ok = New-Object system.Windows.Forms.Button
     $ok.text = "OK"
-    $ok.location = New-Object System.Drawing.Point(($Form.width - 120 - ($Form.margin *2)   ), ($Form.row_height * $Form.slot))
+    $ok.location = New-Object System.Drawing.Point(
+        ($Form.width - 120 - ($Form.margin * 2)),
+        ($Form.row_height * $Form.slot)
+    )
     $cancel = New-Object system.Windows.Forms.Button
     $cancel.text = "Cancel"
-    $cancel.location = New-Object System.Drawing.Point(($Form.width - 60 - $Form.margin), ($Form.row_height * $Form.slot))
+    $cancel.location = New-Object System.Drawing.Point(
+        ($Form.width - 60 - $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
     $cancel.Width = $ok.Width = 60
     $cancel.Height = $ok.Height = $Form.row_height
     $Form.Form.Controls.Add($ok)
@@ -460,9 +532,7 @@ function Add-Action {
     if ($null -ne $callback) {
         $ok.Add_Click($callback)
     } else {
-        # $ok.Add_Click({ $Form.parent.Close() })
         $ok.Add_Click({ $this.parent.Close() })
     }
-    # $cancel.Add_Click({ $Form.parent.Close() })
     $cancel.Add_Click({ $this.parent.Close() })
 }
