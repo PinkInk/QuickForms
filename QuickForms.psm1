@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 19/09/2022 - v2.2.1 - Tim Pelling - refactor
 # 17/09/2022 - v2.2.0 - Tim Pelling - add DateTimePicker control option
 # 17/09/2022 - v2.1.0 - Tim Pelling - add RadioBox control option
 # 17/09/2022 - v2.0.0 - Tim Pelling - switched from methods to cmdlets
