@@ -1,6 +1,6 @@
 # QuickForms
 
-Quick and simple 2 column (label, control) PowerShell forms module, 
+Quick and simple 2 column (label, control) PowerShell GUI form module, 
 supporting the following controls:
 
 - ```TextBox```
