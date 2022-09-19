@@ -72,7 +72,7 @@ $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| [-Title \<value>] | No | String | Title to be displayed in the forms title bar (default: "My Form") |
+| [-Title "\<value>"] | No | String | Title to be displayed in the forms title bar (default: "My Form") |
 | [-LabelWidth \<value>] | No | Int | Width of labels column in pixels (default: 200) |
 | [-ControlWidth \<value>] | No | Int | Width of controls column in pixels (default: 400)
 
@@ -88,8 +88,8 @@ $Firstname = Add-TextBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Label \<value> | Yes | String | Control label |
-| [-Callback {ScriptBlock}] | No | ScriptBlock | Callback bound to ```TextChanged``` event. |
+| -Label "\<value>" | Yes | String | Control label |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event. |
 
 Access the value of the control via its ```.Text``` property. 
 
@@ -103,8 +103,8 @@ $Password = Add-PasswordBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Label \<value> | Yes | String | Control label |
-| [-Callback {ScriptBlock}] | No | ScriptBlock | Callback bound to ```TextChanged``` event. |
+| -Label "\<value>" | Yes | String | Control label |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event. |
 
 Access the value of the control via its ```.Text``` property. 
 
@@ -115,11 +115,10 @@ $Enabled = Add-CheckBox -Form $MyForm `
     -Label "Enabled:" `
     -Callback { Write-Host $this.Checked }
 ```
-
-Callback is optional and bound to ```CheckedChanged``` event if supplied.
-
-Checkbox labels appear to the right of the checkbox in the 
-control column of the form, not the left label column.
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Label "\<value>" | Yes | String | Control label, displayed left of control |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event. |
 
 Access the boolean value of the control via its ```.Checked``` property. 
 
@@ -132,8 +131,11 @@ $Gender = Add-ComboBox -Form $MyForm `
     -Callback { Write-Host $Gender.SelectedItem }
 ```
 
-Options and Callback are optional, Callback is bound to its 
-```SelectedValueChanged``` event if supplied.
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Label "\<value>" | Yes | String | Control label, displayed left of control |
+| [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | Available ComboBox options |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event. |
 
 ```.SelectedItem``` property contains the text of the currently selected item.
 
