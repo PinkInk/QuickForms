@@ -10,6 +10,7 @@ supporting the following controls:
 - ```RadioBox``` (Panel of RadioButtons)
 - ```ListBox``` (with optional user specified Buttons)
 - ```DateTimePicker```
+- ```FileBox``` (file Open and SaveAs control & dialog)
 
 Example (the included **demo.ps1** form):
 
@@ -260,6 +261,36 @@ be constructed using the ```Get-Time``` cmdlet (defaults to current Date & Time)
 Optional ```Callback``` is bound to the controls ```ValueChanged``` event.
 
 Access the value of the control via its ```.Value``` property. 
+
+### FileBox
+
+``` PowerShell
+$MySaveFile = Add-FileBox -Form $demo `
+                -Label "Save as:" `
+                -Type "SaveAs" `
+                -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*" `
+                -Callback { Write-Host $MySaveFile.Text }
+
+```
+
+Returns a TextBox control whose ```.Text``` value is populated by the Open or
+SaveAs dialog displayed when the ```...``` button is pressed.
+
+Optional ```-Type``` can be ```Open``` or ```SaveAs``` for the corresponding
+dialog functionality (defaults to ```Open```).
+
+Optional ```-FileFilter``` can be used to specify the default (1st), and other,
+file formats/patterns/extensions to be supported.  Format is defined by the 
+system Open and SaveAs options e.g.
+
+``` PowerShell
+-FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*"
+```
+
+Optional ```-Callback``` is bound to the TextBox's ```TextChanged``` event.
+
+Path and filename are accessible via the returned TextBox controls ```.Text```
+property. 
 
 ### Add action
 
