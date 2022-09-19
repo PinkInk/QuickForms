@@ -72,9 +72,9 @@ $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| [-Title "\<value>"] | No | String | Title to be displayed in the forms title bar (default: "My Form") |
-| [-LabelWidth \<value>] | No | Int | Width of labels column in pixels (default: 200) |
-| [-ControlWidth \<value>] | No | Int | Width of controls column in pixels (default: 400)
+| [-Title "\<value>"] | No | String | title displayed in title bar (default: "My Form") |
+| [-LabelWidth \<value>] | No | Int | width of labels column in pixels (default: 200) |
+| [-ControlWidth \<value>] | No | Int | width of controls column in pixels (default: 400)
 
 ### Add controls rows
 
@@ -88,8 +88,8 @@ $Firstname = Add-TextBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Label "\<value>" | Yes | String | Control label |
-| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event. |
+| -Label "\<value>" | Yes | String | label |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property. 
 
@@ -103,8 +103,8 @@ $Password = Add-PasswordBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Label "\<value>" | Yes | String | Control label |
-| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event. |
+| -Label "\<value>" | Yes | String | label |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property. 
 
@@ -117,8 +117,8 @@ $Enabled = Add-CheckBox -Form $MyForm `
 ```
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Label "\<value>" | Yes | String | Control label, displayed left of control |
-| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event. |
+| -Label "\<value>" | Yes | String | label, displayed left of control |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event |
 
 Access the boolean value of the control via its ```.Checked``` property. 
 
@@ -133,9 +133,9 @@ $Gender = Add-ComboBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Label "\<value>" | Yes | String | Control label, displayed left of control |
-| [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | Available ComboBox options |
-| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event. |
+| -Label "\<value>" | Yes | String | label |
+| [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ComboBox options |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 
 ```.SelectedItem``` property contains the text of the currently selected item.
 
@@ -181,9 +181,13 @@ $MyList = Add-ListBox -Form $MyForm `
     )
 ```
 
-```Rows```, ```Options```, ```Callback``` and ```Buttons``` are optional.
-
-```Rows``` defaults to 3.  
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Label "\<value>" | Yes | String | label |
+| [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ListBox options |
+| [-Rows \<value>] | No | Int | number of list item rows (default:3) |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
+| [-Buttons @(..)] | No | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
 
 ```Buttons``` is an array of hashtable's containing ```name``` (button text) 
 and ```callback``` (called when button pressed) properties e.g.
@@ -194,8 +198,6 @@ and ```callback``` (called when button pressed) properties e.g.
     @{ name="Remove"; callback={} }
 )
 ```
-
-Callback is bound to ```SelectedValueChanged``` event.
 
 ```.SelectedItem``` property contains the text of the currently selected item.
 
@@ -222,16 +224,16 @@ $MyRadios = Add-RadioBox -Form $demo
     -Callback { if ( $this.Checked ) { Write-Host $this.Text } }
 ```
 
-Returns a Panel of RadioButtons according to the ```-Options``` array.
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Label "\<value>" | Yes | String | label |
+| [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | RadioButton options |
+| [-Horizontal] | No | | align RadioButtons horizontally, no attempt to prevent overflow - default layout is vertical | 
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event of **all** RadioButtons |
+
+Returns a **Panel** of RadioButtons.
 
 Individual RadioButtons can be accessed through the Panels ```.Controls``` array.
-
-Default orientation is vertical i.e. the Panel will consume as many rows as elements 
-in the Options array.  The ```-Horizontal``` option causes the RadioButton's to be 
-presented horizontally but no attempt is made to prevent overflow of the forms width.
-
-Optional ```Callback``` is bound to the ```CheckedChanged``` event of __all__ 
-RadioButtons.
 
 Use the ```.Checked``` property of a RadioButton in the ```.Controls``` array
 to determine whether it is selected, and/or the ```.PerformClick()``` method to 
@@ -258,15 +260,12 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
             -Callback { Write-Host $this.Value }
 ```
 
-Returns a DateTimePicker control with specified Label.
-
-Optional ```-Type``` can be either ```Date```, ```Time``` or both (```DateTime```)
-and defaults to ```Date```.
-
-Optional initial Date/Time is specified using ```-DateTime``` which must normally
-be constructed using the ```Get-Time``` cmdlet (defaults to current Date & Time).
-
-Optional ```Callback``` is bound to the controls ```ValueChanged``` event.
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Label "\<value>" | Yes | String | label |
+| [-Type Date|Time|DateTime] | No | Option | type (default:Date) |
+| [-DateTime \<value>] | No | DateTime | initial Date/Time is specified using ```Get-Date``` (default: now) |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```ValueChanged``` event |
 
 Access the value of the control via its ```.Value``` property. 
 
@@ -281,21 +280,23 @@ $MySaveFile = Add-FileBox -Form $demo `
 
 ```
 
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Label "\<value>" | Yes | String | label |
+| [-Type Open|SaveAs] | No | Option | dialog type (default:Open) |
+| [-FileFilter "\<value>"] | No | String | file filter (refer notes) |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
+
 Returns a TextBox control whose ```.Text``` value is populated by the Open or
 SaveAs dialog displayed when the ```...``` button is pressed.
 
-Optional ```-Type``` can be ```Open``` or ```SaveAs``` for the corresponding
-dialog functionality (defaults to ```Open```).
-
 Optional ```-FileFilter``` can be used to specify the default (1st), and other,
-file formats/patterns/extensions to be supported.  Format is defined by the 
+file formats/patterns/extensions to be supported - format is defined by the 
 system Open and SaveAs options e.g.
 
 ``` PowerShell
 -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*"
 ```
-
-Optional ```-Callback``` is bound to the TextBox's ```TextChanged``` event.
 
 Path and filename are accessible via the returned TextBox controls ```.Text```
 property. 
@@ -306,6 +307,11 @@ property.
 Add-Action -Form $MyForm `
     -Callback { $this.parent.Close(); Write-Host "OK Selected" }
 ```
+
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to OK buttons ```Click``` event |
+
 
 Add the customary OK and Cancel buttons to the form, optionally 
 with a callback for the OK button, which is commonly used to
