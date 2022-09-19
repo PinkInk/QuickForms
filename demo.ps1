@@ -64,27 +64,30 @@ $MyList = Add-ListBox -Form $demo `
                 }
             )
 
-
 $MySaveFile = Add-FileBox -Form $demo `
                 -Label "Save as:" `
                 -Type "SaveAs" `
                 -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*" `
                 -Callback { Write-Host $MySaveFile.Text }
-
             
 Add-Action -Form $demo -Callback {
-    if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
-        $demo.ExitCode = 1
-        $this.parent.close()
-    } else {
-        Write-Host "Password & Confirm Password do not match!"
+        if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
+            $demo.ExitCode = 1
+            $this.parent.close()
+        } else {
+            Write-Host "Password & Confirm Password do not match!"
+        }
     }
-}
 
 $demo.Show()
 
 if ( $demo.ExitCode -eq 1 ) {
-    Write-Host $MyFirstName.Text, $MySurname.Text, $MyUserID.Text, $MyPassword.Text
+    Write-Host "Name: $($MyFirstName.Text) $($MySurname.Text)"
+    Write-Host "UserID: $($MyUserID.Text)"
+    Write-Host "Password: $($MyPassword.Text)"
+    Write-Host "Date-time: $($MyDateTime.Value)"
+    Write-Host "Gender: $($MyOptions.SelectedItem)"
+    Write-Host "Save-as: $($MySaveFile.Text)"
 } else {
     Write-Host "Form cancelled"
 }
