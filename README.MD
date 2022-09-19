@@ -86,7 +86,10 @@ $Firstname = Add-TextBox -Form $MyForm `
     -Callback { $Firstname.Text = $Firstname.Text.ToUpper() }
 ```
 
-Callback is optional and bound to ```TextChanged``` event if supplied.
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Label \<value> | Yes | String | Control label |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | Callback bound to ```TextChanged``` event. |
 
 Access the value of the control via its ```.Text``` property. 
 
@@ -98,7 +101,10 @@ $Password = Add-PasswordBox -Form $MyForm `
     -Callback { Write-Host $Password.Text }
 ```
 
-Callback is optional and bound to ```TextChanged``` event if supplied.
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Label \<value> | Yes | String | Control label |
+| [-Callback {ScriptBlock}] | No | ScriptBlock | Callback bound to ```TextChanged``` event. |
 
 Access the value of the control via its ```.Text``` property. 
 
