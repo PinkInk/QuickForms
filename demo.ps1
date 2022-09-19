@@ -18,7 +18,7 @@ $MyUserID.Enabled = $false
 $MyPassword = Add-PasswordBox -Form $demo -Label "Password:"
 
 $MyConfirmPassword = Add-PasswordBox -Form $demo -Label "Confirm Password:" -Callback {
-        Write-Output "$($MyPassword.Text -eq $this.Text)"
+        Write-Host "$($MyPassword.Text -eq $this.Text)"
     }
 
 $MyDateTime = Add-DateTimePicker -Form $demo `
@@ -53,7 +53,7 @@ $MyList = Add-ListBox -Form $demo `
             -Label "List:" `
             -Rows 3 `
             -Options @("Item the first") `
-            -Callback { Write-Output $MyList.SelectedItem } `
+            -Callback { Write-Host $MyList.SelectedItem } `
             -Buttons @(
                 @{ name="Add"; callback={ $MyList.Items.Add("Item another") } },
                 @{ name="Remove"; callback={
@@ -69,14 +69,14 @@ Add-Action -Form $demo -Callback {
         $demo.ExitCode = 1
         $this.parent.close()
     } else {
-        Write-Output "Password & Confirm Password do not match!"
+        Write-Host "Password & Confirm Password do not match!"
     }
 }
 
 $demo.Show()
 
 if ( $demo.ExitCode -eq 1 ) {
-    Write-Output $MyFirstName.Text, $MySurname.Text, $MyUserID.Text, $MyPassword.Text
+    Write-Host $MyFirstName.Text, $MySurname.Text, $MyUserID.Text, $MyPassword.Text
 } else {
-    Write-Output "Form cancelled"
+    Write-Host "Form cancelled"
 }
