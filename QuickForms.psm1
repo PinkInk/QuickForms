@@ -91,11 +91,7 @@ function New-QuickForm {
 }
 
 function Add-TextBox {
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [Parameter(Mandatory=$true)][string]$Label,
-        [scriptblock]$Callback
-    )
+
     <#
         .SYNOPSIS
         Add a TextBox control, and label, to an existing QuickForm.
@@ -110,16 +106,26 @@ function Add-TextBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the TextChanged event occurs.
     #>
+
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [scriptblock]$Callback
+    )
+
     $Control = New-Object system.Windows.Forms.TextBox
-    $Control.Multiline = $false
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
     $Control.width = $Form.control_width - (2 * $Form.margin)
+    $Control.Height = $Form.row_height
+    $Control.Multiline = $false
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
     }
+    $Form.Form.Controls.Add($Control)
+
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
@@ -129,21 +135,18 @@ function Add-TextBox {
     )
     $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
     $LabelControl.Height = $Form.row_height
-    $Control.Height = $Form.row_height
     $Form.Form.Controls.Add($LabelControl)
+
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+
     return $Control
+
 }
 
 function Add-PasswordBox {
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [Parameter(Mandatory=$true)][string]$Label,
-        [scriptblock]$Callback
-    )
+
     <#
         .SYNOPSIS
         Add a Password Entry control, and label, to an existing QuickForm.
@@ -158,17 +161,27 @@ function Add-PasswordBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the TextChanged event occurs.
     #>
+
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [scriptblock]$Callback
+    )
+
     $Control = New-Object system.Windows.Forms.TextBox
     $Control.Multiline = $false
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
-    $Control.PasswordChar = "*"
+    $Control.Height = $Form.row_height
     $Control.width = $Form.control_width - (2 * $Form.margin)
+    $Control.PasswordChar = "*"
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
     }
+    $Form.Form.Controls.Add($Control)
+
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
@@ -178,21 +191,18 @@ function Add-PasswordBox {
     )
     $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
     $LabelControl.Height = $Form.row_height
-    $Control.Height = $Form.row_height
     $Form.Form.Controls.Add($LabelControl)
+
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+
     return $Control
+
 }
 
 function Add-CheckBox {
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [Parameter(Mandatory=$true)][string]$Label,
-        [scriptblock]$Callback
-    )
+
     <#
         .SYNOPSIS
         Add a CheckBox control, and label, to an existing QuickForm.
@@ -207,6 +217,13 @@ function Add-CheckBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the CheckedChanged event occurs.
     #>
+
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [scriptblock]$Callback
+    )
+
     $Control = New-Object system.Windows.Forms.CheckBox
     $Control.text = $label
     $Control.Width = $Form.control_width - (2 * $Form.margin)
@@ -218,21 +235,19 @@ function Add-CheckBox {
     if ($null -ne $callback) {
         $Control.Add_CheckedChanged($callback)
     }
+    $Form.Form.Controls.Add($Control)
+
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+
     return $Control
+
 }
 
 function Add-ComboBox {
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [Parameter(Mandatory=$true)][string]$Label,
-        [array]$Options = @(),
-        [scriptblock]$Callback
-    )
-    <#
+
+        <#
         .SYNOPSIS
         Add a ComboBox control, and label, to an existing QuickForm.
         .DESCRIPTION
@@ -248,16 +263,27 @@ function Add-ComboBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the SelectedValueChanged event occurs.
     #>
+
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [array]$Options = @(),
+        [scriptblock]$Callback
+    )
+
     $Control = New-Object System.Windows.Forms.ComboBox
+    $Control.width = $Form.control_width - (2 * $Form.margin)
+    $Control.Height = $Form.row_height
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
-    $Control.width = $Form.control_width - (2 * $Form.margin)
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
+    $Form.Form.Controls.Add($Control)
+
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
@@ -267,23 +293,18 @@ function Add-ComboBox {
     )
     $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
     $LabelControl.Height = $Form.row_height
-    $Control.Height = $Form.row_height
     $Form.Form.Controls.Add($LabelControl)
+
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+
     return $Control
+
 }
 
 function Add-RadioBox {
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [Parameter(Mandatory=$true)][string]$Label,
-        [Parameter(Mandatory=$true)][array]$Options,
-        [switch]$Horizontal,
-        [scriptblock]$Callback
-    )
+
     <#
         .SYNOPSIS
         Add a group of RadioButton controls, and label, to an existing QuickForm.
@@ -307,12 +328,23 @@ function Add-RadioBox {
 
         Default is vertical, one RadioButton form row per specified Option.
     #>
+
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [Parameter(Mandatory=$true)][array]$Options,
+        [switch]$Horizontal,
+        [scriptblock]$Callback
+    )
+
     $Panel = New-Object System.Windows.Forms.Panel
     $Panel.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
     $Panel.width = $Form.control_width - (2*$Form.margin)
+    $Form.Form.Controls.Add($Panel)
+
     if ($Horizontal) {
         $x = 0
         $options | ForEach-Object {
@@ -342,6 +374,7 @@ function Add-RadioBox {
             $rows += 1
         }
     }
+
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
@@ -352,21 +385,16 @@ function Add-RadioBox {
     $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
     $LabelControl.Height = $Panel.Height = $Form.row_height * $rows
     $Form.Form.Controls.Add($LabelControl)
+
     $Form.slot += $rows
-    $Form.Form.Controls.Add($Panel)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+
     return $Panel
+
 }
 
 function Add-ListBox {
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [Parameter(Mandatory=$true)][string]$Label,
-        [int]$Rows = 3,
-        [array]$Options = @(),
-        [scriptblock]$Callback,
-        [array]$Buttons
-    )
+
     <#
         .SYNOPSIS
         Add a ListBox control, label and optionally buttons, to an existing QuickForm.
@@ -388,6 +416,16 @@ function Add-ListBox {
         Optional array of buttons to display below the list e.g.
         @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
     #>
+
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [int]$Rows = 3,
+        [array]$Options = @(),
+        [scriptblock]$Callback,
+        [array]$Buttons
+    )
+
     $Control = New-Object System.Windows.Forms.ListBox
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     $Control.Location = New-Object System.Drawing.Point(
@@ -395,10 +433,12 @@ function Add-ListBox {
         ($Form.row_height * $Form.slot)
     )
     $Control.width = $Form.control_width - (2 * $Form.margin)
+    $Control.Height = $Form.row_height * $rows
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
-    $Control.Height = $Form.row_height * $rows
+    $Form.Form.Controls.Add($Control)
+
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
@@ -409,6 +449,7 @@ function Add-ListBox {
     $LabelControl.Width = $Form.label_width - (2*$Form.margin)
     $LabelControl.Height = $Form.row_height
     $Form.Form.Controls.Add($LabelControl)
+
     if ($buttons) {
         $x = $Form.label_width + $Form.margin
         $buttons | ForEach-Object{
@@ -427,10 +468,12 @@ function Add-ListBox {
         }
         $rows += 1
     }
+
     $Form.slot += $rows
-    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+
     return $Control
+
 }
 
 function Add-DateTimePicker {
@@ -452,6 +495,7 @@ function Add-DateTimePicker {
         .PARAMETER Callback
         Optional Scriptblock to call when the ValueChanged event occurs.
     #>
+
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
         [Parameter(Mandatory=$true)][string]$Label,
@@ -459,7 +503,14 @@ function Add-DateTimePicker {
         [datetime]$DateTime,
         [scriptblock]$Callback
     )
+
     $Control = New-Object system.Windows.Forms.DateTimePicker
+    $Control.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Control.width = $Form.control_width - (2 * $Form.margin)
+    $Control.Height = $Form.row_height
     if ( $Type -eq "Time" ) {
         $Control.Format = "Custom"
         $Control.CustomFormat = (Get-Culture).DateTimeFormat.ShortTimePattern
@@ -471,14 +522,11 @@ function Add-DateTimePicker {
     if ( $DateTime ) {
         $Control.Value = $DateTime
     }
-    $Control.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
-    $Control.width = $Form.control_width - (2 * $Form.margin)
     if ($null -ne $callback) {
         $Control.Add_ValueChanged($callback)
     }
+    $Form.Form.Controls.Add($Control)
+
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
@@ -488,23 +536,18 @@ function Add-DateTimePicker {
     )
     $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
     $LabelControl.Height = $Form.row_height
-    $Control.Height = $Form.row_height
     $Form.Form.Controls.Add($LabelControl)
+
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($Control)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+
     return $Control
+
 }
 
 function Add-FileBox {
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [Parameter(Mandatory=$true)][string]$Label,
-        [ValidateNotNullOrEmpty()][ValidateSet('Open','SaveAs')][string]$Type = "Open",
-        [String]$FileFilter,
-        [scriptblock]$Callback
-    )
+
     <#
         .SYNOPSIS
         Add a File Open or SaveAs control, and label, to an existing QuickForm.
@@ -525,6 +568,14 @@ function Add-FileBox {
         .PARAMETER Callback
         Optional Scriptblock to call when the TextBox's TextChanged event occurs.
     #>
+
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][string]$Label,
+        [ValidateNotNullOrEmpty()][ValidateSet('Open','SaveAs')][string]$Type = "Open",
+        [String]$FileFilter,
+        [scriptblock]$Callback
+    )
     
     $Panel = New-Object System.Windows.Forms.Panel
     $Panel.Location = New-Object System.Drawing.Point(
@@ -533,6 +584,7 @@ function Add-FileBox {
     )
     $Panel.width = $Form.control_width - (2*$Form.margin)
     $Panel.Height = $Form.row_height
+    $Form.Form.Controls.Add($Panel)
 
     $ButtonControl = New-Object system.Windows.Forms.Button
     $ButtonControl.Text = "..."
@@ -587,13 +639,14 @@ function Add-FileBox {
 
     $rows = 1
     $Form.slot += $rows
-    $Form.Form.Controls.Add($Panel)
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+
     return $Control
 }
 
 function Add-Action {
-   <#
+
+    <#
         .SYNOPSIS
         Add OK & Cancel buttons to an existing QuickForm.
         .DESCRIPTION
@@ -605,16 +658,25 @@ function Add-Action {
         .PARAMETER Callback
         Optional Scriptblock to call when the OK button is clicked.
     #>
+
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
         [scriptblock]$Callback
     )
+
     $ok = New-Object system.Windows.Forms.Button
     $ok.text = "OK"
     $ok.location = New-Object System.Drawing.Point(
         ($Form.width - 120 - ($Form.margin * 2)),
         ($Form.row_height * $Form.slot)
     )
+    if ($null -ne $callback) {
+        $ok.Add_Click($callback)
+    } else {
+        $ok.Add_Click({ $this.parent.Close() })
+    }
+    $Form.Form.Controls.Add($ok)
+
     $cancel = New-Object system.Windows.Forms.Button
     $cancel.text = "Cancel"
     $cancel.location = New-Object System.Drawing.Point(
@@ -623,12 +685,7 @@ function Add-Action {
     )
     $cancel.Width = $ok.Width = 60
     $cancel.Height = $ok.Height = $Form.row_height
-    $Form.Form.Controls.Add($ok)
-    $Form.Form.Controls.Add($cancel)
-    if ($null -ne $callback) {
-        $ok.Add_Click($callback)
-    } else {
-        $ok.Add_Click({ $this.parent.Close() })
-    }
     $cancel.Add_Click({ $this.parent.Close() })
+    $Form.Form.Controls.Add($cancel)
+
 }
