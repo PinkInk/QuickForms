@@ -65,11 +65,11 @@ $MyList = Add-ListBox -Form $demo `
             )
 
 
-$MyOpenFile = Add-FileBox -Form $demo `
+$MySaveFile = Add-FileBox -Form $demo `
                 -Label "Save as:" `
                 -Type "SaveAs" `
                 -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*" `
-                -Callback { Write-Host $MyOpenFile.Text }
+                -Callback { Write-Host $MySaveFile.Text }
 
             
 Add-Action -Form $demo -Callback {
