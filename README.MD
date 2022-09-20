@@ -88,7 +88,7 @@ $Firstname = Add-TextBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
@@ -104,7 +104,7 @@ $Password = Add-PasswordBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
@@ -119,7 +119,7 @@ $Enabled = Add-CheckBox -Form $MyForm `
 ```
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label, displayed left of control |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event |
 
@@ -136,7 +136,7 @@ $Gender = Add-ComboBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ComboBox options |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
@@ -187,7 +187,7 @@ $MyList = Add-ListBox -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ListBox options |
 | [-Rows \<value>] | No | Int | number of list item rows (default:3) |
@@ -231,7 +231,7 @@ $MyRadios = Add-RadioBox -Form $demo
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | RadioButton options |
 | [-Horizontal] | No | | align RadioButtons horizontally, no attempt to prevent overflow - default layout is vertical | 
@@ -268,7 +268,7 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label |
 | [-Type Date|Time|DateTime] | No | Option | type (default:Date) |
 | [-DateTime \<value>] | No | DateTime | initial Date/Time is specified using ```Get-Date``` (default: now) |
@@ -289,7 +289,7 @@ $MySaveFile = Add-FileBox -Form $demo `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label |
 | [-Type Open|SaveAs] | No | Option | dialog type (default:Open) |
 | [-FileFilter "\<value>"] | No | String | file filter (refer notes) |
@@ -318,7 +318,7 @@ Add-Action -Form $MyForm `
 
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add control row to, can be passed on pipeline |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to OK buttons ```Click``` event |
 
 
