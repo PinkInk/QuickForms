@@ -182,7 +182,6 @@ function Add-PasswordBox {
     )
 
     $Control = New-Object system.Windows.Forms.TextBox
-    $Control.Multiline = $false
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
@@ -190,6 +189,7 @@ function Add-PasswordBox {
     $Control.Height = $Form.row_height
     $Control.width = $Form.control_width - (2 * $Form.margin)
     $Control.PasswordChar = "*"
+    $Control.Multiline = $false
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
     }
@@ -229,13 +229,13 @@ function Add-CheckBox {
     )
 
     $Control = New-Object system.Windows.Forms.CheckBox
-    $Control.text = $label
     $Control.Width = $Form.control_width - (2 * $Form.margin)
     $Control.Height = $Form.row_height
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
+    $Control.text = $label
     if ($null -ne $callback) {
         $Control.Add_CheckedChanged($callback)
     }
@@ -278,11 +278,11 @@ function Add-ComboBox {
     $Control = New-Object System.Windows.Forms.ComboBox
     $Control.width = $Form.control_width - (2 * $Form.margin)
     $Control.Height = $Form.row_height
-    $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
+    $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
@@ -424,13 +424,13 @@ function Add-ListBox {
     )
 
     $Control = New-Object System.Windows.Forms.ListBox
-    $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
     $Control.width = $Form.control_width - (2 * $Form.margin)
     $Control.Height = $Form.row_height * $rows
+    $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
