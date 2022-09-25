@@ -89,7 +89,7 @@ $Firstname = Add-TextBox -Form $MyForm `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | Yes | String | label |
+| -Label "\<value>" | No | String | label |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property. 
@@ -105,7 +105,7 @@ $Password = Add-PasswordBox -Form $MyForm `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | Yes | String | label |
+| -Label "\<value>" | No | String | label |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property. 
@@ -137,7 +137,7 @@ $Gender = Add-ComboBox -Form $MyForm `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | Yes | String | label |
+| -Label "\<value>" | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ComboBox options |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 
@@ -188,7 +188,7 @@ $MyList = Add-ListBox -Form $MyForm `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | Yes | String | label |
+| -Label "\<value>" | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ListBox options |
 | [-Rows \<value>] | No | Int | number of list item rows (default:3) |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
@@ -232,7 +232,7 @@ $MyRadios = Add-RadioBox -Form $demo
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | Yes | String | label |
+| -Label "\<value>" | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | RadioButton options |
 | [-Horizontal] | No | | align RadioButtons horizontally, no attempt to prevent overflow - default layout is vertical | 
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event of **all** RadioButtons |
@@ -269,7 +269,7 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | Yes | String | label |
+| -Label "\<value>" | No | String | label |
 | [-Type Date|Time|DateTime] | No | Option | type (default:Date) |
 | [-DateTime \<value>] | No | DateTime | initial Date/Time is specified using ```Get-Date``` (default: now) |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```ValueChanged``` event |
@@ -290,7 +290,7 @@ $MySaveFile = Add-FileBox -Form $demo `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | Yes | String | label |
+| -Label "\<value>" | No | String | label |
 | [-Type Open|SaveAs] | No | Option | dialog type (default:Open) |
 | [-FileFilter "\<value>"] | No | String | file filter (refer notes) |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
@@ -368,12 +368,6 @@ You can refer to the current control as ```$this``` within its Callback e.g.
 $MyCheckbox = Add-CheckBox -Form $MyForm -Callback { Write-Host $this.Checked }
 ```
 
-### Form logic
-
-For brevity it's probably preferable to author one ```Update-Fields``` function
-to manage control logic and bind it to the callback of all (or most) enabled
-controls. 
-
 ### Add form properties
 
 It can be useful to add properties to the form to e.g. replace the functionality
@@ -398,3 +392,22 @@ if ($form.ExitCode -eq 1) {
 } else { Write-Host "Form Cancelled" }
 
 ```
+
+### Label columnless forms
+
+In some instances (e.g. a search dialog) it might be desirable to do without the
+label column, and labels, e.g.;
+
+``` PowerShell
+$form = New-QuickForm -Title "Search" -LabelWidth 0
+$SearchString = $form | Add-TextBox
+$SearchResult = $form | Add-ListBox -Rows 5
+$form | Add-Action
+$form.Show()
+```
+
+### Form logic
+
+For brevity it's probably preferable to author one ```Update-Fields``` function
+to manage control logic and bind it to the callback of all (or most) enabled
+controls. 
