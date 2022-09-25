@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 25/09/2022 - v2.4.1 - Tim Pelling - factor out label placement from most cmdlets
 # 25/09/2022 - v2.4.0 - Tim Pelling - render labels optional
 # 25/09/2022 - v2.3.2 - Tim Pelling - bugfix Save-As FileBox scriptblock
 # 19/09/2022 - v2.3.1 - Tim Pelling - bugfix date-time control.showupdown
@@ -94,6 +95,23 @@ function New-QuickForm {
     return $form
 }
 
+# Internal
+function Add-Label {
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [string]$Label
+    )
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        $Form.margin,
+        ($Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
+    $LabelControl.Height = $Form.row_height
+    $Form.Form.Controls.Add($LabelControl)
+}
 function Add-TextBox {
 
     <#
@@ -130,18 +148,7 @@ function Add-TextBox {
     }
     $Form.Form.Controls.Add($Control)
 
-    if ($Label) {
-        $LabelControl = New-Object System.Windows.Forms.Label
-        $LabelControl.text = $label
-        $LabelControl.AutoSize = $false
-        $LabelControl.Location = New-Object System.Drawing.Point(
-            $Form.margin,
-            ($Form.row_height * $Form.slot)
-        )
-        $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
-        $LabelControl.Height = $Form.row_height
-        $Form.Form.Controls.Add($LabelControl)
-    }
+    if ($Label) { $Form | Add-Label -Label $Label }
 
     $rows = 1
     $Form.slot += $rows
@@ -188,18 +195,7 @@ function Add-PasswordBox {
     }
     $Form.Form.Controls.Add($Control)
 
-    if ($Label) {
-        $LabelControl = New-Object System.Windows.Forms.Label
-        $LabelControl.text = $label
-        $LabelControl.AutoSize = $false
-        $LabelControl.Location = New-Object System.Drawing.Point(
-            $Form.margin,
-            ($Form.row_height * $Form.slot)
-        )
-        $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
-        $LabelControl.Height = $Form.row_height
-        $Form.Form.Controls.Add($LabelControl)
-    }
+    if ($Label) { $Form | Add-Label -Label $Label }
 
     $rows = 1
     $Form.slot += $rows
@@ -292,18 +288,7 @@ function Add-ComboBox {
     }
     $Form.Form.Controls.Add($Control)
 
-    if ($Label) {
-        $LabelControl = New-Object System.Windows.Forms.Label
-        $LabelControl.text = $label
-        $LabelControl.AutoSize = $false
-        $LabelControl.Location = New-Object System.Drawing.Point(
-            $Form.margin,
-            ($Form.row_height * $Form.slot)
-        )
-        $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
-        $LabelControl.Height = $Form.row_height
-        $Form.Form.Controls.Add($LabelControl)
-    }
+    if ($Label) { $Form | Add-Label -Label $Label }
 
     $rows = 1
     $Form.slot += $rows
@@ -451,18 +436,7 @@ function Add-ListBox {
     }
     $Form.Form.Controls.Add($Control)
 
-    if ($Label) {
-        $LabelControl = New-Object System.Windows.Forms.Label
-        $LabelControl.text = $label
-        $LabelControl.AutoSize = $false
-        $LabelControl.Location = New-Object System.Drawing.Point(
-            ($Form.margin),
-            ($Form.row_height * $Form.slot)
-        )
-        $LabelControl.Width = $Form.label_width - (2*$Form.margin)
-        $LabelControl.Height = $Form.row_height
-        $Form.Form.Controls.Add($LabelControl)
-    }
+    if ($Label) { $Form | Add-Label -Label $Label }
 
     if ($buttons) {
         $x = $Form.label_width + $Form.margin
@@ -541,18 +515,7 @@ function Add-DateTimePicker {
     }
     $Form.Form.Controls.Add($Control)
 
-    if ($Label) {
-        $LabelControl = New-Object System.Windows.Forms.Label
-        $LabelControl.text = $label
-        $LabelControl.AutoSize = $false
-        $LabelControl.Location = New-Object System.Drawing.Point(
-            $Form.margin,
-        ( $Form.row_height * $Form.slot)
-        )
-        $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
-        $LabelControl.Height = $Form.row_height
-        $Form.Form.Controls.Add($LabelControl)
-    }
+    if ($Label) { $Form | Add-Label -Label $Label }
 
     $rows = 1
     $Form.slot += $rows
@@ -642,18 +605,7 @@ function Add-FileBox {
     }
     $Panel.Controls.Add($Control)
 
-    if ($Label) {
-        $LabelControl = New-Object System.Windows.Forms.Label
-        $LabelControl.text = $label
-        $LabelControl.AutoSize = $false
-        $LabelControl.Location = New-Object System.Drawing.Point(
-            $Form.margin,
-            ($Form.row_height * $Form.slot)
-        )
-        $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
-        $LabelControl.Height = $Form.row_height
-        $Form.Form.Controls.Add($LabelControl)
-    }
+    if ($Label) { $Form | Add-Label -Label $Label }
 
     $rows = 1
     $Form.slot += $rows
