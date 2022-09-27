@@ -29,6 +29,11 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
                 -DateTime (Get-Date -Year 1999 -Month 12 -Day 3 -Hour 12 -Minute 23) `
                 -Callback { Write-Host "Date Time: $($this.Value)" }
 
+$MyDate = Add-TextBox -Form $demo `
+                -Label "Date:" `
+                -Mask "00/00/0000" `
+                -Callback { Write-Host "Date: $($this.Text)"}
+
 $MySex = Add-CheckBox -Form $demo -Label "Male" -Callback {
     if ( $this.Checked ) {
         $MyOptions.SelectedItem = "Male"

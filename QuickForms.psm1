@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 27/09/2022 - v2.5.0 - Tim Pelling - optional text Mask for TextBox control
 # 27/09/2022 - v2.4.3 - Tim Pelling - let datetime set it's own width
 # 27/09/2022 - v2.4.2 - Tim Pelling - fix size of FileBox button
 # 25/09/2022 - v2.4.1 - Tim Pelling - factor out label placement from most cmdlets
@@ -127,6 +128,8 @@ function Add-TextBox {
         Form to add the control and label to.
         .PARAMETER Label
         Label for the control.
+        .PARAMETER Mask
+        Optional text input mask refer https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.maskedtextbox.mask?view=windowsdesktop-6.0 for syntax.
         .PARAMETER Callback
         Optional Scriptblock to call when the TextChanged event occurs.
     #>
@@ -134,10 +137,16 @@ function Add-TextBox {
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
         [string]$Label,
+        [string]$Mask,
         [scriptblock]$Callback
     )
 
-    $Control = New-Object system.Windows.Forms.TextBox
+    if ($Mask) {
+        $Control = New-Object system.Windows.Forms.MaskedTextBox
+        $Control.Mask = $Mask
+    } else {
+        $Control = New-Object system.Windows.Forms.TextBox
+    }
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
