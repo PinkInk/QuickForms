@@ -97,7 +97,7 @@ Access the value of the control via its ```.Text``` property.
 
 Optional ```-Mask``` parameter can be used to define an input mask that will
 constrain text input.  Refer [here](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.maskedtextbox.mask?view=windowsdesktop-6.0) 
-page for mask syntax.
+for mask syntax.
 
 #### PasswordBox
 
