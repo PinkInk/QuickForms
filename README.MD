@@ -4,7 +4,6 @@ Quick and simple 2 column (label, control) PowerShell GUI form module,
 supporting the following controls:
 
 - ```TextBox```
-- ```PasswordBox``` (TextBox with hidden input)
 - ```CheckBox```
 - ```ComboBox```
 - ```RadioBox``` (Panel of RadioButtons)
