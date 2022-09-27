@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 27/09/2022 - v2.7.0 - Tim Pelling - allow multi-line textboxes
 # 27/09/2022 - v2.6.0 - Tim Pelling - factor out PasswordBox in favour TextBox -Password
 # 27/09/2022 - v2.5.0 - Tim Pelling - optional text Mask for TextBox control
 # 27/09/2022 - v2.4.3 - Tim Pelling - let datetime set it's own width
@@ -140,6 +141,7 @@ function Add-TextBox {
         [string]$Label,
         [string]$Mask,
         [switch]$Password,
+        [int32]$Rows = 1,
         [scriptblock]$Callback
     )
 
@@ -154,8 +156,13 @@ function Add-TextBox {
         ($Form.row_height * $Form.slot)
     )
     $Control.width = $Form.control_width - (2 * $Form.margin)
-    $Control.Height = $Form.row_height
-    $Control.Multiline = $false
+    if ($Rows -gt 1 -and -not $Mask) { 
+        $Control.Multiline = $true 
+    } else { 
+        $Control.Multiline = $false
+        $Rows = 1 # for safety
+    }
+    $Control.Height = $Form.row_height * $Rows
     if ($Password) { $Control.PasswordChar = "*" }
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
@@ -164,9 +171,9 @@ function Add-TextBox {
 
     if ($Label) { $Form | Add-Label -Label $Label }
 
-    $rows = 1
-    $Form.slot += $rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    # $rows = 1
+    $Form.slot += $Rows
+    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $Rows))"
 
     return $Control
 
@@ -473,6 +480,8 @@ function Add-DateTimePicker {
     } elseif ( $Type -eq "DateTime" ) {
         $Control.Format = "Custom"
         $Control.CustomFormat = (Get-Culture).DateTimeFormat.FullDateTimePattern
+        # setting width appears only required for long date-time format
+        $Control.width = $Form.control_width - (2 * $Form.margin)
     } # Date is control default
     if ( $DateTime ) {
         $Control.Value = $DateTime

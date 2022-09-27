@@ -91,6 +91,7 @@ $Firstname = Add-TextBox -Form $MyForm `
 | -Label "\<value>" | No | String | label |
 | [-Mask "\<value>" ] | No | String | Optional input mask |
 | [-Password] | No | Switch | Hide input |
+| [-Rows <value>] | No | Int | text input rows, default = 1 |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property.
@@ -112,6 +113,18 @@ input is not encrypted hence is not secure. e.g.
 $MyPassword = Add-TextBox -Form $MyForm `
     -Label "Password:" `
     -Password
+```
+
+Optional ```-Rows``` parameter enables MultiLine text input, with values greater
+than 1.  Note that the height of each row is the height of a control row, not
+a row of text, hence specifying a value of 2 will likely result in more
+than 2 rows of text being visible in the control.  The value of the parameter is 
+ignored if used in combination with ```-Mask```.
+
+``` PowerShell
+$MyNotes = Add-TextBox -Form $MyForm `
+    -Label "Notes:" `
+    -Rows 2
 ```
 
 #### CheckBox

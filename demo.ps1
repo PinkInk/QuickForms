@@ -76,7 +76,11 @@ $MySaveFile = Add-FileBox -Form $demo `
                 -Type "SaveAs" `
                 -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*" `
                 -Callback { Write-Host "Save as: $($MySaveFile.Text)" }
-            
+
+$MyNotes = Add-TextBox -Form $demo `
+                -Label "Notes:" `
+                -Rows 2
+
 Add-Action -Form $demo -Callback {
     if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
         $demo.ExitCode = 1
