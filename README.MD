@@ -90,30 +90,30 @@ $Firstname = Add-TextBox -Form $MyForm `
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | No | String | label |
-| [-Mask "\<value>" ] No | String | Optional input mask |
+| [-Mask "\<value>" ] | No | String | Optional input mask |
+| [-Password] | No | Switch | Hide input |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property.
 
 Optional ```-Mask``` parameter can be used to define an input mask that will
 constrain text input.  Refer [here](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.maskedtextbox.mask?view=windowsdesktop-6.0) 
-for mask syntax.
-
-#### PasswordBox
+for mask syntax. e.g.
 
 ``` PowerShell
-$Password = Add-PasswordBox -Form $MyForm `
-    -Label "Password:" `
-    -Callback { Write-Host $Password.Text }
+$MyDate = Add-TextBox -Form $MyForm `
+    -Label "Date:" `
+    -Mask "00/00/0000"
 ```
 
-| Argument | Mandatory | Type | Description |
-| --- | --- | --- | --- |
-| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | No | String | label |
-| [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
+Optional ```-Password``` switch hides input behind "*" characters.  Note that the
+input is not encrypted hence is not secure. e.g.
 
-Access the value of the control via its ```.Text``` property. 
+``` PowerShell
+$MyPassword = Add-TextBox -Form $MyForm `
+    -Label "Password:" `
+    -Password
+```
 
 #### CheckBox
 
@@ -125,7 +125,7 @@ $Enabled = Add-CheckBox -Form $MyForm `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | Yes | String | label, displayed left of control |
+| -Label "\<value>" | Yes | String | label, displayed right of control, not in label column |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event |
 
 Access the boolean value of the control via its ```.Checked``` property. 

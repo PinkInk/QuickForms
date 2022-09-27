@@ -17,9 +17,9 @@ $MySurName = Add-TextBox -Form $demo -Label "Surname:" -Callback {
 $MyUserID = Add-TextBox -Form $demo -Label "User ID:"
 $MyUserID.Enabled = $false
 
-$MyPassword = Add-PasswordBox -Form $demo -Label "Password:"
+$MyPassword = Add-TextBox -Form $demo -Label "Password:" -Password
 
-$MyConfirmPassword = Add-PasswordBox -Form $demo -Label "Confirm Password:" -Callback {
+$MyConfirmPassword = Add-TextBox -Form $demo -Label "Confirm Password:" -Password -Callback {
     Write-Host "Passwords match: $($MyPassword.Text -eq $this.Text)"
 }
 

@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 27/09/2022 - v2.6.0 - Tim Pelling - factor out PasswordBox in favour TextBox -Password
 # 27/09/2022 - v2.5.0 - Tim Pelling - optional text Mask for TextBox control
 # 27/09/2022 - v2.4.3 - Tim Pelling - let datetime set it's own width
 # 27/09/2022 - v2.4.2 - Tim Pelling - fix size of FileBox button
@@ -138,6 +139,7 @@ function Add-TextBox {
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
         [string]$Label,
         [string]$Mask,
+        [switch]$Password,
         [scriptblock]$Callback
     )
 
@@ -154,53 +156,7 @@ function Add-TextBox {
     $Control.width = $Form.control_width - (2 * $Form.margin)
     $Control.Height = $Form.row_height
     $Control.Multiline = $false
-    if ($null -ne $callback) {
-        $Control.Add_TextChanged($callback)
-    }
-    $Form.Form.Controls.Add($Control)
-
-    if ($Label) { $Form | Add-Label -Label $Label }
-
-    $rows = 1
-    $Form.slot += $rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
-
-    return $Control
-
-}
-
-function Add-PasswordBox {
-
-    <#
-        .SYNOPSIS
-        Add a Password Entry control, and label, to an existing QuickForm.
-        .DESCRIPTION
-        Returns a TextBox object.
-        .EXAMPLE
-        $myPassword = Add-PasswordBox -Form $demo -Label "Password:" -Callback { Write-Host $this.Text }
-        .PARAMETER Form
-        Form to add the control and label to.
-        .PARAMETER Label
-        Label for the control.
-        .PARAMETER Callback
-        Optional Scriptblock to call when the TextChanged event occurs.
-    #>
-
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [string]$Label,
-        [scriptblock]$Callback
-    )
-
-    $Control = New-Object system.Windows.Forms.TextBox
-    $Control.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
-    $Control.Height = $Form.row_height
-    $Control.width = $Form.control_width - (2 * $Form.margin)
-    $Control.PasswordChar = "*"
-    $Control.Multiline = $false
+    if ($Password) { $Control.PasswordChar = "*" }
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
     }
