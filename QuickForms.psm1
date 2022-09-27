@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 27/09/2022 - v2.4.3 - Tim Pelling - let datetime set it's own width
 # 27/09/2022 - v2.4.2 - Tim Pelling - fix size of FileBox button
 # 25/09/2022 - v2.4.1 - Tim Pelling - factor out label placement from most cmdlets
 # 25/09/2022 - v2.4.0 - Tim Pelling - render labels optional
@@ -498,7 +499,7 @@ function Add-DateTimePicker {
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
-    $Control.width = $Form.control_width - (2 * $Form.margin)
+    # $Control.width = $Form.control_width - (2 * $Form.margin)
     $Control.Height = $Form.row_height
     if ( $Type -eq "Time" ) {
         $Control.Format = "Custom"
