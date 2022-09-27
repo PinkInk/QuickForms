@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 27/09/2022 - v2.4.2 - Tim Pelling - fix size of FileBox button
 # 25/09/2022 - v2.4.1 - Tim Pelling - factor out label placement from most cmdlets
 # 25/09/2022 - v2.4.0 - Tim Pelling - render labels optional
 # 25/09/2022 - v2.3.2 - Tim Pelling - bugfix Save-As FileBox scriptblock
@@ -566,6 +567,9 @@ function Add-FileBox {
     $Form.Form.Controls.Add($Panel)
 
     $ButtonControl = New-Object system.Windows.Forms.Button
+    $Panel.Controls.Add($ButtonControl)
+    $ButtonControl.AutoSize = $true
+    $ButtonControl.AutoSizeMode = "GrowAndShrink"
     $ButtonControl.Text = "..."
     $ButtonControl.Height = $Form.row_height
     $ButtonControl.Location = New-Object System.Drawing.Point(
@@ -592,7 +596,6 @@ function Add-FileBox {
             }
         })
     }
-    $Panel.Controls.Add($ButtonControl)
 
     $Control = New-Object system.Windows.Forms.TextBox
     $Control.Location = New-Object System.Drawing.Point(0, 0)
