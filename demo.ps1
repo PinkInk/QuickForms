@@ -1,6 +1,8 @@
 import-module .\QuickForms.psd1
 
 $demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
+
+# add ExitCode property
 $demo | Add-Member -NotePropertyName ExitCode -NotePropertyValue 0
 
 # pipeline form
@@ -18,14 +20,14 @@ $MyUserID.Enabled = $false
 $MyPassword = Add-PasswordBox -Form $demo -Label "Password:"
 
 $MyConfirmPassword = Add-PasswordBox -Form $demo -Label "Confirm Password:" -Callback {
-    Write-Host "$($MyPassword.Text -eq $this.Text)"
+    Write-Host "Passwords match: $($MyPassword.Text -eq $this.Text)"
 }
 
 $MyDateTime = Add-DateTimePicker -Form $demo `
                 -Label "Date Time:" `
                 -Type DateTime `
                 -DateTime (Get-Date -Year 1999 -Month 12 -Day 3 -Hour 12 -Minute 23) `
-                -Callback { Write-Host $this.Value }
+                -Callback { Write-Host "Date Time: $($this.Value)" }
 
 $MySex = Add-CheckBox -Form $demo -Label "Male" -Callback {
     if ( $this.Checked ) {
@@ -39,7 +41,7 @@ $MySex = Add-CheckBox -Form $demo -Label "Male" -Callback {
 
 $MyOptions = Add-ComboBox -Form $demo -Label "Sex:" -Options @("Male", "Female") -Callback {
     $MySex.Checked = if ($this.SelectedItem -eq "Male") {$true} else {$false}
-    $MyRadios.Controls | %{  if ($_.Text -eq $this.SelectedItem) { $_.PerformClick() } }
+    $MyRadios.Controls | %{ if ($_.Text -eq $this.SelectedItem) { $_.PerformClick() } }
 }
 
 $MyRadios = Add-RadioBox -Form $demo -Label "Gender:" -Options @("Male", "Female") -Callback {
@@ -53,7 +55,7 @@ $MyList = Add-ListBox -Form $demo `
             -Label "List:" `
             -Rows 3 `
             -Options @("Item the first") `
-            -Callback { Write-Host $MyList.SelectedItem } `
+            -Callback { Write-Host "List Item: $($MyList.SelectedItem)" } `
             -Buttons @(
                 @{ name="Add"; callback={ $MyList.Items.Add("Item another") } },
                 @{ name="Remove"; callback={
@@ -68,7 +70,7 @@ $MySaveFile = Add-FileBox -Form $demo `
                 -Label "Save as:" `
                 -Type "SaveAs" `
                 -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*" `
-                -Callback { Write-Host $MySaveFile.Text }
+                -Callback { Write-Host "Save as: $($MySaveFile.Text)" }
             
 Add-Action -Form $demo -Callback {
     if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
