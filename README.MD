@@ -95,6 +95,7 @@ $Firstname = Add-TextBox -Form $MyForm `
 | [-Rows <value>] | No | Int | text input rows, default = 1 |
 | [-Disabled] | No | Switch | disable control |
 | [-Text "\<value>"] | No | String | set initial control ```.Text``` value |
+| [-Lockable] | No | Switch | adds a checkbox to lock/unlock the control |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property.
@@ -133,6 +134,21 @@ $MyNotes = Add-TextBox -Form $MyForm `
 Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
 
 Optional ```-Text``` parameter sets the initial value in the TextBox.
+
+Optional ```-Lockable``` parameter adds a checkbox in front of the TextBox which
+can be used to Enable/Disable the control to allow/prevent editing it.
+This is expected to be used to allow to optionally override a normally 
+calculated value.  Typically it will be used in combination with the ```-Disabled```
+parameter to set the initial state of the TextBox to be un-editable.  Other control
+Callbacks that update the TextBox should be cognisant of the value of its
+```.Enabled``` property e.g.
+
+``` PowerShell
+$Input = Add-TextBox -Form $MyForm -Label "Input" -Callback {
+    if (!$Calculated.Enabled) { $Calculated.Text = $this.ToUpper() }
+}
+$Calculated = Add-TextBox -Form $MyForm -Label "Calculated" -Lockable -Disabled
+```
 
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the TextBox
 controls ```TextChanged``` event.

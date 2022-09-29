@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 29/09/2022 - v2.10.0 - Tim Pelling - add Lockable option to textboxes
 # 29/09/2022 - v2.9.0 - Tim Pelling - add params to set initial control value
 # 29/09/2022 - v2.8.0 - Tim Pelling - add -Disabled option to most controls
 # 27/09/2022 - v2.7.0 - Tim Pelling - allow multi-line textboxes
@@ -139,7 +140,11 @@ function Add-TextBox {
         .PARAMETER Text
         Optionally set initial TextBox Text value.
         .PARAMETER Disabled
-        Optional switch to disable control. 
+        Optional switch to disable control.
+        .PARAMETER Lockable
+        Allows the textbox to be locked/unlocked via an accompanying checkbox.
+
+        Used to allow overriding a normally calculated value.
     #>
 
     param (
@@ -150,8 +155,34 @@ function Add-TextBox {
         [int32]$Rows = 1,
         [scriptblock]$Callback,
         [Switch]$Disabled,
-        [string]$Text
+        [string]$Text,
+        [Switch]$Lockable
     )
+
+    if ($Mask) { $Rows = 1 } # multiline ignored with mask param
+
+    $Panel = New-Object System.Windows.Forms.Panel
+    $Panel.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Panel.width = $Form.control_width - (2*$Form.margin)
+    $Panel.Height = $Form.row_height * $Rows
+    $Form.Form.Controls.Add($Panel)
+
+    $TextBoxOffset = 0
+    if ($Lockable) {
+        $Lock = New-Object system.Windows.Forms.CheckBox
+        $Lock.Location = New-Object System.Drawing.Point(0,0)
+        if (!$Disabled) { $Lock.Checked = $true }
+        $Lock.AutoSize = $true
+        $Panel.Controls.Add($Lock)
+        $TextBoxOffset = $Lock.Width
+        $Lock.Add_CheckedChanged({
+            $TextBox = $this.parent.Controls | Where-Object { $_.GetType().Name -eq "TextBox"}
+            $TextBox.Enabled = !$TextBox.Enabled
+        })
+    }
 
     if ($Mask) {
         $Control = New-Object system.Windows.Forms.MaskedTextBox
@@ -159,16 +190,12 @@ function Add-TextBox {
     } else {
         $Control = New-Object system.Windows.Forms.TextBox
     }
-    $Control.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
-    $Control.width = $Form.control_width - (2 * $Form.margin)
+    $Control.Location = New-Object System.Drawing.Point($TextBoxOffset,0)
+    $Control.width = $Form.control_width - (2 * $Form.margin) - $TextBoxOffset
     if ($Rows -gt 1 -and -not $Mask) { 
         $Control.Multiline = $true 
     } else { 
         $Control.Multiline = $false
-        $Rows = 1 # for safety
     }
     $Control.Height = $Form.row_height * $Rows
     if ($Password) { $Control.PasswordChar = "*" }
@@ -177,11 +204,10 @@ function Add-TextBox {
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
     }
-    $Form.Form.Controls.Add($Control)
+    $Panel.Controls.Add($Control)
 
     if ($Label) { $Form | Add-Label -Label $Label }
 
-    # $rows = 1
     $Form.slot += $Rows
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $Rows))"
 
@@ -442,8 +468,6 @@ function Add-ListBox {
         [string]$SelectedItem,
         [int32]$SelectedIndex
     )
-
-    Write-Host "$SelectedIndex"
 
     $Control = New-Object System.Windows.Forms.ListBox
     $Control.Location = New-Object System.Drawing.Point(

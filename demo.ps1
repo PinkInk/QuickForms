@@ -6,15 +6,19 @@ $demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 $demo | Add-Member -NotePropertyName ExitCode -NotePropertyValue 0
 
 # pipeline form
-$MyFirstName = $demo | Add-TextBox -Label "First name:" -Text "John" -Callback {
-    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
+$MyFirstName = $demo | Add-TextBox -Label "First name:" -Callback {
+    if (!$MyUserID.Enabled) {
+        $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
+    }
 }
 
 $MySurName = Add-TextBox -Form $demo -Label "Surname:" -Callback {
-    $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
+    if (!$MyUserID.Enabled){
+        $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
+    }
 }
 
-$MyUserID = Add-TextBox -Form $demo -Label "User ID:" -Disabled
+$MyUserID = Add-TextBox -Form $demo -Label "User ID:" -Lockable -Disabled
 
 $MyPassword = Add-TextBox -Form $demo -Label "Password:" -Password
 
