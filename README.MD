@@ -43,7 +43,7 @@ The general workflow is;
 - Add action (OK, Cancel buttons)
 - Show form
 
-### Import module
+## Import module
 
 If installed:
 
@@ -61,7 +61,7 @@ Note: if installed in the same directory as script you must import the .psd1
 file (not the .psm1 file) in order to satisfy a dependency on the 
 System.Windows.Forms assemblies.
 
-### Initialise form
+## Initialise form
 
 ```New-QuickForm``` is used to initialise a new form.
 
@@ -75,11 +75,10 @@ $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 | [-LabelWidth \<value>] | No | Int | width of labels column in pixels (default: 200) |
 | [-ControlWidth \<value>] | No | Int | width of controls column in pixels (default: 400)
 
-### Add controls rows
 
 ---
 
-#### Add-TextBox
+## Add-TextBox
 
 ``` PowerShell
 $Firstname = Add-TextBox -Form $MyForm `
@@ -140,7 +139,7 @@ controls ```TextChanged``` event.
 
 ---
 
-#### Add-CheckBox
+## Add-CheckBox
 
 ``` PowerShell
 $Enabled = Add-CheckBox -Form $MyForm `
@@ -167,7 +166,7 @@ controls ```CheckedChanged``` event.
 
 ---
 
-#### Add-ComboBox
+## Add-ComboBox
 
 ``` PowerShell
 $Gender = Add-ComboBox -Form $MyForm `
@@ -214,7 +213,7 @@ controls ```SelectedValueChanged``` event.
 
 ---
 
-#### Add-ListBox
+## Add-ListBox
 
 ``` PowerShell
 $MyList = Add-ListBox -Form $MyForm ``
@@ -292,7 +291,7 @@ and ```callback``` (called when button pressed) properties e.g.
 
 ---
 
-### Add-RadioBox
+## Add-RadioBox
 
 ``` PowerShell
 $MyRadios = Add-RadioBox -Form $demo   
@@ -343,7 +342,7 @@ $MyRadio.Controls | Where Text -eq "Test2" | %{ $_.PerformClick() }
 
 ---
 
-### Add-DateTimePicker
+## Add-DateTimePicker
 
 ``` PowerShell
 $MyDateTime = Add-DateTimePicker -Form $demo `
@@ -375,7 +374,7 @@ Optional ```-Callback``` parameter binds the supplied ScriptBlock to the control
 
 ---
 
-### Add-FileBox
+## Add-FileBox
 
 ``` PowerShell
 $MySaveFile = Add-FileBox -Form $demo `
@@ -410,7 +409,7 @@ controls ```TextChanged``` event.
 
 ---
 
-### Add-Action
+## Add-Action
 
 ``` Powershell
 Add-Action -Form $MyForm `
@@ -448,7 +447,7 @@ Add-Action -Form $MyForm -Callback {
 
 ---
 
-### Show form
+## Show form
 Display the form.
 
 ```PowerShell
