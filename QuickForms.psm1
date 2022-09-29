@@ -392,7 +392,9 @@ function Add-RadioBox {
             $Control.Location = New-Object System.Drawing.Point($x, 0)
             $Control.height = $Form.row_height
             $Control.Text = $_
-            if ($SelectedItem) { if ($_ -eq $SelectedItem) { $Control.Checked = $true } }
+            if ($SelectedItem) { 
+                if ($_ -eq $SelectedItem) { $Control.Checked = $true } 
+            }
             if ($Disabled) { $Control.Enabled = $false }
             if ($null -ne $callback) {
                 $Control.Add_CheckedChanged( $callback )
@@ -405,11 +407,16 @@ function Add-RadioBox {
         $rows = 0
         $options | ForEach-Object {
             $Control = New-Object System.Windows.Forms.RadioButton
-            $Control.Location = New-Object System.Drawing.Point(0, ($Form.row_height * $rows))
+            $Control.Location = New-Object System.Drawing.Point(
+                0, 
+                ($Form.row_height * $rows)
+            )
             $Control.width = $Form.control_width - (2 * $Form.margin)
             $Control.height = $Form.row_height
             $Control.Text = $_
-            if ($SelectedItem) { if ($_ -eq $SelectedItem) { $Control.Checked = $true } }
+            if ($SelectedItem) { 
+                if ($_ -eq $SelectedItem) { $Control.Checked = $true } 
+            }
             if ($Disabled) { $Control.Enabled = $false }
             if ($null -ne $callback) {
                 $Control.Add_CheckedChanged( $callback )
