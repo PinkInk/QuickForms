@@ -15,7 +15,7 @@ Example (the included **demo.ps1** form):
 
 ![demo form](./demo.png)
 
-Callbacks can be easily attached to the most common control events e.g. 
+Callbacks as ScriptBlocks can be easily attached to the most common control events e.g. 
 ```TextChanged``` event for ```TextBox``` and ```PasswordBox``` controls.
 
 Form layout is managed by the module in order to reduce the
