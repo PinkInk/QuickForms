@@ -89,7 +89,7 @@ $Firstname = Add-TextBox -Form $MyForm `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | No | String | label |
+| [-Label "\<value>"] | No | String | label |
 | [-Mask "\<value>" ] | No | String | Optional input mask |
 | [-Password] | No | Switch | Hide input |
 | [-Rows <value>] | No | Int | text input rows, default = 1 |
@@ -194,10 +194,10 @@ $Gender = Add-ComboBox -Form $MyForm `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | No | String | label |
+| [-Label "\<value>"] | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ComboBox options |
 | [-Disabled] | No | Switch | disable control |
-! [-SelectedItem "\<value>" ] No | String | set selected item by text value |
+| [-SelectedItem "\<value>" ] No | String | set selected item by text value |
 | [-SelectedIndex <value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 
@@ -266,10 +266,10 @@ $MyList = Add-ListBox -Form $MyForm `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | No | String | label |
+| [-Label "\<value>"] | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ListBox options |
 | [-Rows \<value>] | No | Int | number of list item rows (default:3) |
-! [-SelectedItem "\<value>" ] No | String | set selected item by text value |
+| [-SelectedItem "\<value>" ] No | String | set selected item by text value |
 | [-SelectedIndex <value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 | [-Buttons @(..)] | No | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
@@ -325,7 +325,7 @@ $MyRadios = Add-RadioBox -Form $demo
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | No | String | label |
+| [-Label "\<value>"] | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | RadioButton options |
 | [-Horizontal] | No | | align RadioButtons horizontally, no attempt to prevent overflow - default layout is vertical | 
 | [-Disabled] | No | Switch | disable control |
@@ -376,7 +376,7 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | No | String | label |
+| [-Label "\<value>"] | No | String | label |
 | [-Type Date|Time|DateTime] | No | Option | type (default:Date) |
 | [-DateTime \<value>] | No | DateTime | initial Date/Time is specified using ```Get-Date``` (default: now) |
 | [-Disabled] | No | Switch | disable control |
@@ -409,7 +409,7 @@ $MySaveFile = Add-FileBox -Form $demo `
 | Argument | Mandatory | Type | Description |
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
-| -Label "\<value>" | No | String | label |
+| [-Label "\<value>"] | No | String | label |
 | [-Type Open|SaveAs] | No | Option | dialog type (default:Open) |
 | [-FileFilter "\<value>"] | No | String | file filter (refer notes) |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
