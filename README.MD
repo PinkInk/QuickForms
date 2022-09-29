@@ -93,7 +93,7 @@ $Firstname = Add-TextBox -Form $MyForm `
 | [-Password] | No | Switch | Hide input |
 | [-Rows <value>] | No | Int | text input rows, default = 1 |
 | [-Disabled] | No | Switch | disable control |
-| [-Text "<value>"] | No | String | set initial control ```.Text``` value |
+| [-Text "\<value>"] | No | String | set initial control ```.Text``` value |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property.
@@ -129,6 +129,13 @@ $MyNotes = Add-TextBox -Form $MyForm `
     -Rows 2
 ```
 
+Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
+
+Optional ```-Text``` parameter sets the initial value in the TextBox.
+
+Optional ```-Callback``` parameter binds the supplied ScriptBlock to the TextBox
+controls ```TextChanged``` event.
+
 #### CheckBox
 
 ``` PowerShell
@@ -145,6 +152,14 @@ $Enabled = Add-CheckBox -Form $MyForm `
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event |
 
 Access the boolean value of the control via its ```.Checked``` property. 
+
+Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
+
+Optional ```-Checked``` parameter can be used to set the CheckBox's ```.Checked``` 
+property to ```$true```, default is ```$false```.
+
+Optional ```-Callback``` parameter binds the supplied ScriptBlock to the CheckBox
+controls ```CheckedChanged``` event.
 
 #### ComboBox
 
@@ -179,6 +194,17 @@ e.g. ```.SelectedIndex``` property.
 
 Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
 where multiple items with the same name appear in the list).
+
+Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
+
+Optional ```-SelectedItem``` parameter selects the ComboBox item with the specified
+text/name.
+
+Optional ```-SelectedIndex``` parameter selects the ComboBox item with the specified
+integer index, and takes precedence over any value supplied via ```-SelectedItem```.
+
+Optional ```-Callback``` parameter binds the supplied ScriptBlock to the CheckBox
+controls ```SelectedValueChanged``` event.
 
 #### ListBox
 
@@ -220,16 +246,6 @@ $MyList = Add-ListBox -Form $MyForm `
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 | [-Buttons @(..)] | No | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
 
-```Buttons``` is an array of hashtable's containing ```name``` (button text) 
-and ```callback``` (called when button pressed) properties e.g.
-
-``` PowerShell
-@(
-    @{ name="Add"; callback={} },
-    @{ name="Remove"; callback={} }
-)
-```
-
 ```.SelectedItem``` property contains the text of the currently selected item.
 
 ```.SelectedIndex``` property contains the index of the currently selected item, 
@@ -244,6 +260,27 @@ e.g. ```.SelectedIndex``` property.
 
 Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
 where multiple items with the same name appear in the list).
+
+Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
+
+Optional ```-SelectedItem``` parameter selects the ComboBox item with the specified
+text/name.
+
+Optional ```-SelectedIndex``` parameter selects the ComboBox item with the specified
+integer index, and takes precedence over any value supplied via ```-SelectedItem```.
+
+Optional ```-Callback``` parameter binds the supplied ScriptBlock to the CheckBox
+controls ```SelectedValueChanged``` event.
+
+```Buttons``` is an optional array of hashtable's containing ```name``` (button text) 
+and ```callback``` (called when button pressed) properties e.g.
+
+``` PowerShell
+@(
+    @{ name="Add"; callback={} },
+    @{ name="Remove"; callback={} }
+)
+```
 
 ### RadioBox
 
@@ -265,13 +302,23 @@ $MyRadios = Add-RadioBox -Form $demo
 | [-SelectedItem "\<value>"] | No | String | set initially checked RadioBox |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event of **all** RadioButtons |
 
-Returns a **Panel** of RadioButtons.
+Returns a **Panel** of RadioButtons, individual RadioButtons can be accessed 
+through the Panels ```.Controls``` array.
 
-Individual RadioButtons can be accessed through the Panels ```.Controls``` array.
+Optional ```-Horizontal``` parameter specifies to layout the RadioButton's horizontally
+rather than vertically (the default).  No attempt is made to prevent the resulting 
+layout from overflowing the width of the form (if it does, increase the ```-ControlWidth```
+of the form, or select the default vertical control layout).
 
-Use the ```.Checked``` property of a RadioButton in the ```.Controls``` array
-to determine whether it is selected, and/or the ```.PerformClick()``` method to 
-select it e.g.
+Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
+
+Optional ```-SelectedItem``` parameter selects the RadioButton with the specified
+text/name.
+
+Optional ```-Callback``` parameter binds the supplied ScriptBlock to all the RadioButton
+controls ```CheckedChanged``` events - use the ```.Checked``` property of a 
+RadioButton in the ```.Controls``` array to determine whether it is selected, 
+and/or the ```.PerformClick()``` method to select it e.g.
 
 ``` PowerShell
 $MyRadio = Add-RadioBox -Form $MyForm `
@@ -303,7 +350,16 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 | [-Disabled] | No | Switch | disable control |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```ValueChanged``` event |
 
-Access the value of the control via its ```.Value``` property. 
+Access the value of the control via its ```.Value``` property.
+
+Optional ```-DateTime``` parameter is used to set the controls Date and Time.
+Construct the value using ```Get-DateTime```.  If not specified the controls
+value defaults to now.
+
+Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
+
+Optional ```-Callback``` parameter binds the supplied ScriptBlock to the controls 
+```ValueChanged``` event.
 
 ### FileBox
 
@@ -334,6 +390,9 @@ system Open and SaveAs options, reference [here](https://learn.microsoft.com/en-
 ``` PowerShell
 -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*"
 ```
+
+Optional ```-Callback``` parameter binds the supplied ScriptBlock to the TextBox 
+controls ```TextChanged``` event.
 
 ### Add action
 
