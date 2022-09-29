@@ -197,7 +197,7 @@ $Gender = Add-ComboBox -Form $MyForm `
 | [-Label "\<value>"] | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ComboBox options |
 | [-Disabled] | No | Switch | disable control |
-| [-SelectedItem "\<value>" ] No | String | set selected item by text value |
+| [-SelectedItem "\<value>" ] | No | String | set selected item by text value |
 | [-SelectedIndex <value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 
@@ -269,7 +269,7 @@ $MyList = Add-ListBox -Form $MyForm `
 | [-Label "\<value>"] | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ListBox options |
 | [-Rows \<value>] | No | Int | number of list item rows (default:3) |
-| [-SelectedItem "\<value>" ] No | String | set selected item by text value |
+| [-SelectedItem "\<value>" ] | No | String | set selected item by text value |
 | [-SelectedIndex <value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 | [-Buttons @(..)] | No | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
@@ -377,7 +377,7 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | [-Label "\<value>"] | No | String | label |
-| [-Type Date|Time|DateTime] | No | Option | type (default:Date) |
+| [-Type Date\|Time\|DateTime] | No | Option | type (default:Date) |
 | [-DateTime \<value>] | No | DateTime | initial Date/Time is specified using ```Get-Date``` (default: now) |
 | [-Disabled] | No | Switch | disable control |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```ValueChanged``` event |
