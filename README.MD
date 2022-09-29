@@ -92,6 +92,8 @@ $Firstname = Add-TextBox -Form $MyForm `
 | [-Mask "\<value>" ] | No | String | Optional input mask |
 | [-Password] | No | Switch | Hide input |
 | [-Rows <value>] | No | Int | text input rows, default = 1 |
+| [-Disabled] | No | Switch | disable control |
+| [-Text "<value>"] | No | String | set initial control ```.Text``` value |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
 Access the value of the control via its ```.Text``` property.
@@ -138,6 +140,8 @@ $Enabled = Add-CheckBox -Form $MyForm `
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | Yes | String | label, displayed right of control, not in label column |
+| [-Disabled] | No | Switch | disable control |
+| [-Checked] | No | Switch | check the control (default: unchecked) |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event |
 
 Access the boolean value of the control via its ```.Checked``` property. 
@@ -156,6 +160,9 @@ $Gender = Add-ComboBox -Form $MyForm `
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | -Label "\<value>" | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ComboBox options |
+| [-Disabled] | No | Switch | disable control |
+! [-SelectedItem "\<value>" ] No | String | set selected item by text value |
+| [-SelectedIndex <value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 
 ```.SelectedItem``` property contains the text of the currently selected item.
@@ -208,6 +215,8 @@ $MyList = Add-ListBox -Form $MyForm `
 | -Label "\<value>" | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ListBox options |
 | [-Rows \<value>] | No | Int | number of list item rows (default:3) |
+! [-SelectedItem "\<value>" ] No | String | set selected item by text value |
+| [-SelectedIndex <value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 | [-Buttons @(..)] | No | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
 
@@ -252,6 +261,8 @@ $MyRadios = Add-RadioBox -Form $demo
 | -Label "\<value>" | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | RadioButton options |
 | [-Horizontal] | No | | align RadioButtons horizontally, no attempt to prevent overflow - default layout is vertical | 
+| [-Disabled] | No | Switch | disable control |
+| [-SelectedItem "\<value>"] | No | String | set initially checked RadioBox |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event of **all** RadioButtons |
 
 Returns a **Panel** of RadioButtons.
@@ -289,6 +300,7 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 | -Label "\<value>" | No | String | label |
 | [-Type Date|Time|DateTime] | No | Option | type (default:Date) |
 | [-DateTime \<value>] | No | DateTime | initial Date/Time is specified using ```Get-Date``` (default: now) |
+| [-Disabled] | No | Switch | disable control |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```ValueChanged``` event |
 
 Access the value of the control via its ```.Value``` property. 
@@ -317,14 +329,11 @@ SaveAs dialog displayed when the ```...``` button is pressed.
 
 Optional ```-FileFilter``` can be used to specify the default (1st), and other,
 file formats/patterns/extensions to be supported - format is defined by the 
-system Open and SaveAs options e.g.
+system Open and SaveAs options, reference [here](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.filedialog.filter?view=windowsdesktop-6.0#system-windows-forms-filedialog-filter) e.g.
 
 ``` PowerShell
 -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*"
 ```
-
-Path and filename are accessible via the returned TextBox controls ```.Text```
-property. 
 
 ### Add action
 

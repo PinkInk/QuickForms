@@ -6,7 +6,7 @@ $demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 $demo | Add-Member -NotePropertyName ExitCode -NotePropertyValue 0
 
 # pipeline form
-$MyFirstName = $demo | Add-TextBox -Label "First name:" -Callback {
+$MyFirstName = $demo | Add-TextBox -Label "First name:" -Text "John" -Callback {
     $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
 }
 
@@ -14,8 +14,7 @@ $MySurName = Add-TextBox -Form $demo -Label "Surname:" -Callback {
     $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
 }
 
-$MyUserID = Add-TextBox -Form $demo -Label "User ID:"
-$MyUserID.Enabled = $false
+$MyUserID = Add-TextBox -Form $demo -Label "User ID:" -Disabled
 
 $MyPassword = Add-TextBox -Form $demo -Label "Password:" -Password
 
@@ -59,8 +58,8 @@ $MyRadios = Add-RadioBox -Form $demo -Label "Gender:" -Options @("Male", "Female
 $MyList = Add-ListBox -Form $demo `
             -Label "List:" `
             -Rows 3 `
-            -Options @("Item the first") `
-            -Callback { Write-Host "List Item: $($MyList.SelectedItem)" } `
+            -Options @("Item the first", "Item the second") `
+            -Callback { Write-Host "List Item: $($MyList.SelectedIndex)" } `
             -Buttons @(
                 @{ name="Add"; callback={ $MyList.Items.Add("Item another") } },
                 @{ name="Remove"; callback={

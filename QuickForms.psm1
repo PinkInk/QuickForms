@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 29/09/2022 - v2.8.0 - Tim Pelling - add -Disabled option to most controls
 # 27/09/2022 - v2.7.0 - Tim Pelling - allow multi-line textboxes
 # 27/09/2022 - v2.6.0 - Tim Pelling - factor out PasswordBox in favour TextBox -Password
 # 27/09/2022 - v2.5.0 - Tim Pelling - optional text Mask for TextBox control
@@ -134,6 +135,10 @@ function Add-TextBox {
         Optional text input mask refer https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.maskedtextbox.mask?view=windowsdesktop-6.0 for syntax.
         .PARAMETER Callback
         Optional Scriptblock to call when the TextChanged event occurs.
+        .PARAMETER Text
+        Optionally set initial TextBox Text value.
+        .PARAMETER Disabled
+        Optional switch to disable control. 
     #>
 
     param (
@@ -142,7 +147,9 @@ function Add-TextBox {
         [string]$Mask,
         [switch]$Password,
         [int32]$Rows = 1,
-        [scriptblock]$Callback
+        [scriptblock]$Callback,
+        [Switch]$Disabled,
+        [string]$Text
     )
 
     if ($Mask) {
@@ -164,6 +171,8 @@ function Add-TextBox {
     }
     $Control.Height = $Form.row_height * $Rows
     if ($Password) { $Control.PasswordChar = "*" }
+    if ($Disabled) { $Control.Enabled = $false }
+    if ($Text) { $Control.Text = $Text }
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
     }
@@ -194,12 +203,18 @@ function Add-CheckBox {
         Label for the control (in the right-hand controls column, unlike other control types).
         .PARAMETER Callback
         Optional Scriptblock to call when the CheckedChanged event occurs.
+        .PARAMETER Disabled
+        Optional switch to disable control.
+        .PARAMETER Checked
+        Optionally set the initial state of the checkBox to Checked (default state: Unchecked) 
     #>
 
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
         [Parameter(Mandatory=$true)][string]$Label,
-        [scriptblock]$Callback
+        [scriptblock]$Callback,
+        [Switch]$Disabled,
+        [Switch]$Checked
     )
 
     $Control = New-Object system.Windows.Forms.CheckBox
@@ -210,6 +225,8 @@ function Add-CheckBox {
         ($Form.row_height * $Form.slot)
     )
     $Control.text = $label
+    if ($Disabled) { $Control.Enabled = $false }
+    if ($Checked) { $Control.Checked = $true }
     if ($null -ne $callback) {
         $Control.Add_CheckedChanged($callback)
     }
@@ -240,13 +257,22 @@ function Add-ComboBox {
         Optional Array of options to populate the combo box with.
         .PARAMETER Callback
         Optional Scriptblock to call when the SelectedValueChanged event occurs.
+        .PARAMETER Disabled
+        Optional switch to disable control.
+        .PARAMETER SelectedItem
+        Optionally set the selected item by name/text.
+        .PARAMETER SelectedIndex
+        Optionally set the selected item by index, takes precedence over .SelectedItem if both set.
     #>
 
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
         [string]$Label,
         [array]$Options = @(),
-        [scriptblock]$Callback
+        [scriptblock]$Callback,
+        [Switch]$Disabled,
+        [string]$SelectedItem,
+        [int32]$SelectedIndex
     )
 
     $Control = New-Object System.Windows.Forms.ComboBox
@@ -257,6 +283,9 @@ function Add-ComboBox {
         ($Form.row_height * $Form.slot)
     )
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
+    if ($Disabled) { $Control.Enabled = $false }
+    if ($SelectedItem) { $Control.SelectedItem = $SelectedItem }
+    if ($SelectedIndex -ge 0) { $Control.SelectedIndex = $SelectedIndex }
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
@@ -296,6 +325,10 @@ function Add-RadioBox {
         Layout the RadioButton's horizontally in a single control row, but may overflow form width.
 
         Default is vertical, one RadioButton form row per specified Option.
+        .PARAMETER Disabled
+        Optional switch to disable control.
+        .PARAMETER SelectedItem
+        Optionally set the selected item by name/text.
     #>
 
     param (
@@ -303,7 +336,9 @@ function Add-RadioBox {
         [string]$Label,
         [Parameter(Mandatory=$true)][array]$Options,
         [switch]$Horizontal,
-        [scriptblock]$Callback
+        [scriptblock]$Callback,
+        [Switch]$Disabled,
+        [string]$SelectedItem
     )
 
     $Panel = New-Object System.Windows.Forms.Panel
@@ -321,6 +356,8 @@ function Add-RadioBox {
             $Control.Location = New-Object System.Drawing.Point($x, 0)
             $Control.height = $Form.row_height
             $Control.Text = $_
+            if ($SelectedItem) { if ($_ -eq $SelectedItem) { $Control.Checked = $true } }
+            if ($Disabled) { $Control.Enabled = $false }
             if ($null -ne $callback) {
                 $Control.Add_CheckedChanged( $callback )
             }
@@ -336,6 +373,8 @@ function Add-RadioBox {
             $Control.width = $Form.control_width - (2 * $Form.margin)
             $Control.height = $Form.row_height
             $Control.Text = $_
+            if ($SelectedItem) { if ($_ -eq $SelectedItem) { $Control.Checked = $true } }
+            if ($Disabled) { $Control.Enabled = $false }
             if ($null -ne $callback) {
                 $Control.Add_CheckedChanged( $callback )
             }
@@ -386,6 +425,10 @@ function Add-ListBox {
         .PARAMETER Buttons
         Optional array of buttons to display below the list e.g.
         @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
+        .PARAMETER SelectedItem
+        Optionally set the selected item by name/text.
+        .PARAMETER SelectedIndex
+        Optionally set the selected item by index, takes precedence over .SelectedItem if both set.
     #>
 
     param (
@@ -394,8 +437,12 @@ function Add-ListBox {
         [int]$Rows = 3,
         [array]$Options = @(),
         [scriptblock]$Callback,
-        [array]$Buttons
+        [array]$Buttons,
+        [string]$SelectedItem,
+        [int32]$SelectedIndex
     )
+
+    Write-Host "$SelectedIndex"
 
     $Control = New-Object System.Windows.Forms.ListBox
     $Control.Location = New-Object System.Drawing.Point(
@@ -405,6 +452,8 @@ function Add-ListBox {
     $Control.width = $Form.control_width - (2 * $Form.margin)
     $Control.Height = $Form.row_height * $rows
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
+    if ($SelectedItem) { $Control.SelectedItem = $SelectedItem }
+    if ($SelectedIndex -ge 0) { $Control.SelectedIndex = $SelectedIndex }
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
@@ -456,6 +505,8 @@ function Add-DateTimePicker {
         Initial DateTime for the control, via Get-Date.
         .PARAMETER Callback
         Optional Scriptblock to call when the ValueChanged event occurs.
+        .PARAMETER Disabled
+        Optional switch to disable control. 
     #>
 
     param (
@@ -463,7 +514,8 @@ function Add-DateTimePicker {
         [string]$Label,
         [ValidateNotNullOrEmpty()][ValidateSet('Date','Time','DateTime')][string]$Type = "Date",
         [datetime]$DateTime,
-        [scriptblock]$Callback
+        [scriptblock]$Callback,
+        [Switch]$Disabled
     )
 
     $Control = New-Object system.Windows.Forms.DateTimePicker
@@ -486,6 +538,7 @@ function Add-DateTimePicker {
     if ( $DateTime ) {
         $Control.Value = $DateTime
     }
+    if ($Disabled) { $Control.Enabled = $false }
     if ($null -ne $callback) {
         $Control.Add_ValueChanged($callback)
     }
