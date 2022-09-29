@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 29/09/2022 - v2.9.0 - Tim Pelling - add params to set initial control value
 # 29/09/2022 - v2.8.0 - Tim Pelling - add -Disabled option to most controls
 # 27/09/2022 - v2.7.0 - Tim Pelling - allow multi-line textboxes
 # 27/09/2022 - v2.6.0 - Tim Pelling - factor out PasswordBox in favour TextBox -Password
