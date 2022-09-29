@@ -385,8 +385,13 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 Access the value of the control via its ```.Value``` property.
 
 Optional ```-DateTime``` parameter is used to set the controls Date and Time.
-Construct the value using ```Get-DateTime```.  If not specified the controls
-value defaults to now.
+Construct the value using ```Get-Date```.  If not specified the controls
+value defaults to now e.g.
+
+``` PowerShell
+$MyDate = AddDateTimePicker -Form $Form -Label "Date" -Type Date `
+    -DateTime (Get-Date -Year 1969 -Month 12 -Day 15)
+```
 
 Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
 
