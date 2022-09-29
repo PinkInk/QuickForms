@@ -135,12 +135,12 @@ Optional ```-Disabled``` parameter disables the control for input (sets ```.Enab
 
 Optional ```-Text``` parameter sets the initial value in the TextBox.
 
-Optional ```-Lockable``` parameter adds a checkbox in front of the TextBox which
-can be used to Enable/Disable the control to allow/prevent editing it.
-This is expected to be used to allow to optionally override a normally 
+Optional ```-Lockable``` parameter adds a CheckBox in front of the TextBox which
+can be used to Enable/Disable the control to allow or prevent editing it.
+This is expected to be used to allow the user to optionally override a normally 
 calculated value.  Typically it will be used in combination with the ```-Disabled```
 parameter to set the initial state of the TextBox to be un-editable.  Other control
-Callbacks that update the TextBox should be cognisant of the value of its
+Callbacks, that update the TextBox, should be cognisant of the value of its
 ```.Enabled``` property e.g.
 
 ``` PowerShell
@@ -414,7 +414,9 @@ SaveAs dialog displayed when the ```...``` button is pressed.
 
 Optional ```-FileFilter``` can be used to specify the default (1st), and other,
 file formats/patterns/extensions to be supported - format is defined by the 
-system Open and SaveAs options, reference [here](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.filedialog.filter?view=windowsdesktop-6.0#system-windows-forms-filedialog-filter) e.g.
+system Open and SaveAs options, reference 
+[here](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.filedialog.filter?view=windowsdesktop-6.0#system-windows-forms-filedialog-filter) 
+e.g.
 
 ``` PowerShell
 -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*"
