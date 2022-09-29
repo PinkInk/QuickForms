@@ -410,7 +410,7 @@ $MySaveFile = Add-FileBox -Form $demo `
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | [-Label "\<value>"] | No | String | label |
-| [-Type Open|SaveAs] | No | Option | dialog type (default:Open) |
+| [-Type Open\|SaveAs] | No | Option | dialog type (default:Open) |
 | [-FileFilter "\<value>"] | No | String | file filter (refer notes) |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
