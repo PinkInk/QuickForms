@@ -79,7 +79,7 @@ $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 
 ---
 
-#### TextBox
+#### Add-TextBox
 
 ``` PowerShell
 $Firstname = Add-TextBox -Form $MyForm `
@@ -140,7 +140,7 @@ controls ```TextChanged``` event.
 
 ---
 
-#### CheckBox
+#### Add-CheckBox
 
 ``` PowerShell
 $Enabled = Add-CheckBox -Form $MyForm `
@@ -167,7 +167,7 @@ controls ```CheckedChanged``` event.
 
 ---
 
-#### ComboBox
+#### Add-ComboBox
 
 ``` PowerShell
 $Gender = Add-ComboBox -Form $MyForm `
@@ -214,7 +214,7 @@ controls ```SelectedValueChanged``` event.
 
 ---
 
-#### ListBox
+#### Add-ListBox
 
 ``` PowerShell
 $MyList = Add-ListBox -Form $MyForm ``
@@ -292,7 +292,7 @@ and ```callback``` (called when button pressed) properties e.g.
 
 ---
 
-### RadioBox
+### Add-RadioBox
 
 ``` PowerShell
 $MyRadios = Add-RadioBox -Form $demo   
@@ -343,7 +343,7 @@ $MyRadio.Controls | Where Text -eq "Test2" | %{ $_.PerformClick() }
 
 ---
 
-### DateTimePicker
+### Add-DateTimePicker
 
 ``` PowerShell
 $MyDateTime = Add-DateTimePicker -Form $demo `
@@ -375,7 +375,7 @@ Optional ```-Callback``` parameter binds the supplied ScriptBlock to the control
 
 ---
 
-### FileBox
+### Add-FileBox
 
 ``` PowerShell
 $MySaveFile = Add-FileBox -Form $demo `
@@ -410,7 +410,7 @@ controls ```TextChanged``` event.
 
 ---
 
-### Add action
+### Add-Action
 
 ``` Powershell
 Add-Action -Form $MyForm `
