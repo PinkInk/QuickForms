@@ -232,7 +232,7 @@ controls ```SelectedValueChanged``` event.
 ## Add-ListBox
 
 ``` PowerShell
-$MyList = Add-ListBox -Form $MyForm ``
+$MyList = Add-ListBox -Form $MyForm `
     -Label "List:" `
     -Rows 4 `
     -Options @("Item 1", "Item 2") `
@@ -248,8 +248,13 @@ $MyList = Add-ListBox -Form $MyForm `
     -Options @("Item the first") `
     -Callback { Write-Host $MyList.SelectedItem } `
     -Buttons @(
-        @{ name="Add"; callback={ $MyList.Items.Add("Item another") } },
-        @{ name="Remove"; callback={
+        @{ 
+            name="Add";
+            callback={ $MyList.Items.Add("Item another") } 
+        },
+        @{ 
+            name="Remove";
+            callback={
                 if ( $MyList.SelectedIndex -ne -1 ) {
                     $MyList.Items.RemoveAt( $MyList.SelectedIndex )
                 }
