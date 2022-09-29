@@ -2,18 +2,18 @@ import-module .\QuickForms.psd1
 
 $demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 
-# add ExitCode property
+# add ExitCode property to the form
 $demo | Add-Member -NotePropertyName ExitCode -NotePropertyValue 0
 
 # pipeline form
 $MyFirstName = $demo | Add-TextBox -Label "First name:" -Callback {
-    if (!$MyUserID.Enabled) {
+    if (!$MyUserID.Enabled) { # only update locked UserID
         $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
     }
 }
 
 $MySurName = Add-TextBox -Form $demo -Label "Surname:" -Callback {
-    if (!$MyUserID.Enabled){
+    if (!$MyUserID.Enabled) { # only update locked UserID
         $MyUserID.Text = "$($MyFirstName.Text[0]).$($MySurname.Text)"
     }
 }
@@ -22,20 +22,11 @@ $MyUserID = Add-TextBox -Form $demo -Label "User ID:" -Lockable -Disabled
 
 $MyPassword = Add-TextBox -Form $demo -Label "Password:" -Password
 
-$MyConfirmPassword = Add-TextBox -Form $demo -Label "Confirm Password:" -Password -Callback {
-    Write-Host "Passwords match: $($MyPassword.Text -eq $this.Text)"
-}
+$MyConfirmPassword = Add-TextBox -Form $demo -Label "Confirm Password:"
 
-$MyDateTime = Add-DateTimePicker -Form $demo `
-                -Label "Date Time:" `
-                -Type DateTime `
-                -DateTime (Get-Date -Year 1999 -Month 12 -Day 3 -Hour 12 -Minute 23) `
-                -Callback { Write-Host "Date Time: $($this.Value)" }
+$MyDateTime = Add-DateTimePicker -Form $demo -Label "Date Time:" -Type DateTime
 
-$MyDate = Add-TextBox -Form $demo `
-                -Label "Date:" `
-                -Mask "00/00/0000" `
-                -Callback { Write-Host "Date: $($this.Text)"}
+$MyDate = Add-TextBox -Form $demo -Label "Date:" -Mask "00/00/0000" `
 
 $MySex = Add-CheckBox -Form $demo -Label "Male" -Callback {
     if ( $this.Checked ) {
@@ -59,14 +50,16 @@ $MyRadios = Add-RadioBox -Form $demo -Label "Gender:" -Options @("Male", "Female
     }
 }
 
-$MyList = Add-ListBox -Form $demo `
-            -Label "List:" `
-            -Rows 3 `
+$MyList = Add-ListBox -Form $demo -Label "List:" -Rows 3 `
             -Options @("Item the first", "Item the second") `
-            -Callback { Write-Host "List Item: $($MyList.SelectedIndex)" } `
             -Buttons @(
-                @{ name="Add"; callback={ $MyList.Items.Add("Item another") } },
-                @{ name="Remove"; callback={
+                @{ 
+                    name = "Add"; 
+                    callback = { $MyList.Items.Add("Item another") } 
+                }
+                @{
+                    name = "Remove"; 
+                    callback = {
                         if ( $MyList.SelectedIndex -ne -1 ) {
                             $MyList.Items.RemoveAt( $MyList.SelectedIndex )
                         }
@@ -74,15 +67,10 @@ $MyList = Add-ListBox -Form $demo `
                 }
             )
 
-$MySaveFile = Add-FileBox -Form $demo `
-                -Label "Save as:" `
-                -Type "SaveAs" `
-                -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*" `
-                -Callback { Write-Host "Save as: $($MySaveFile.Text)" }
+$MySaveFile = Add-FileBox -Form $demo -Label "Save as:" -Type "SaveAs" `
+                -FileFilter "txt files (*.txt)|*.txt|All files (*.*)|*.*"
 
-$MyNotes = Add-TextBox -Form $demo `
-                -Label "Notes:" `
-                -Rows 2
+$MyNotes = Add-TextBox -Form $demo -Label "Notes:" -Rows 2
 
 Add-Action -Form $demo -Callback {
     if ($MyPassword.Text -eq $MyConfirmPassword.Text) {
@@ -96,12 +84,7 @@ Add-Action -Form $demo -Callback {
 $demo.Show()
 
 if ( $demo.ExitCode -eq 1 ) {
-    Write-Host "Name: $($MyFirstName.Text) $($MySurname.Text)"
-    Write-Host "UserID: $($MyUserID.Text)"
-    Write-Host "Password: $($MyPassword.Text)"
-    Write-Host "Date-time: $($MyDateTime.Value)"
-    Write-Host "Gender: $($MyOptions.SelectedItem)"
-    Write-Host "Save-as: $($MySaveFile.Text)"
+    Write-Host "Create $($MyUserID.Text) ..."
 } else {
     Write-Host "Form cancelled"
 }
