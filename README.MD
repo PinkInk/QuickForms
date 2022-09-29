@@ -3,12 +3,12 @@
 Quick and simple 2 column (label, control) PowerShell GUI form module, 
 supporting the following controls:
 
-- ```TextBox```
+- ```TextBox``` (single/multi-line, password masking, input masks & lockable state)
 - ```CheckBox```
 - ```ComboBox```
-- ```RadioBox``` (Panel of RadioButtons)
-- ```ListBox``` (with optional user specified Buttons)
-- ```DateTimePicker```
+- ```RadioBox``` (as panel of RadioButtons)
+- ```ListBox``` (optional user specified Buttons)
+- ```DateTimePicker``` (date, time or date & time)
 - ```FileBox``` (file Open and SaveAs)
 
 Example (the included **demo.ps1** form):
