@@ -77,6 +77,8 @@ $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 
 ### Add controls rows
 
+---
+
 #### TextBox
 
 ``` PowerShell
@@ -136,6 +138,8 @@ Optional ```-Text``` parameter sets the initial value in the TextBox.
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the TextBox
 controls ```TextChanged``` event.
 
+---
+
 #### CheckBox
 
 ``` PowerShell
@@ -160,6 +164,8 @@ property to ```$true```, default is ```$false```.
 
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the CheckBox
 controls ```CheckedChanged``` event.
+
+---
 
 #### ComboBox
 
@@ -205,6 +211,8 @@ integer index, and takes precedence over any value supplied via ```-SelectedItem
 
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the CheckBox
 controls ```SelectedValueChanged``` event.
+
+---
 
 #### ListBox
 
@@ -282,6 +290,8 @@ and ```callback``` (called when button pressed) properties e.g.
 )
 ```
 
+---
+
 ### RadioBox
 
 ``` PowerShell
@@ -331,6 +341,8 @@ $MyRadio = Add-RadioBox -Form $MyForm `
 $MyRadio.Controls | Where Text -eq "Test2" | %{ $_.PerformClick() }
 ```
 
+---
+
 ### DateTimePicker
 
 ``` PowerShell
@@ -360,6 +372,8 @@ Optional ```-Disabled``` parameter disables the control for input (sets ```.Enab
 
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the controls 
 ```ValueChanged``` event.
+
+---
 
 ### FileBox
 
@@ -393,6 +407,8 @@ system Open and SaveAs options, reference [here](https://learn.microsoft.com/en-
 
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the TextBox 
 controls ```TextChanged``` event.
+
+---
 
 ### Add action
 
@@ -430,12 +446,16 @@ Add-Action -Form $MyForm -Callback {
 }
 ```
 
+---
+
 ### Show form
 Display the form.
 
 ```PowerShell
 $MyForm.Show()
 ```
+
+---
 
 ## Tips and tricks
 
