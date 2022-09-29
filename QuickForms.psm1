@@ -70,6 +70,7 @@ class QuickForm {
 }
 
 function New-QuickForm {
+
     <#
         .SYNOPSIS
         Create a new simple 2 column form
@@ -95,13 +96,17 @@ function New-QuickForm {
         .PARAMETER ControlWidth
         Width of the controls column in pixels.
     #>
+
     param (
         [string]$Title = "My Form",
         [int32]$LabelWidth = 200,
         [int32]$ControlWidth = 400
     )
+
     $form = New-Object QuickForm($Title, $LabelWidth, $ControlWidth)
+
     return $form
+
 }
 
 # Internal
