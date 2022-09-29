@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 29/09/2022 - v2.10.1 - Tim Pelling - fix lockable with masked options
 # 29/09/2022 - v2.10.0 - Tim Pelling - add Lockable option to textboxes
 # 29/09/2022 - v2.9.0 - Tim Pelling - add params to set initial control value
 # 29/09/2022 - v2.8.0 - Tim Pelling - add -Disabled option to most controls
@@ -179,7 +180,10 @@ function Add-TextBox {
         $Panel.Controls.Add($Lock)
         $TextBoxOffset = $Lock.Width
         $Lock.Add_CheckedChanged({
-            $TextBox = $this.parent.Controls | Where-Object { $_.GetType().Name -eq "TextBox"}
+            $TextBox = $this.parent.Controls | Where-Object { 
+                $_.GetType().Name -eq "TextBox" -or
+                $_.GetType().Name -eq "MaskedTextBox" 
+            }
             $TextBox.Enabled = !$TextBox.Enabled
         })
     }
