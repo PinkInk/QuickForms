@@ -198,7 +198,7 @@ $Gender = Add-ComboBox -Form $MyForm `
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ComboBox options |
 | [-Disabled] | No | Switch | disable control |
 | [-SelectedItem "\<value>" ] | No | String | set selected item by text value |
-| [-SelectedIndex <value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
+| [-SelectedIndex \<value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 
 ```.SelectedItem``` property contains the text of the currently selected item.
@@ -270,7 +270,7 @@ $MyList = Add-ListBox -Form $MyForm `
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ListBox options |
 | [-Rows \<value>] | No | Int | number of list item rows (default:3) |
 | [-SelectedItem "\<value>" ] | No | String | set selected item by text value |
-| [-SelectedIndex <value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
+| [-SelectedIndex \<value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 | [-Buttons @(..)] | No | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
 
