@@ -16,11 +16,12 @@ Example (the included **demo.ps1** form):
 ![demo form](./demo.png)
 
 Callbacks as ScriptBlocks can be easily attached to the most common control events e.g. 
-```TextChanged``` event for ```TextBox``` and ```PasswordBox``` controls.
+```TextChanged``` event for ```TextBox``` controls and ```CheckedChanged``` events
+for CheckBoxes etc.
 
 Form layout is managed by the module in order to reduce the
-time required to strap a GUI onto existing scripts and improve
-readability by requiring only terse initialisation and logic.
+time required to strap a GUI onto existing procedures, and improve
+readability by requiring only terse initialisation and control logic.
 
 ## Install
 
