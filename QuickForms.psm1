@@ -5,7 +5,8 @@
 #
 # History
 # -------
-# 29/09/2022 - v2.10.1 - Tim Pelling - fix lockable with masked options
+# 30/09/2022 - v2.10.2 - Tim Pelling - bugfix: SelectedIndex not specified
+# 29/09/2022 - v2.10.1 - Tim Pelling - bugfix: lockable with masked options
 # 29/09/2022 - v2.10.0 - Tim Pelling - add Lockable option to textboxes
 # 29/09/2022 - v2.9.0 - Tim Pelling - add params to set initial control value
 # 29/09/2022 - v2.8.0 - Tim Pelling - add -Disabled option to most controls
@@ -321,7 +322,7 @@ function Add-ComboBox {
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     if ($Disabled) { $Control.Enabled = $false }
     if ($SelectedItem) { $Control.SelectedItem = $SelectedItem }
-    if ($SelectedIndex -ge 0) { $Control.SelectedIndex = $SelectedIndex }
+    if ($SelectedIndex -and $SelectedIndex -ge 0) { $Control.SelectedIndex = $SelectedIndex }
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
@@ -494,7 +495,7 @@ function Add-ListBox {
     $Control.Height = $Form.row_height * $rows
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     if ($SelectedItem) { $Control.SelectedItem = $SelectedItem }
-    if ($SelectedIndex -ge 0) { $Control.SelectedIndex = $SelectedIndex }
+    if ($SelectedIndex -and $SelectedIndex -ge 0) { $Control.SelectedIndex = $SelectedIndex }
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
