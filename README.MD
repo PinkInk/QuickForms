@@ -99,7 +99,10 @@ $Firstname = Add-TextBox -Form $MyForm `
 | [-Lockable] | No | Switch | adds a checkbox to lock/unlock the control |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
-Access the value of the control via its ```.Text``` property.
+Returns a TextBox - access the value of the control via its ```.Text``` property.
+
+Optional ```-Label``` parameter sets the label text to be displayed in the left-
+hand label column of the QuickForm, adjacent to the control.
 
 Optional ```-Mask``` parameter can be used to define an input mask that will
 constrain text input.  Refer [here](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.maskedtextbox.mask?view=windowsdesktop-6.0) 
@@ -171,7 +174,10 @@ $Enabled = Add-CheckBox -Form $MyForm `
 | [-Checked] | No | Switch | check the control (default: unchecked) |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```CheckedChanged``` event |
 
-Access the boolean value of the control via its ```.Checked``` property. 
+Returns a CheckBox - access the boolean value of the control via its ```.Checked``` property. 
+
+```-Label``` parameter sets the label text to be displayed on the right of CheckBox
+(not in the left-hand label column, as with other controls).
 
 Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
 
@@ -202,20 +208,22 @@ $Gender = Add-ComboBox -Form $MyForm `
 | [-SelectedIndex \<value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 
-```.SelectedItem``` property contains the text of the currently selected item.
+Returns a ComboBox - access the value of the control via its ```.SelectedItem``` property (text of the 
+currently list item) or ```.SelectedIndex``` property (array index of the currently 
+selected item, or ```-1``` if a selection hasn't yet been made).
 
-```.SelectedIndex``` property contains the index of the currently selected item, 
-or ```-1``` if a selection hasn't yet been made.
+The ComboBoxes ```.Items``` property contains the array of items.
 
-```.Items``` property contains the array of items.
+Call the ComboBoxes ```.Items.Add("<value>")``` method to add a new item.
 
-Call ```.Items.Add("<value>")``` method to add a new item.
-
-Call ```.Items.RemoveAt("<index>")``` method to remove an item by index 
+Call the ComboBoxes ```.Items.RemoveAt("<index>")``` method to remove an item by index 
 e.g. ```.SelectedIndex``` property.
 
-Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
+Call the ComboBoxes ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
 where multiple items with the same name appear in the list).
+
+Optional ```-Label``` parameter sets the label text to be displayed in the left-
+hand label column of the QuickForm, adjacent to the control.
 
 Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
 
@@ -275,20 +283,22 @@ $MyList = Add-ListBox -Form $MyForm `
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 | [-Buttons @(..)] | No | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
 
-```.SelectedItem``` property contains the text of the currently selected item.
+Returns a ListBox - access the value of the control via its ```.SelectedItem``` property (text of the 
+currently list item) or ```.SelectedIndex``` property (array index of the currently 
+selected item, or ```-1``` if a selection hasn't yet been made).
 
-```.SelectedIndex``` property contains the index of the currently selected item, 
-or ```-1``` if a selection hasn't yet been made.
+The ListBoxes ```.Items``` property contains the array of items.
 
-```.Items``` property contains the array of items.
+Call the ListBoxes ```.Items.Add("<value>")``` method to add a new item.
 
-Call ```.Items.Add("<value>")``` method to add a new item.
-
-Call ```.Items.RemoveAt("<index>")``` method to remove an item by index 
+Call the ListBoxes ```.Items.RemoveAt("<index>")``` method to remove an item by index 
 e.g. ```.SelectedIndex``` property.
 
-Call ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
+Call the ListBoxes ```.Items.Remove("<value>")``` method to remove an item by name (randomly 
 where multiple items with the same name appear in the list).
+
+Optional ```-Label``` parameter sets the label text to be displayed in the left-
+hand label column of the QuickForm, adjacent to the control.
 
 Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
 
@@ -301,7 +311,7 @@ integer index, and takes precedence over any value supplied via ```-SelectedItem
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the CheckBox
 controls ```SelectedValueChanged``` event.
 
-```Buttons``` is an optional array of hashtable's containing ```name``` (button text) 
+Optional ```Buttons``` parameter requires an array of hashtable's containing ```name``` (button text) 
 and ```callback``` (called when button pressed) properties e.g.
 
 ``` PowerShell
@@ -335,6 +345,9 @@ $MyRadios = Add-RadioBox -Form $demo
 
 Returns a **Panel** of RadioButtons, individual RadioButtons can be accessed 
 through the Panels ```.Controls``` array.
+
+Optional ```-Label``` parameter sets the label text to be displayed in the left-
+hand label column of the QuickForm, adjacent to the control.
 
 Optional ```-Horizontal``` parameter specifies to layout the RadioButton's horizontally
 rather than vertically (the default).  No attempt is made to prevent the resulting 
@@ -383,7 +396,13 @@ $MyDateTime = Add-DateTimePicker -Form $demo `
 | [-Disabled] | No | Switch | disable control |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```ValueChanged``` event |
 
-Access the value of the control via its ```.Value``` property.
+Returns a DateTimePicker - access the value of the control via its ```.Value``` property.
+
+Optional ```-Label``` parameter sets the label text to be displayed in the left-
+hand label column of the QuickForm, adjacent to the control.
+
+Optional ```-Type```parameter selects between a ```Date```, ```Time``` or Long 
+```DateTime``` control format, default ```Date```.
 
 Optional ```-DateTime``` parameter is used to set the controls Date and Time.
 Construct the value using ```Get-Date```.  If not specified the controls
@@ -420,8 +439,12 @@ $MySaveFile = Add-FileBox -Form $demo `
 | [-FileFilter "\<value>"] | No | String | file filter (refer notes) |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
 
-Returns a TextBox control whose ```.Text``` value is populated by the Open or
+Returns a TextBox whose ```.Text``` value is populated by the Open or
 SaveAs dialog displayed when the ```...``` button is pressed.
+
+Optional ```-Type``` can be used to specify a File ```Open``` dialog (existing file)
+or ```SaveAs``` dialog (create a file), defaults to ```Open``` if parameter not 
+specified.
 
 Optional ```-FileFilter``` can be used to specify the default (1st), and other,
 file formats/patterns/extensions to be supported - format is defined by the 
