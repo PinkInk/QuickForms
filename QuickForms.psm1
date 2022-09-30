@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 30/09/2022 - v2.10.3 - Tim Pelling - bugfix: SelectedIndex = 0
 # 30/09/2022 - v2.10.2 - Tim Pelling - bugfix: SelectedIndex not specified
 # 29/09/2022 - v2.10.1 - Tim Pelling - bugfix: lockable with masked options
 # 29/09/2022 - v2.10.0 - Tim Pelling - add Lockable option to textboxes
@@ -309,7 +310,7 @@ function Add-ComboBox {
         [scriptblock]$Callback,
         [Switch]$Disabled,
         [string]$SelectedItem,
-        [int32]$SelectedIndex
+        [int32]$SelectedIndex = -1
     )
 
     $Control = New-Object System.Windows.Forms.ComboBox
@@ -322,7 +323,7 @@ function Add-ComboBox {
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     if ($Disabled) { $Control.Enabled = $false }
     if ($SelectedItem) { $Control.SelectedItem = $SelectedItem }
-    if ($SelectedIndex -and $SelectedIndex -ge 0) { $Control.SelectedIndex = $SelectedIndex }
+    if ($SelectedIndex -gt -1) { $Control.SelectedIndex = $SelectedIndex }
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
@@ -483,7 +484,7 @@ function Add-ListBox {
         [scriptblock]$Callback,
         [array]$Buttons,
         [string]$SelectedItem,
-        [int32]$SelectedIndex
+        [int32]$SelectedIndex = -1
     )
 
     $Control = New-Object System.Windows.Forms.ListBox
@@ -495,7 +496,7 @@ function Add-ListBox {
     $Control.Height = $Form.row_height * $rows
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
     if ($SelectedItem) { $Control.SelectedItem = $SelectedItem }
-    if ($SelectedIndex -and $SelectedIndex -ge 0) { $Control.SelectedIndex = $SelectedIndex }
+    if ($SelectedIndex -gt -1) { $Control.SelectedIndex = $SelectedIndex }
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
