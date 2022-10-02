@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 02/10/2022 - v2.11.0 - Tim Pelling - Add-Title - a text label, full form width
 # 30/09/2022 - v2.10.3 - Tim Pelling - bugfix: SelectedIndex = 0
 # 30/09/2022 - v2.10.2 - Tim Pelling - bugfix: SelectedIndex not specified
 # 29/09/2022 - v2.10.1 - Tim Pelling - bugfix: lockable with masked options
@@ -128,6 +129,39 @@ function Add-Label {
     $LabelControl.Height = $Form.row_height
     $Form.Form.Controls.Add($LabelControl)
 }
+
+function Add-Title {
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [string]$Label,
+        [Switch]$Bold,
+        [Switch]$Italic
+    )
+    $LabelControl = New-Object System.Windows.Forms.Label
+    $LabelControl.text = $label
+    $LabelControl.AutoSize = $false
+    $LabelControl.Location = New-Object System.Drawing.Point(
+        $Form.margin,
+        ($Form.row_height * $Form.slot)
+    )
+    $LabelControl.Width = $Form.label_width + $Form.control_width
+    $LabelControl.Height = $Form.row_height
+    $Form.Form.Controls.Add($LabelControl)
+
+    if ($Bold -or $Italic) {
+        if ($Bold) { $Style += [System.Drawing.FontStyle]::Bold }
+        if ($Italic) { $Style += [System.Drawing.FontStyle]::Italic }
+        $labelControl.Font = [System.Drawing.Font]::new(
+            $LabelControl.Font.FontFamily, 
+            $LabelControl.Font.Size, 
+            $Style
+        )
+    }
+
+    return $LabelControl
+
+}
+
 function Add-TextBox {
 
     <#

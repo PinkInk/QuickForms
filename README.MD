@@ -10,6 +10,7 @@ supporting the following controls:
 - ```ListBox``` (optional user specified Buttons)
 - ```DateTimePicker``` (date, time or date & time)
 - ```FileBox``` (Open and SaveAs file paths)
+- ```Title``` (information or heading text row)
 
 Example (the included **demo.ps1** form):
 
@@ -442,6 +443,9 @@ $MySaveFile = Add-FileBox -Form $demo `
 Returns a TextBox whose ```.Text``` value is populated by the Open or
 SaveAs dialog displayed when the ```...``` button is pressed.
 
+Optional ```-Label``` parameter sets the label text to be displayed in the left-
+hand label column of the QuickForm, adjacent to the control.
+
 Optional ```-Type``` can be used to specify a File ```Open``` dialog (existing file)
 or ```SaveAs``` dialog (create a file), defaults to ```Open``` if parameter not 
 specified.
@@ -458,6 +462,37 @@ e.g.
 
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the TextBox 
 controls ```TextChanged``` event.
+
+---
+
+## Add-Title
+
+``` PowerShell
+Add-Title -Form $MyForm -Label "Section Header" -Bold -Italic
+```
+
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
+| [-Label "\<value>"] | No | String | label, full form width |
+| [-Bold] | No | Switch | render label font bold |
+| [-Italic] | No | Switch | render label font italic |
+
+Returns a Label.
+
+Optional ```-Label``` parameter sets the label text to be displayed across the
+form from the left, text is not constrained to the label column and can flow into
+the control column.
+
+Optional ```-Bold``` and ```-Italic``` parameters set the corresponding font
+rendering options.
+
+As ```-Label``` is optional this cmdlet can be used to add a blank row to the 
+form for layout purposes e.g.
+
+``` PowerShell
+Add-Title -Form $MyTitle | Out-Null
+```
 
 ---
 
