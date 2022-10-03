@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 03/10/2022 - v2.11.1 - Tim Pelling - increment row count for Add-Title
 # 02/10/2022 - v2.11.0 - Tim Pelling - Add-Title - a text label, full form width
 # 30/09/2022 - v2.10.3 - Tim Pelling - bugfix: SelectedIndex = 0
 # 30/09/2022 - v2.10.2 - Tim Pelling - bugfix: SelectedIndex not specified
@@ -158,6 +159,9 @@ function Add-Title {
         )
     }
 
+    $Form.slot += 1
+    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $Rows))"
+
     return $LabelControl
 
 }
@@ -304,8 +308,7 @@ function Add-CheckBox {
     }
     $Form.Form.Controls.Add($Control)
 
-    $rows = 1
-    $Form.slot += $rows
+    $Form.slot += 1
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
 
     return $Control
@@ -365,8 +368,7 @@ function Add-ComboBox {
 
     if ($Label) { $Form | Add-Label -Label $Label }
 
-    $rows = 1
-    $Form.slot += $rows
+    $Form.slot += 1
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
 
     return $Control
@@ -623,8 +625,7 @@ function Add-DateTimePicker {
 
     if ($Label) { $Form | Add-Label -Label $Label }
 
-    $rows = 1
-    $Form.slot += $rows
+    $Form.slot += 1
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
 
     return $Control
@@ -715,8 +716,7 @@ function Add-FileBox {
 
     if ($Label) { $Form | Add-Label -Label $Label }
 
-    $rows = 1
-    $Form.slot += $rows
+    $Form.slot += 1
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
 
     return $Control
