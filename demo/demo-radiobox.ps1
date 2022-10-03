@@ -1,6 +1,6 @@
 import-module ..\QuickForms.psd1
 
-$demo = New-QuickForm -Title "Various ListBoxes" -LabelWidth 100 -ControlWidth 450
+$demo = New-QuickForm -Title "Various RadioBoxes" -LabelWidth 100 -ControlWidth 450
 
 Add-Title -Form $demo | Out-Null
 Add-Title -Form $demo -Label 'Add-RadioBox -Form $demo -Label "RadioBox" -Options @("One","Two","Three")' -Bold | Out-Null
