@@ -5,6 +5,7 @@
 #
 # History
 # -------
+# 03/10/2022 - v2.11.1 - Tim Pelling - increment row count for Add-Title
 # 02/10/2022 - v2.11.0 - Tim Pelling - Add-Title - a text label, full form width
 # 30/09/2022 - v2.10.3 - Tim Pelling - bugfix: SelectedIndex = 0
 # 30/09/2022 - v2.10.2 - Tim Pelling - bugfix: SelectedIndex not specified
@@ -157,6 +158,9 @@ function Add-Title {
             $Style
         )
     }
+
+    $Form.slot += 1
+    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $Rows))"
 
     return $LabelControl
 
