@@ -3,42 +3,6 @@
 # ===============
 # Quick and dirty 2 column powershell forms
 #
-# History
-# -------
-# 03/10/2022 - v2.11.2 - Tim Pelling - bugfix: undo changes to form size in most cmdlets
-# 03/10/2022 - v2.11.1 - Tim Pelling - bugfix: increment row count for Add-Title
-# 02/10/2022 - v2.11.0 - Tim Pelling - Add-Title - a text label, full form width
-# 30/09/2022 - v2.10.3 - Tim Pelling - bugfix: SelectedIndex = 0
-# 30/09/2022 - v2.10.2 - Tim Pelling - bugfix: SelectedIndex not specified
-# 29/09/2022 - v2.10.1 - Tim Pelling - bugfix: lockable with masked options
-# 29/09/2022 - v2.10.0 - Tim Pelling - add Lockable option to textboxes
-# 29/09/2022 - v2.9.0 - Tim Pelling - add params to set initial control value
-# 29/09/2022 - v2.8.0 - Tim Pelling - add -Disabled option to most controls
-# 27/09/2022 - v2.7.0 - Tim Pelling - allow multi-line textboxes
-# 27/09/2022 - v2.6.0 - Tim Pelling - factor out PasswordBox in favour TextBox -Password
-# 27/09/2022 - v2.5.0 - Tim Pelling - optional text Mask for TextBox control
-# 27/09/2022 - v2.4.3 - Tim Pelling - let datetime set it's own width
-# 27/09/2022 - v2.4.2 - Tim Pelling - fix size of FileBox button
-# 25/09/2022 - v2.4.1 - Tim Pelling - factor out label placement from most cmdlets
-# 25/09/2022 - v2.4.0 - Tim Pelling - render labels optional
-# 25/09/2022 - v2.3.2 - Tim Pelling - bugfix Save-As FileBox scriptblock
-# 19/09/2022 - v2.3.1 - Tim Pelling - bugfix date-time control.showupdown
-# 19/09/2022 - v2.3.0 - Tim Pelling - add File Open/SaveAs control (FileBox)
-# 19/09/2022 - v2.2.1 - Tim Pelling - refactor
-# 17/09/2022 - v2.2.0 - Tim Pelling - add DateTimePicker control option
-# 17/09/2022 - v2.1.0 - Tim Pelling - add RadioBox control option
-# 17/09/2022 - v2.0.0 - Tim Pelling - switched from methods to cmdlets
-# 25/08/2022 - v1.3.1 - Tim Pelling - adopt system default font
-# 17/08/2022 - v1.3.0 - Tim Pelling - remove control name requirement
-# 01/07/2022 - v1.2.0 - Tim Pelling - return rather than magically create objects
-#                                       unhide child form object
-#                                       modified argument order for AddRow(s), bring type to front
-#                                       added listbox, with buttons
-# 30/06/2022 - v1.1.2 - Tim Pelling - allow different label and column widths
-# 29/08/2019 - v1.1.1 - Tim Pelling - update AddAction behaviour for flexibility
-# 29/08/2019 - v1.1.0 - Tim Pelling - added module manifest, PasswordBox as discrete type
-# 28/08/2019 - v1.0.1 - Tim Pelling - make widget variable declarations global
-# 26/08/2019 - v1.0.0 - Tim Pelling - First Issue
 
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
