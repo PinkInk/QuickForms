@@ -11,7 +11,7 @@ Add-Title -Form $demo -Label 'Add-RadioBox -Form $demo -Label "Horizontal" -Opti
 $Horizontal = Add-RadioBox -Form $demo -Label "Horizontal" -Options @("One","Two","Three") -Horizontal
 
 Add-Title -Form $demo | Out-Null
-Add-Title -Form $demo -Label 'Add-RadioBox -Form $demo -Label "SelectedItem" -Options @("One","Two","Three")' -Bold | Out-Null
+Add-Title -Form $demo -Label 'Add-RadioBox -Form $demo -Label "SelectedItem" -Options @("One","Two","Three") `' -Bold | Out-Null
 Add-Title -Form $demo -Label '             -Horizontal -SelectedItem "Two"' -Bold | Out-Null
 $SelectedItem = Add-RadioBox -Form $demo -Label "SelectedItem" -Options @("One","Two","Three") -Horizontal -SelectedItem "Two"
 

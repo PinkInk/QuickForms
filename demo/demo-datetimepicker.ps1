@@ -15,7 +15,7 @@ Add-Title -Form $demo -Label 'Add-DateTimePicker -Form $demo -Label "DateTime" -
 $DateTime = Add-DateTimePicker -Form $demo -Label "DateTime" -Type DateTime
 
 Add-Title -Form $demo | Out-Null
-Add-Title -Form $demo -Label 'Add-DateTimePicker -Form $demo -Label "Set" -Type Date' -Bold | Out-Null
+Add-Title -Form $demo -Label 'Add-DateTimePicker -Form $demo -Label "Set" -Type Date `' -Bold | Out-Null
 Add-Title -Form $demo -Label '                   -DateTime (Get-Date -Year 1999 -Month 12 -Day 1)' -Bold | Out-Null
 $Set = Add-DateTimePicker -Form $demo -Label "Set" -Type Date -DateTime (Get-Date -Year 1999 -Month 12 -Day 1)
 

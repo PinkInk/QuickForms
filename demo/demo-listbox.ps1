@@ -7,12 +7,12 @@ Add-Title -Form $demo -Label 'Add-ListBox -Form $demo -Label "ListBox" -Options 
 $ListBox = Add-ListBox -Form $demo -Label "ListBox" -Options (1..5) -Rows 2
 
 Add-Title -Form $demo | Out-Null
-Add-Title -Form $demo -Label 'Add-ListBox -Form $demo -Label "SelectedItem" -Options @("One","Two")' -Bold | Out-Null
+Add-Title -Form $demo -Label 'Add-ListBox -Form $demo -Label "SelectedItem" -Options @("One","Two") `' -Bold | Out-Null
 Add-Title -Form $demo -Label '            -Rows 2 -SelectedItem "One"' -Bold | Out-Null
 $SelectedItem = Add-ListBox -Form $demo -Label "SelectedItem" -Options @("One","Two") -Rows 2 -SelectedItem "One"
 
 Add-Title -Form $demo | Out-Null
-Add-Title -Form $demo -Label 'Add-ListBox -Form $demo -Label "SelectedIndex" -Options (1..3)' -Bold | Out-Null
+Add-Title -Form $demo -Label 'Add-ListBox -Form $demo -Label "SelectedIndex" -Options (1..3) `' -Bold | Out-Null
 Add-Title -Form $demo -Label '            -Rows 2 -SelectedItem 1' -Bold | Out-Null
 $SelectedIndex = Add-ListBox -Form $demo -Label "SelectedIndex" -Options (1..3) -Rows 2 -SelectedIndex 1
 
