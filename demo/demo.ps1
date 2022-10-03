@@ -1,4 +1,4 @@
-import-module .\QuickForms.psd1
+import-module ..\QuickForms.psd1
 
 $demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 

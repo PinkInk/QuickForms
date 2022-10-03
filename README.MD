@@ -14,7 +14,7 @@ supporting the following controls:
 
 Example (the included **demo.ps1** form):
 
-![demo form](./demo.png)
+![demo form](./demo/demo.png)
 
 Callbacks as ScriptBlocks can be easily attached to the most common control events e.g. 
 ```TextChanged``` event for ```TextBox``` controls and ```CheckedChanged``` events
