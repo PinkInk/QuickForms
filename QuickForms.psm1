@@ -159,7 +159,8 @@ function Add-Title {
         )
     }
 
-    $Form.slot += 1
+    $Rows = 1
+    $Form.slot += $Rows
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $Rows))"
 
     return $LabelControl

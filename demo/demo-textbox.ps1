@@ -12,7 +12,7 @@ Add-Title -Form $demo -Label 'Add-TextBox -Form $form -Label "Mask" -Mask "00/00
 $Mask = Add-TextBox -Form $demo -Label "Mask" -Mask "00/00/0000"
 
 Add-Title -Form $demo -Label 'Add-TextBox -Form $form -Label "Lockable" -Disabled -Text "Calculated value"'
-$Lockable = Add-TextBox -Form $demo -Label "Lockable" -Disabled -Text "Calculated value"
+$Lockable = Add-TextBox -Form $demo -Label -Lockable -Disabled -Text "Calculated value"
 
 Add-Title -Form $demo -Label 'Add-TextBox -Form $form -Label "Multi row" -Rows 2'
 $MultiRow = Add-TextBox -Form $demo -Label "Multi row" -Rows 2
