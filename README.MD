@@ -92,8 +92,8 @@ $Firstname = Add-TextBox -Form $MyForm `
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | [-Label "\<value>"] | No | String | label |
-| [-Mask "\<value>" ] | No | String | Optional input mask |
-| [-Password] | No | Switch | Hide input |
+| [-Mask "\<value>" ] | No | String | optional input mask |
+| [-Password] | No | Switch | hide input |
 | [-Rows <value>] | No | Int | text input rows, default = 1 |
 | [-Disabled] | No | Switch | disable control |
 | [-Text "\<value>"] | No | String | set initial control ```.Text``` value |
@@ -105,7 +105,7 @@ Returns a TextBox - access the value of the control via its ```.Text``` property
 Optional ```-Label``` parameter sets the label text to be displayed in the left-
 hand label column of the QuickForm, adjacent to the control.
 
-Optional ```-Mask``` parameter can be used to define an input mask that will
+Optional ```-Mask``` parameter is used to define an input mask that will
 constrain text input.  Refer [here](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.maskedtextbox.mask?view=windowsdesktop-6.0) 
 for mask syntax. e.g.
 
