@@ -142,7 +142,7 @@ function Add-TextBox {
         .EXAMPLE
         $myFirstName = Add-TextBox -Form $demo -Label "First Name:" -Callback { Write-Host $this.Text }
         .PARAMETER Form
-        Form to add the control and label to.
+        Form to add the control and label to, accepted on the pipeline.
         .PARAMETER Label
         Label for the control.
         .PARAMETER Mask
@@ -154,9 +154,11 @@ function Add-TextBox {
         .PARAMETER Disabled
         Optional switch to disable control.
         .PARAMETER Lockable
-        Allows the textbox to be locked/unlocked via an accompanying checkbox.
-
-        Used to allow overriding a normally calculated value.
+        Optionally allow the textbox to be locked/unlocked via an accompanying checkbox, to allow overriding a normally calculated value.
+        .PARAMETER Rows
+        Optionally add a multiLine text box with specified number of rows.
+        .PARAMETER Text
+        Optionally initialise the controls .Text value.
     #>
 
     param (
