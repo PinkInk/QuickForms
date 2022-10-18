@@ -97,12 +97,31 @@ function Add-Label {
 }
 
 function Add-Title {
+
+    <#
+        .SYNOPSIS
+        Add a title row, to an existing QuickForm.
+        .DESCRIPTION
+        Returns a Label object.
+        .EXAMPLE
+        Add-Title -Form $demo -Label "A new section of the form" | Out-Null
+        .PARAMETER Form
+        Form to add the control and label to, accepted on the pipeline.
+        .PARAMETER Label
+        Optional label text.
+        .PARAMETER Bold
+        Optionally render the label text as Bold.
+        .PARAMETER Italic
+        Optionally render the label text as Italic.
+    #>
+
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
         [string]$Label,
         [Switch]$Bold,
         [Switch]$Italic
     )
+
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
@@ -572,7 +591,6 @@ function Add-DateTimePicker {
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)
     )
-    # $Control.width = $Form.control_width - (2 * $Form.margin)
     $Control.Height = $Form.row_height
     if ( $Type -eq "Time" ) {
         $Control.Format = "Custom"
