@@ -490,6 +490,8 @@ function Add-ListBox {
         Optional Array of options to populate the list box with.
         .PARAMETER Rows
         Optional number of list rows to display (Default = 3).
+        .PARAMETER Checkable
+        Optionally show checkboxes next to each item.
         .PARAMETER Callback
         Optional Scriptblock to call when the SelectedValueChanged event occurs.
         .PARAMETER Buttons
@@ -506,13 +508,19 @@ function Add-ListBox {
         [string]$Label,
         [int]$Rows = 3,
         [array]$Options = @(),
+        [switch]$Checkable,
         [scriptblock]$Callback,
         [array]$Buttons,
         [string]$SelectedItem,
         [int32]$SelectedIndex = -1
     )
 
-    $Control = New-Object System.Windows.Forms.ListBox
+    if ($Checkable) {
+        $Control = New-Object System.Windows.Forms.CheckedListBox
+        $Control.CheckOnClick = $true
+    } else {
+        $Control = New-Object System.Windows.Forms.ListBox
+    }
     $Control.Location = New-Object System.Drawing.Point(
         ($Form.label_width + $Form.margin),
         ($Form.row_height * $Form.slot)

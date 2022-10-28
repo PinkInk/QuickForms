@@ -278,6 +278,7 @@ $MyList = Add-ListBox -Form $MyForm `
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | [-Label "\<value>"] | No | String | label |
 | [-Options @("\<value1>","\<value2>",etc.)] | No | Array of Strings | ListBox options |
+| [-Checkable] | No | Switch | checkboxes for each list item |
 | [-Rows \<value>] | No | Int | number of list item rows (default:3) |
 | [-SelectedItem "\<value>" ] | No | String | set selected item by text value |
 | [-SelectedIndex \<value>] | No | Int | set selected item by index, has precedence over ```-SelectedItem``` |
@@ -300,6 +301,13 @@ where multiple items with the same name appear in the list).
 
 Optional ```-Label``` parameter sets the label text to be displayed in the left-
 hand label column of the QuickForm, adjacent to the control.
+
+Optional ```-Rows``` parameter sets the number of rows for the ListBox.
+
+Optional ```-Checkable``` parameter creates a CheckedListBox i.e. where each row
+has an accompanying checkbox at its left.  Discover which values, or row indexes
+are selected via the returned objects ```.CheckedItems``` and ```.CheckedIndices```
+parameters respectively.
 
 Optional ```-Disabled``` parameter disables the control for input (sets ```.Enabled = $false```).
 

@@ -12,6 +12,15 @@ Add-Title -Form $demo -Label '            -Rows 2 -SelectedItem "One"' -Bold | O
 $SelectedItem = Add-ListBox -Form $demo -Label "SelectedItem" -Options @("One","Two") -Rows 2 -SelectedItem "One"
 
 Add-Title -Form $demo | Out-Null
+Add-Title -Form $demo -Label 'Add-ListBox -Form $demo -Label "Checkable" -Options (1..5) `' -Bold | Out-Null
+Add-Title -Form $demo -Label '            -Checkable' -Bold | Out-Null
+$Checkable = Add-ListBox -Form $demo -Label "Checkable" -Options (1..5) -Checkable -Callback {
+    $this.Items | %{
+        Write-Host "$_, $($_ -in $this.CheckedItems)"
+    }
+}
+
+Add-Title -Form $demo | Out-Null
 Add-Title -Form $demo -Label 'Add-ListBox -Form $demo -Label "SelectedIndex" -Options (1..3) `' -Bold | Out-Null
 Add-Title -Form $demo -Label '            -Rows 2 -SelectedItem 1' -Bold | Out-Null
 $SelectedIndex = Add-ListBox -Form $demo -Label "SelectedIndex" -Options (1..3) -Rows 2 -SelectedIndex 1
