@@ -479,7 +479,7 @@ function Add-ListBox {
         .SYNOPSIS
         Add a ListBox control, label and optionally buttons, to an existing QuickForm.
         .DESCRIPTION
-        Returns a ListBox object.
+        Returns a ListBox object, or CheckedListBox if -Checkable option specified.
         .EXAMPLE
         $myList = Add-ListBox -Form $demo -Label "List:" -Rows 4 -Options @("First item") -Callback { Write-Host $this.SelectedItem } -Buttons @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
         .PARAMETER Form

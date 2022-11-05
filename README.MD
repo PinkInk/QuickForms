@@ -285,8 +285,9 @@ $MyList = Add-ListBox -Form $MyForm `
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```SelectedValueChanged``` event |
 | [-Buttons @(..)] | No | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
 
-Returns a ListBox - access the value of the control via its ```.SelectedItem``` property (text of the 
-currently list item) or ```.SelectedIndex``` property (array index of the currently 
+Returns a ListBox (or CheckedListBox if ```-Checkable``` option specified) - access 
+the value of the control via its ```.SelectedItem``` property (text of the 
+currently selected list item) or ```.SelectedIndex``` property (array index of the currently 
 selected item, or ```-1``` if a selection hasn't yet been made).
 
 The ListBoxes ```.Items``` property contains the array of items.
