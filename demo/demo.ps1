@@ -22,7 +22,7 @@ $MyUserID = Add-TextBox -Form $demo -Label "User ID:" -Lockable -Disabled
 
 $MyPassword = Add-TextBox -Form $demo -Label "Password:" -Password
 
-$MyConfirmPassword = Add-TextBox -Form $demo -Label "Confirm Password:"
+$MyConfirmPassword = Add-TextBox -Form $demo -Label "Confirm Password:" -Password
 
 $MyDateTime = Add-DateTimePicker -Form $demo -Label "Date Time:" -Type DateTime
 
