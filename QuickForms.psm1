@@ -13,9 +13,9 @@ class QuickForm {
     hidden [int32]$slot = 0
     hidden [int32]$label_width = 200
     hidden [int32]$control_width = 400
-    hidden [int32]$width = $label_width + $control_width
+    hidden [int32]$width = $label_width + $control_width + (2 * $margin)
     hidden [int32]$row_height = 25
-    hidden [int32]$margin = 10
+    hidden [int32]$margin = 5
 
     # constructor
     QuickForm(
@@ -26,8 +26,8 @@ class QuickForm {
         $this.Form = New-Object system.Windows.Forms.Form
         $this.label_width = $LabelWidth
         $this.control_width = $ControlWidth
-        $this.width = $LabelWidth + $ControlWidth
-        $this.Form.ClientSize = "$($this.width), $($this.row_height)"
+        $this.width = $LabelWidth + $ControlWidth + (2 * $this.margin)
+        $this.Form.ClientSize = "$($this.width), 0"
         $this.Form.text = $Title
         $this.Form.BackColor = "#ffffff"
         $this.Form.TopMost = $false
@@ -35,6 +35,9 @@ class QuickForm {
 
     # show the dialog
     Show() { $this.Form.ShowDialog() }
+
+    # hide the dialog
+    Hide() { $this.Form.Hide() }
 
 }
 
@@ -62,8 +65,13 @@ function New-QuickForm {
         .PARAMETER LabelWidth
         Width of the labels column in pixels.
 
+        Default - 200 pixels.
+
         .PARAMETER ControlWidth
         Width of the controls column in pixels.
+
+        Default - 400 pixels.
+
     #>
 
     param (
@@ -78,24 +86,53 @@ function New-QuickForm {
 
 }
 
-# Internal
+# 
+# Internal - Add Row panel, to contain label(s) and control(s)
+# 
+function Add-Panel {
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [string]$Rows = 1
+    )
+
+    $Panel = New-Object System.Windows.Forms.Panel
+
+    $Panel.Location = New-Object System.Drawing.Point(
+        ($Form.margin),
+        ($Form.row_height * $Form.slot)
+    )
+    $Panel.width = $Form.Width - (2 * $Form.margin)
+    $Panel.Height = $Form.row_height * $Rows
+
+    $Form.slot += $Rows
+    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $Rows))"
+
+    $Form.Form.Controls.Add($Panel)
+
+    return $Panel
+}
+
+# 
+# Internal - add Label to panel
+# 
 function Add-Label {
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][object]$Panel,
         [string]$Label
     )
     $LabelControl = New-Object System.Windows.Forms.Label
     $LabelControl.text = $label
     $LabelControl.AutoSize = $false
-    $LabelControl.Location = New-Object System.Drawing.Point(
-        $Form.margin,
-        ($Form.row_height * $Form.slot)
-    )
-    $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
+    $LabelControl.Location = New-Object System.Drawing.Point(0, 0)
+    $LabelControl.Width = $Form.label_width
     $LabelControl.Height = $Form.row_height
-    $Form.Form.Controls.Add($LabelControl)
+    $Panel.Controls.Add($LabelControl)
 }
 
+# 
+# External - add panel containing title row (form width label)
+# 
 function Add-Title {
 
     <#
@@ -122,35 +159,36 @@ function Add-Title {
         [Switch]$Italic
     )
 
+    $Panel = Add-Panel -Form $Form -Rows 1
+
     $LabelControl = New-Object System.Windows.Forms.Label
-    $LabelControl.text = $label
+
     $LabelControl.AutoSize = $false
-    $LabelControl.Location = New-Object System.Drawing.Point(
-        $Form.margin,
-        ($Form.row_height * $Form.slot)
-    )
-    $LabelControl.Width = $Form.label_width + $Form.control_width
-    $LabelControl.Height = $Form.row_height
-    $Form.Form.Controls.Add($LabelControl)
+    $LabelControl.Location = New-Object System.Drawing.Point(0, 0)
+    $LabelControl.Width = $Panel.Width
+    $LabelControl.Height = $Panel.Height
+
+    $LabelControl.text = $label
 
     if ($Bold -or $Italic) {
         if ($Bold) { $Style += [System.Drawing.FontStyle]::Bold }
         if ($Italic) { $Style += [System.Drawing.FontStyle]::Italic }
-        $labelControl.Font = [System.Drawing.Font]::new(
+        $LabelControl.Font = [System.Drawing.Font]::new(
             $LabelControl.Font.FontFamily, 
             $LabelControl.Font.Size, 
             $Style
         )
     }
 
-    $Rows = 1
-    $Form.slot += $Rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $Rows))"
+    $Panel.Controls.Add($LabelControl)
 
     return $LabelControl
 
 }
 
+# 
+# External - add panel containing label & textbox
+# 
 function Add-TextBox {
 
     <#
@@ -194,19 +232,12 @@ function Add-TextBox {
 
     if ($Mask) { $Rows = 1 } # multiline ignored with mask param
 
-    $Panel = New-Object System.Windows.Forms.Panel
-    $Panel.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
-    $Panel.width = $Form.control_width - (2*$Form.margin)
-    $Panel.Height = $Form.row_height * $Rows
-    $Form.Form.Controls.Add($Panel)
+    $Panel = Add-Panel -Form $Form -Rows $Rows
 
     $TextBoxOffset = 0
     if ($Lockable) {
         $Lock = New-Object system.Windows.Forms.CheckBox
-        $Lock.Location = New-Object System.Drawing.Point(0,0)
+        $Lock.Location = New-Object System.Drawing.Point($Form.label_width, 0)
         if (!$Disabled) { $Lock.Checked = $true }
         $Lock.AutoSize = $true
         $Panel.Controls.Add($Lock)
@@ -226,31 +257,40 @@ function Add-TextBox {
     } else {
         $Control = New-Object system.Windows.Forms.TextBox
     }
-    $Control.Location = New-Object System.Drawing.Point($TextBoxOffset,0)
-    $Control.width = $Form.control_width - (2 * $Form.margin) - $TextBoxOffset
+
+    $Control.Location = New-Object System.Drawing.Point(($Form.label_width + $TextBoxOffset), 0)
+    
+    $Control.width = $Form.control_width - $TextBoxOffset
+    
     if ($Rows -gt 1 -and -not $Mask) { 
         $Control.Multiline = $true 
     } else { 
         $Control.Multiline = $false
     }
+    
     $Control.Height = $Form.row_height * $Rows
+    
     if ($Password) { $Control.PasswordChar = "*" }
+    
     if ($Disabled) { $Control.Enabled = $false }
+    
     if ($Text) { $Control.Text = $Text }
+    
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
     }
+    
     $Panel.Controls.Add($Control)
 
-    if ($Label) { $Form | Add-Label -Label $Label }
-
-    $Form.slot += $Rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $Rows))"
+    if ($Label) { $Form | Add-Label -Panel $Panel -Label $Label }
 
     return $Control
 
 }
 
+# 
+# External - add panel containing checkbox
+# 
 function Add-CheckBox {
 
     <#
@@ -280,52 +320,56 @@ function Add-CheckBox {
         [Switch]$Checked
     )
 
+    $Panel = Add-Panel -Form $Form -Rows 1
+
     $Control = New-Object system.Windows.Forms.CheckBox
-    $Control.Width = $Form.control_width - (2 * $Form.margin)
+
+    $Control.Width = $Form.control_width
     $Control.Height = $Form.row_height
-    $Control.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
+    $Control.Location = New-Object System.Drawing.Point($Form.label_width, 0)
+
     $Control.text = $label
+
     if ($Disabled) { $Control.Enabled = $false }
+
     if ($Checked) { $Control.Checked = $true }
+
     if ($null -ne $callback) {
         $Control.Add_CheckedChanged($callback)
     }
-    $Form.Form.Controls.Add($Control)
 
-    $Rows = 1
-    $Form.slot += $Rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    $Panel.Controls.Add($Control)
 
     return $Control
 
 }
 
+# 
+# External - add panel containing combobox
+# 
 function Add-ComboBox {
 
-        <#
-        .SYNOPSIS
-        Add a ComboBox control, and label, to an existing QuickForm.
-        .DESCRIPTION
-        Returns a ComboBox object.
-        .EXAMPLE
-        $myCombo = Add-ComboBox -Form $demo -Label "Gender" -Options @("Male", "Female") -Callback { Write-Host $this.SelectedItem }
-        .PARAMETER Form
-        Form to add the control and label to.
-        .PARAMETER Label
-        Label for the control.
-        .PARAMETER Options
-        Optional Array of options to populate the combo box with.
-        .PARAMETER Callback
-        Optional Scriptblock to call when the SelectedValueChanged event occurs.
-        .PARAMETER Disabled
-        Optional switch to disable control.
-        .PARAMETER SelectedItem
-        Optionally set the selected item by name/text.
-        .PARAMETER SelectedIndex
-        Optionally set the selected item by index, takes precedence over .SelectedItem if both set.
+    <#
+    .SYNOPSIS
+    Add a ComboBox control, and label, to an existing QuickForm.
+    .DESCRIPTION
+    Returns a ComboBox object.
+    .EXAMPLE
+    $myCombo = Add-ComboBox -Form $demo -Label "Gender" -Options @("Male", "Female") -Callback { Write-Host $this.SelectedItem }
+    .PARAMETER Form
+    Form to add the control and label to.
+    .PARAMETER Label
+    Label for the control.
+    .PARAMETER Options
+    Optional Array of options to populate the combo box with.
+    .PARAMETER Callback
+    Optional Scriptblock to call when the SelectedValueChanged event occurs.
+    .PARAMETER Disabled
+    Optional switch to disable control.
+    .PARAMETER SelectedItem
+    Optionally set the selected item by name/text.
+    .PARAMETER SelectedIndex
+    Optionally set the selected item by index, takes precedence over .SelectedItem if both set.
     #>
 
     param (
@@ -338,32 +382,37 @@ function Add-ComboBox {
         [int32]$SelectedIndex = -1
     )
 
+    $Panel = Add-Panel -Form $Form -Rows 1
+
     $Control = New-Object System.Windows.Forms.ComboBox
-    $Control.width = $Form.control_width - (2 * $Form.margin)
+
+    $Control.width = $Form.control_width
     $Control.Height = $Form.row_height
-    $Control.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
+    $Control.Location = New-Object System.Drawing.Point($Form.label_width, 0)
+    
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
+    
     if ($Disabled) { $Control.Enabled = $false }
+    
     if ($SelectedItem) { $Control.SelectedItem = $SelectedItem }
+    
     if ($SelectedIndex -gt -1) { $Control.SelectedIndex = $SelectedIndex }
+    
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
-    $Form.Form.Controls.Add($Control)
+    
+    $Panel.Controls.Add($Control)
 
-    if ($Label) { $Form | Add-Label -Label $Label }
-
-    $Rows = 1
-    $Form.slot += $Rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    if ($Label) { $Form | Add-Label -Panel $Panel -Label $Label }
 
     return $Control
 
 }
 
+# 
+# External - add panel containing radiobuttons
+# 
 function Add-RadioBox {
 
     <#
@@ -404,75 +453,84 @@ function Add-RadioBox {
         [string]$SelectedItem
     )
 
-    $Panel = New-Object System.Windows.Forms.Panel
-    $Panel.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
-    $Panel.width = $Form.control_width - (2*$Form.margin)
-    $Form.Form.Controls.Add($Panel)
+    if ($Horizontal) { $Rows = 1 } else { $Rows = $Options.Count }
+
+    $Panel = Add-Panel -Form $Form -Rows $Rows
 
     if ($Horizontal) {
-        $x = 0
+
+        $x = $Form.label_width
+
         $options | ForEach-Object {
+
             $Control = New-Object System.Windows.Forms.RadioButton
+
             $Control.Location = New-Object System.Drawing.Point($x, 0)
             $Control.height = $Form.row_height
+            # sets own width to maximise horizontal space utilisation
+
             $Control.Text = $_
+
             if ($SelectedItem) { 
                 if ($_ -eq $SelectedItem) { $Control.Checked = $true } 
             }
+
             if ($Disabled) { $Control.Enabled = $false }
+
             if ($null -ne $callback) {
                 $Control.Add_CheckedChanged( $callback )
             }
+
             $Panel.Controls.Add($Control)
+
             $x += $Control.width
+
         }
-        $rows = 1
+
     } else { # default vertical layout
-        $rows = 0
+
+        $index = 0
+
         $options | ForEach-Object {
+
             $Control = New-Object System.Windows.Forms.RadioButton
+
             $Control.Location = New-Object System.Drawing.Point(
-                0, 
-                ($Form.row_height * $rows)
+                $Form.label_width, 
+                ($Form.row_height * $index)
             )
-            $Control.width = $Form.control_width - (2 * $Form.margin)
+            $Control.width = $Form.control_width
             $Control.height = $Form.row_height
+
             $Control.Text = $_
+
             if ($SelectedItem) { 
                 if ($_ -eq $SelectedItem) { $Control.Checked = $true } 
             }
+
             if ($Disabled) { $Control.Enabled = $false }
+
             if ($null -ne $callback) {
                 $Control.Add_CheckedChanged( $callback )
             }
+
             $Panel.Controls.Add($Control)
-            $rows += 1
+
+            $index += 1
+
         }
+
     }
 
-    if ($Label) {
-        $LabelControl = New-Object System.Windows.Forms.Label
-        $LabelControl.text = $label
-        $LabelControl.AutoSize = $false
-        $LabelControl.Location = New-Object System.Drawing.Point(
-            $Form.margin,
-            ($Form.row_height * $Form.slot)
-        )
-        $LabelControl.Width = $Form.label_width - (2 * $Form.margin)
-        $LabelControl.Height = $Panel.Height = $Form.row_height * $rows
-        $Form.Form.Controls.Add($LabelControl)
-    }
-
-    $Form.slot += $rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    if ($Label) { $Form | Add-Label -Panel $Panel -Label $Label }
 
     return $Panel
 
 }
 
+# 
+# External - add panel containing listbox
+# 
 function Add-ListBox {
 
     <#
@@ -515,54 +573,72 @@ function Add-ListBox {
         [int32]$SelectedIndex = -1
     )
 
+    if ($Buttons) {
+        $Panel = Add-Panel -Form $Form -Rows ($Rows + 1)
+    } else {
+        $Panel = Add-Panel -Form $Form -Rows $Rows
+    }
+
     if ($Checkable) {
         $Control = New-Object System.Windows.Forms.CheckedListBox
         $Control.CheckOnClick = $true
     } else {
         $Control = New-Object System.Windows.Forms.ListBox
     }
-    $Control.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
-    $Control.width = $Form.control_width - (2 * $Form.margin)
-    $Control.Height = $Form.row_height * $rows
+
+    $Control.Location = New-Object System.Drawing.Point($Form.label_width, 0)
+    $Control.width = $Form.control_width
+    $Control.Height = $Form.row_height * $Rows
+
     $options | ForEach-Object{ [void] $Control.Items.Add($_) }
+
     if ($SelectedItem) { $Control.SelectedItem = $SelectedItem }
+
     if ($SelectedIndex -gt -1) { $Control.SelectedIndex = $SelectedIndex }
+
     if ($null -ne $callback) {
         $Control.Add_SelectedValueChanged( $callback )
     }
-    $Form.Form.Controls.Add($Control)
 
-    if ($Label) { $Form | Add-Label -Label $Label }
+    $Panel.Controls.Add($Control)
+
+    if ($Label) { $Form | Add-Label -Panel $Panel -Label $Label }
 
     if ($buttons) {
-        $x = $Form.label_width + $Form.margin
+
+        $x = $Form.label_width
+
         $buttons | ForEach-Object{
+
             $ButtonControl = New-Object System.Windows.Forms.Button
+
             $ButtonControl.Location = New-Object System.Drawing.Point(
                 $x,
-                ($Form.row_height * ($Form.slot + $rows))
+                ($Form.row_height * $Rows)
             )
             $ButtonControl.Height = $Form.row_height
+
             $ButtonControl.Text = $_.name
+
             if ($null -ne $_.callback) {
                 $ButtonControl.Add_Click( $_.callback )
             }
-            $Form.Form.Controls.Add($ButtonControl)
-            $x += $ButtonControl.Size.Width
-        }
-        $rows += 1
-    }
 
-    $Form.slot += $rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+            $Panel.Controls.Add($ButtonControl)
+
+            $x += $ButtonControl.Size.Width
+
+        }
+
+    }
 
     return $Control
 
 }
 
+# 
+# External - add panel containing date time picker
+# 
 function Add-DateTimePicker {
     <#
         .SYNOPSIS
@@ -594,12 +670,13 @@ function Add-DateTimePicker {
         [Switch]$Disabled
     )
 
+    $Panel = Add-Panel -Form $Form -Rows 1
+
     $Control = New-Object system.Windows.Forms.DateTimePicker
-    $Control.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
+
+    $Control.Location = New-Object System.Drawing.Point($Form.label_width, 0)
     $Control.Height = $Form.row_height
+
     if ( $Type -eq "Time" ) {
         $Control.Format = "Custom"
         $Control.CustomFormat = (Get-Culture).DateTimeFormat.ShortTimePattern
@@ -608,27 +685,28 @@ function Add-DateTimePicker {
         $Control.Format = "Custom"
         $Control.CustomFormat = (Get-Culture).DateTimeFormat.FullDateTimePattern
         # setting width appears only required for long date-time format
-        $Control.width = $Form.control_width - (2 * $Form.margin)
+        $Control.width = $Form.control_width
     } # Date is control default
-    if ( $DateTime ) {
-        $Control.Value = $DateTime
-    }
+
+    if ( $DateTime ) { $Control.Value = $DateTime }
+
     if ($Disabled) { $Control.Enabled = $false }
+
     if ($null -ne $callback) {
         $Control.Add_ValueChanged($callback)
     }
-    $Form.Form.Controls.Add($Control)
 
-    if ($Label) { $Form | Add-Label -Label $Label }
+    $Panel.Controls.Add($Control)
 
-    $Rows = 1
-    $Form.slot += $Rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    if ($Label) { $Form | Add-Label -Panel $Panel -Label $Label }
 
     return $Control
 
 }
 
+# 
+# External - add panel containing disabled filename text box and button for file dialog
+# 
 function Add-FileBox {
 
     <#
@@ -660,26 +738,25 @@ function Add-FileBox {
         [scriptblock]$Callback
     )
 
-    $Panel = New-Object System.Windows.Forms.Panel
-    $Panel.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
-    $Panel.width = $Form.control_width - (2*$Form.margin)
-    $Panel.Height = $Form.row_height
-    $Form.Form.Controls.Add($Panel)
+    $Panel = Add-Panel -Form $Form -Rows 1
 
     $ButtonControl = New-Object system.Windows.Forms.Button
-    $Panel.Controls.Add($ButtonControl)
+
+    $Panel.Controls.Add($ButtonControl) # autosize can't calc width unless added
+
     $ButtonControl.AutoSize = $true
     $ButtonControl.AutoSizeMode = "GrowAndShrink"
-    $ButtonControl.Text = "..."
     $ButtonControl.Height = $Form.row_height
+
+    $ButtonControl.Text = "..."
+
     $ButtonControl.Location = New-Object System.Drawing.Point(
         ($Panel.Width - $ButtonControl.Width),
         0
     )
+
     $ButtonControl | Add-Member -NotePropertyName FileFilter -NotePropertyValue $FileFilter
+
     if ($Type -eq "Open") {
         $ButtonControl.Add_Click({
             $Dialog = New-Object system.Windows.Forms.OpenFileDialog
@@ -701,25 +778,29 @@ function Add-FileBox {
     }
 
     $Control = New-Object system.Windows.Forms.TextBox
-    $Control.Location = New-Object System.Drawing.Point(0, 0)
-    $Control.Height = $Form.row_height
-    $Control.width = $Panel.Width - $ButtonControl.Width - $Form.margin
+
     $Control.Enabled = $false
     $Control.Multiline = $false
+
+    $Control.Location = New-Object System.Drawing.Point($Form.label_width, 0)
+    $Control.Height = $Form.row_height
+    $Control.width = $Panel.Width - $ButtonControl.Width
+
     if ($null -ne $callback) {
         $Control.Add_TextChanged($callback)
     }
+
     $Panel.Controls.Add($Control)
 
-    if ($Label) { $Form | Add-Label -Label $Label }
-
-    $Rows = 1
-    $Form.slot += $Rows
-    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + ($Form.row_height * $rows))"
+    if ($Label) { $Form | Add-Label -Panel $Panel -Label $Label }
 
     return $Control
+
 }
 
+# 
+# External - std Ok Cancel buttons (no panel so $this.parent.close makes sense)
+# 
 function Add-Action {
 
     <#
@@ -740,28 +821,39 @@ function Add-Action {
         [scriptblock]$Callback
     )
 
+    # $Form.slot += 1
+    $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + $Form.row_height)"
+
     $ok = New-Object system.Windows.Forms.Button
     $ok.text = "OK"
+
     $ok.location = New-Object System.Drawing.Point(
         ($Form.width - 120 - ($Form.margin * 2)),
         ($Form.row_height * $Form.slot)
     )
+    $ok.Width = 60
+    $ok.Height = $Form.row_height
+    
     if ($null -ne $callback) {
         $ok.Add_Click($callback)
     } else {
         $ok.Add_Click({ $this.parent.Close() })
     }
+    
     $Form.Form.Controls.Add($ok)
 
     $cancel = New-Object system.Windows.Forms.Button
     $cancel.text = "Cancel"
+
     $cancel.location = New-Object System.Drawing.Point(
         ($Form.width - 60 - $Form.margin),
         ($Form.row_height * $Form.slot)
     )
-    $cancel.Width = $ok.Width = 60
-    $cancel.Height = $ok.Height = $Form.row_height
+    $cancel.Width = 60
+    $cancel.Height = $Form.row_height
+
     $cancel.Add_Click({ $this.parent.Close() })
+
     $Form.Form.Controls.Add($cancel)
 
 }
