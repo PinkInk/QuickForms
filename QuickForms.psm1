@@ -230,7 +230,9 @@ function Add-TextBox {
         [scriptblock]$Callback,
         [Switch]$Disabled,
         [string]$Text,
-        [Switch]$Lockable
+        [Switch]$Lockable,
+        [scriptblock]$ActionButton,
+        [string]$ActionButtonText = ">"
     )
 
     if ($Mask) { $Rows = 1 } # multiline ignored with mask param
@@ -238,6 +240,7 @@ function Add-TextBox {
     $Panel = Add-Panel -Form $Form -Rows $Rows
 
     $TextBoxOffset = 0
+
     if ($Lockable) {
         $Lock = New-Object system.Windows.Forms.CheckBox
         $Lock.Location = New-Object System.Drawing.Point($Form.label_width, 0)
@@ -252,6 +255,21 @@ function Add-TextBox {
             }
             $TextBox.Enabled = !$TextBox.Enabled
         })
+    }
+
+    if ($ActionButton) {
+        $ButtonControl = New-Object system.Windows.Forms.Button
+        $Panel.Controls.Add($ButtonControl) # autosize can't calc width unless added
+        $ButtonControl.AutoSize = $true
+        $ButtonControl.AutoSizeMode = "GrowAndShrink"
+        $ButtonControl.Height = $Form.row_height
+        $ButtonControl.Text = $ActionButtonText
+        $ButtonControl.Location = New-Object System.Drawing.Point(
+            ($Panel.Width - $ButtonControl.Width),
+            0
+        )
+        $ButtonControl.Add_Click($ActionButton)
+        $TextBoxOffset += $ButtonControl.Width
     }
 
     if ($Mask) {

@@ -99,6 +99,8 @@ $Firstname = Add-TextBox -Form $MyForm `
 | [-Text "\<value>"] | No | String | set initial control ```.Text``` value |
 | [-Lockable] | No | Switch | adds a checkbox to lock/unlock the control |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to ```TextChanged``` event |
+| [-ActionButton {ScriptBlock}] | No | Scriptblock | add action button with Callback |
+| [-ActionButtonText "\<value>"] | No | String | text on action button (default '>') |
 
 Returns a TextBox - access the value of the control via its ```.Text``` property.
 
@@ -157,6 +159,10 @@ $Calculated = Add-TextBox -Form $MyForm -Label "Calculated" -Lockable -Disabled
 
 Optional ```-Callback``` parameter binds the supplied ScriptBlock to the TextBox
 controls ```TextChanged``` event.
+
+Optional ```-ActionButton``` parameter binds the supplied ScriptBlock to a button
+control on the right of the textbox, normally used to manipulate the TextBox 
+content.  Default button text is ```>``` but can be set using ```-ActionBoxText```.
 
 ---
 

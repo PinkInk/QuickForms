@@ -23,6 +23,11 @@ Add-Title -Form $demo -Label 'Add-TextBox -Form $form -Label "Multi row" -Rows 2
 $MultiRow = Add-TextBox -Form $demo -Label "Multi row" -Rows 2
 
 Add-Title -Form $demo | Out-Null
+Add-Title -Form $demo -Label 'Add-TextBox -Form $form -Label "Action" -ActionButton {$Action.Text = "Cleared"} -ActionButtonText "clear"' -Bold | Out-Null
+$Action = Add-TextBox -Form $demo -Label "Textbox" -ActionButton { $Action.Text = "" } -ActionButtonText "clear"
+
+
+Add-Title -Form $demo | Out-Null
 Add-Action -Form $demo
 
 $demo.Show()
