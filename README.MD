@@ -75,8 +75,8 @@ $MyForm = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
 | --- | --- | --- | --- |
 | [-Title "\<value>"] | No | String | title displayed in title bar (default: "My Form") |
 | [-LabelWidth \<value>] | No | Int | width of labels column in pixels (default: 200) |
-| [-ControlWidth \<value>] | No | Int | width of controls column in pixels (default: 400)
-
+| [-ControlWidth \<value>] | No | Int | width of controls column in pixels (default: 400) |
+| [-RowHeight \<value>] | No | Int | height of rows in pixels (default: 25) |
 
 ---
 

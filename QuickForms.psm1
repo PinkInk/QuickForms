@@ -21,12 +21,14 @@ class QuickForm {
     QuickForm(
         [string]$Title,
         [int32]$LabelWidth = 200,
-        [int32]$ControlWidth = 400
+        [int32]$ControlWidth = 400,
+        [int32]$RowHeight = 25
     ) {
         $this.Form = New-Object system.Windows.Forms.Form
         $this.label_width = $LabelWidth
         $this.control_width = $ControlWidth
         $this.width = $LabelWidth + $ControlWidth + (2 * $this.margin)
+        $this.row_height = $RowHeight
         $this.Form.ClientSize = "$($this.width), 0"
         $this.Form.text = $Title
         $this.Form.BackColor = "#ffffff"
@@ -77,10 +79,11 @@ function New-QuickForm {
     param (
         [string]$Title = "My Form",
         [int32]$LabelWidth = 200,
-        [int32]$ControlWidth = 400
+        [int32]$ControlWidth = 400,
+        [int32]$RowHeight = 25
     )
 
-    $form = New-Object QuickForm($Title, $LabelWidth, $ControlWidth)
+    $form = New-Object QuickForm($Title, $LabelWidth, $ControlWidth, $RowHeight)
 
     return $form
 

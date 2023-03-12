@@ -1,6 +1,6 @@
 import-module ..\QuickForms.psd1
 
-$demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400
+$demo = New-QuickForm -Title "Demo Form" -LabelWidth 200 -ControlWidth 400 -RowHeight 30
 
 # add ExitCode property to the form
 $demo | Add-Member -NotePropertyName ExitCode -NotePropertyValue 0
