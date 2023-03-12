@@ -839,6 +839,71 @@ function Add-FileBox {
 }
 
 # 
+# External - add panel containing buttons
+# 
+function Add-Buttons {
+
+    <#
+        .SYNOPSIS
+        Add a row of buttons, with callbacks, to the form.
+        .DESCRIPTION
+        Returns nothing.
+        .EXAMPLE
+        Add-Buttons -Form $demo -Align "Right" -Buttons @(
+            @{ name="Add"; callback={},
+            @{ name="Remove"; callback={}
+        )
+        .PARAMETER Buttons
+        Array of buttons to display below the list e.g.
+        @( @{name="Add"; callback={}}, @{name="Remove"; callback={}})
+        .PARAMETER Align
+        Optionally align the buttoms to the Left of the form, with the Label column or to the Right of the form. 
+    #>
+
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
+        [Parameter(Mandatory=$true)][array]$Buttons,
+        [ValidateNotNullOrEmpty()][ValidateSet('Left','Label', 'Right')][string]$Align = "Label"
+    )
+
+    $Panel = Add-Panel -Form $Form -Rows 1
+
+    switch ($Align) {
+        "Left" { $x = 0 }
+        "Right" { 
+            $x = $Panel.Width 
+            # reverse button array order in this case
+            function Reverse { [System.Collections.Stack]::new(@($input)) }
+            $Buttons = $Buttons | Reverse
+        }
+        "Label" { $x = $Form.label_width }
+    }
+
+    $Buttons | ForEach-Object{
+
+        $ButtonControl = New-Object System.Windows.Forms.Button
+
+        $ButtonControl.Text = $_.name
+        $ButtonControl.AutoSize = $true
+        $ButtonControl.AutoSizeMode = "GrowAndShrink"    
+        $ButtonControl.Height = $Form.row_height
+        $Panel.Controls.Add($ButtonControl)
+
+        if ( $Align -eq "Right" ) { $x -= $ButtonControl.Width }
+
+        $ButtonControl.Location = New-Object System.Drawing.Point($x, 0)
+
+        if ($null -ne $_.callback) {
+            $ButtonControl.Add_Click( $_.callback )
+        }
+
+        if ( $Align -in "Left", "Label" ) { $x += $ButtonControl.Size.Width }
+
+    }
+
+}
+
+# 
 # External - std Ok Cancel buttons (no panel so $this.parent.close makes sense)
 # 
 function Add-Action {

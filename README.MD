@@ -11,6 +11,7 @@ supporting the following controls:
 - ```DateTimePicker``` (date, time or date & time)
 - ```FileBox``` (Open and SaveAs file paths)
 - ```Title``` (information or heading text row)
+- ```Buttons``` (row of buttons)
 
 Example (the included **demo.ps1** form):
 
@@ -479,6 +480,48 @@ Optional ```-Callback``` parameter binds the supplied ScriptBlock to the TextBox
 controls ```TextChanged``` event.
 
 ---
+
+## Add-Buttons
+
+``` PowerShell
+$MyButtons = Add-Buttons -Form $demo `
+    -Align Right `
+    -Buttons @(
+        @{ 
+            name="Add";
+            callback={ ... } 
+        },
+        @{ 
+            name="Remove";
+            callback={ ... } 
+        }
+    )
+```
+
+| Argument | Mandatory | Type | Description |
+| --- | --- | --- | --- |
+| -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
+| [-Buttons @(..)] | Yes | Array of Hashtables | buttons to display below list, as array of name, callback hashtables (refer notes) |
+| [-Align Left\|Label\|Right] | No | Option | align buttons left, to label column or right |
+
+Creates a row of buttons with the specified ```callback``` bound to their Click
+events, returns nothing.
+
+Optional ```Align``` parameter determines whether the buttons are aligned with
+the ```Left``` edge of the form, the left edge of the ```Label``` column or the
+```Right``` of the form.
+
+```Buttons``` parameter requires an array of hashtable's containing ```name``` (button text) 
+and ```callback``` (called when button pressed) properties e.g.
+
+``` PowerShell
+@(
+    @{ name="Add"; callback={} },
+    @{ name="Remove"; callback={} }
+)
+```
+  Buttons are inserted onto the form in the order that 
+they appear in the ```Buttons``` array. 
 
 ## Add-Title
 
