@@ -641,6 +641,8 @@ function Add-ListBox {
                 $x,
                 ($Form.row_height * $Rows)
             )
+            $ButtonControl.AutoSize = $true
+            $ButtonControl.AutoSizeMode = "GrowAndShrink"    
             $ButtonControl.Height = $Form.row_height
 
             $ButtonControl.Text = $_.name
