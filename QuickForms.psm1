@@ -219,6 +219,10 @@ function Add-TextBox {
         Optionally add a multiLine text box with specified number of rows.
         .PARAMETER Text
         Optionally initialise the controls .Text value.
+        .PARAMETER ActionButton
+        Optionally add a button control to the right of the textbox and bind this callback to its Click event.
+        .PARAMETER ActionButtonText
+        Text for button control (defaults to '>')
     #>
 
     param (
@@ -842,17 +846,18 @@ function Add-Action {
         [scriptblock]$Callback
     )
 
-    # $Form.slot += 1
+    $ButtonWidth = 60
+
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + $Form.row_height)"
 
     $ok = New-Object system.Windows.Forms.Button
     $ok.text = "OK"
 
     $ok.location = New-Object System.Drawing.Point(
-        ($Form.width - 120 - ($Form.margin * 2)),
+        ($Form.width - ($ButtonWidth * 2) - ($Form.margin * 2)),
         ($Form.row_height * $Form.slot)
     )
-    $ok.Width = 60
+    $ok.Width = $ButtonWidth
     $ok.Height = $Form.row_height
     
     if ($null -ne $callback) {
@@ -867,10 +872,10 @@ function Add-Action {
     $cancel.text = "Cancel"
 
     $cancel.location = New-Object System.Drawing.Point(
-        ($Form.width - 60 - $Form.margin),
+        ($Form.width - $ButtonWidth - $Form.margin),
         ($Form.row_height * $Form.slot)
     )
-    $cancel.Width = 60
+    $cancel.Width = $ButtonWidth
     $cancel.Height = $Form.row_height
 
     $cancel.Add_Click({ $this.parent.Close() })
