@@ -283,7 +283,10 @@ function Add-TextBox {
         $Control = New-Object system.Windows.Forms.TextBox
     }
 
-    $Control.Location = New-Object System.Drawing.Point(($Form.label_width + $TextBoxOffset), 0)
+    $Control.Location = New-Object System.Drawing.Point(
+        ($Form.label_width + $TextBoxOffset), 
+        0
+    )
     
     $Control.width = $Form.control_width - $TextBoxOffset
     
@@ -351,7 +354,10 @@ function Add-CheckBox {
 
     $Control.Width = $Form.control_width
     $Control.Height = $Form.row_height
-    $Control.Location = New-Object System.Drawing.Point($Form.label_width, 0)
+    $Control.Location = New-Object System.Drawing.Point(
+        $Form.label_width, 
+        0
+    )
 
     $Control.text = $label
 
@@ -611,7 +617,10 @@ function Add-ListBox {
         $Control = New-Object System.Windows.Forms.ListBox
     }
 
-    $Control.Location = New-Object System.Drawing.Point($Form.label_width, 0)
+    $Control.Location = New-Object System.Drawing.Point(
+        $Form.label_width, 
+        0
+    )
     $Control.width = $Form.control_width
     $Control.Height = $Form.row_height * $Rows
 
@@ -789,7 +798,9 @@ function Add-FileBox {
             $Dialog = New-Object system.Windows.Forms.OpenFileDialog
             if ($this.FileFilter -ne "") { $Dialog.Filter = $this.FileFilter }
             if ( $Dialog.ShowDialog() -eq "OK" ) {
-                $TextBox = $this.parent.Controls | Where-Object { $_.GetType().Name -eq "TextBox"}
+                $TextBox = $this.parent.Controls | Where-Object { 
+                    $_.GetType().Name -eq "TextBox"
+                }
                 $TextBox.Text = $Dialog.FileName
             }
         })
@@ -798,7 +809,9 @@ function Add-FileBox {
             $Dialog = New-Object System.Windows.Forms.SaveFileDialog
             if ($this.FileFilter -ne "") { $Dialog.Filter = $this.FileFilter }
             if ( $Dialog.ShowDialog() -eq "OK" ) {
-                $TextBox = $this.parent.Controls | Where-Object { $_.GetType().Name -eq "TextBox"}
+                $TextBox = $this.parent.Controls | Where-Object { 
+                    $_.GetType().Name -eq "TextBox"
+                }
                 $TextBox.Text = $Dialog.FileName
             }
         })
