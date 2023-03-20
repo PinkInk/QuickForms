@@ -243,7 +243,8 @@ function Add-TextBox {
 
     $Panel = Add-Panel -Form $Form -Rows $Rows
 
-    $TextBoxOffset = 0
+    $TextBoxLeftOffset = 0
+    $TextBoxRightOffset = 0
 
     if ($Lockable) {
         $Lock = New-Object system.Windows.Forms.CheckBox
@@ -251,7 +252,7 @@ function Add-TextBox {
         if (!$Disabled) { $Lock.Checked = $true }
         $Lock.AutoSize = $true
         $Panel.Controls.Add($Lock)
-        $TextBoxOffset = $Lock.Width
+        $TextBoxLeftOffset += $Lock.Width
         $Lock.Add_CheckedChanged({
             $TextBox = $this.parent.Controls | Where-Object { 
                 $_.GetType().Name -eq "TextBox" -or
@@ -273,7 +274,7 @@ function Add-TextBox {
             0
         )
         $ButtonControl.Add_Click($ActionButton)
-        $TextBoxOffset += $ButtonControl.Width
+        $TextBoxRightOffset += $ButtonControl.Width
     }
 
     if ($Mask) {
@@ -284,11 +285,11 @@ function Add-TextBox {
     }
 
     $Control.Location = New-Object System.Drawing.Point(
-        ($Form.label_width + $TextBoxOffset), 
+        ($Form.label_width + $TextBoxLeftOffset), 
         0
     )
     
-    $Control.width = $Form.control_width - $TextBoxOffset
+    $Control.width = $Form.control_width - $TextBoxLeftOffset - $TextBoxRightOffset
     
     if ($Rows -gt 1 -and -not $Mask) { 
         $Control.Multiline = $true 
