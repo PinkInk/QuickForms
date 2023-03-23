@@ -34,6 +34,7 @@ class QuickForm {
         $this.Form.BackColor = "#ffffff"
         $this.Form.TopMost = $false
         $this.Form.FormBorderStyle = 3 # FixedDialog 
+        $this.Form.MaximizeBox = $false
     }
 
     # show the dialog
@@ -81,10 +82,15 @@ function New-QuickForm {
         [string]$Title = "My Form",
         [int32]$LabelWidth = 200,
         [int32]$ControlWidth = 400,
-        [int32]$RowHeight = 25
+        [int32]$RowHeight = 25,
+        [switch]$NoControlBox
     )
 
     $form = New-Object QuickForm($Title, $LabelWidth, $ControlWidth, $RowHeight)
+
+    if ( $NoControlBox ) {
+        $form.Form.ControlBox = $false
+    }
 
     return $form
 
