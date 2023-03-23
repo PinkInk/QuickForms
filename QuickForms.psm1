@@ -75,6 +75,8 @@ function New-QuickForm {
         Width of the controls column in pixels.
 
         Default - 400 pixels.
+        .PARAMETER NoControlBox
+        Disable the form caption bar controls (and the option to close the form)
 
     #>
 
