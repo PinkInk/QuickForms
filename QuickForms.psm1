@@ -33,7 +33,7 @@ class QuickForm {
         $this.Form.text = $Title
         $this.Form.BackColor = "#ffffff"
         $this.Form.TopMost = $false
-        $this.Form.FormBorderStyle = 3 # FixedDialog 
+        $this.Form.FormBorderStyle = "FixedDialog" 
         $this.Form.MaximizeBox = $false
     }
 
