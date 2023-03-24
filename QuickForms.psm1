@@ -929,22 +929,49 @@ function Add-Action {
         Form to add the controls to.
         .PARAMETER Callback
         Optional Scriptblock to call when the OK button is clicked.
+        .PARAMETER OkOnly
+        Optional switch to show only an Ok button (no Cancel button).
+
+        Likely used with New-QuickForms -NoControlBox option to prevent form cancellation.
     #>
 
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][object]$Form,
-        [scriptblock]$Callback
+        [scriptblock]$Callback,
+        [Switch]$OkOnly
     )
 
     $ButtonWidth = 60
 
     $Form.Form.ClientSize = "$($Form.width), $($Form.Form.ClientSize.height + $Form.row_height)"
 
+    $OkOffset = 0
+
+    if ( !$OkOnly ) {
+
+        $cancel = New-Object system.Windows.Forms.Button
+        $cancel.text = "Cancel"
+
+        $cancel.location = New-Object System.Drawing.Point(
+            ($Form.width - $ButtonWidth - $Form.margin),
+            ($Form.row_height * $Form.slot)
+        )
+        $cancel.Width = $ButtonWidth
+        $cancel.Height = $Form.row_height
+
+        $cancel.Add_Click({ $this.parent.Close() })
+
+        $Form.Form.Controls.Add($cancel)
+
+        $OkOffset = $ButtonWidth
+
+    }
+
     $ok = New-Object system.Windows.Forms.Button
     $ok.text = "OK"
 
     $ok.location = New-Object System.Drawing.Point(
-        ($Form.width - ($ButtonWidth * 2) - ($Form.margin * 2)),
+        ($Form.width - $ButtonWidth - $OkOffset - ($Form.margin * 2)),
         ($Form.row_height * $Form.slot)
     )
     $ok.Width = $ButtonWidth
@@ -958,18 +985,5 @@ function Add-Action {
     
     $Form.Form.Controls.Add($ok)
 
-    $cancel = New-Object system.Windows.Forms.Button
-    $cancel.text = "Cancel"
-
-    $cancel.location = New-Object System.Drawing.Point(
-        ($Form.width - $ButtonWidth - $Form.margin),
-        ($Form.row_height * $Form.slot)
-    )
-    $cancel.Width = $ButtonWidth
-    $cancel.Height = $Form.row_height
-
-    $cancel.Add_Click({ $this.parent.Close() })
-
-    $Form.Form.Controls.Add($cancel)
 
 }

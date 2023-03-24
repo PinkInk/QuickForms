@@ -566,6 +566,7 @@ Add-Action -Form $MyForm `
 | --- | --- | --- | --- |
 | -Form \<value> | Yes | QuickForm | form to add to, can be passed on pipeline |
 | [-Callback {ScriptBlock}] | No | ScriptBlock | bound to OK buttons ```Click``` event |
+| [-OkOnly] | No | Switch | hide ```Cancel``` button |
 
 
 Add the customary OK and Cancel buttons to the form, optionally 
@@ -590,6 +591,11 @@ Add-Action -Form $MyForm -Callback {
     $this.parent.close()
 }
 ```
+
+Optional ```OkOnly``` hides the ```Cancel``` button, coupled with
+```New-QuickForms``` option ```-NoControlBox``` this allows forms that can't
+be closed with any other option than ```Ok``` (and triggering whatever Callback 
+that entails).
 
 ---
 
